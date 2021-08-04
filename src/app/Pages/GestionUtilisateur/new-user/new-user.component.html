@@ -1,0 +1,480 @@
+<app-page-title [heading]="'CommunTranslate.Users.heading' | translate" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation">
+
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="{{'CommunTranslate.Users.EnregistrementUtilisateursSysteme' | translate}}">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <form name="formuser" (ngSubmit)="formuser.valid && onSaveUser(formuser)" #formuser="ngForm">
+          <input name="idUser" value="{{valeurId}}" style="display: none" ngModel/>
+
+          <div class="mb-3 card">
+            <div class="card-header-tab card-header form-row">
+              <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+
+                <h5 class="card-title">{{'CommunTranslate.Users.EnregistrementDonnees' | translate}}</h5>
+              </div>
+
+              <div class="col-md-6 text-right">
+                <button type="submit" class="btn btn-info btn-lg"
+                        [disabled]="formuser.invalid">{{labelButtonSave}}</button>&nbsp;
+                <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">
+                  {{'RecurentWord.Annuler' | translate}}
+                </button>
+              </div>
+            </div>
+
+            <div class="form-row" style="padding: 15px;">
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="nomprenom" class="">{{'CommunTranslate.Users.NomPrenom' | translate}} *</label>
+                  <input #objnomprenom="ngModel"
+                         value="{{valeurNomPrenom}}"
+                         ngModel="{{valeurNomPrenom}}"
+                         required="required"
+                         type="text"
+                         name="nomprenom"
+                         id="nomprenom"
+                         placeholder="{{'CommunTranslate.Users.NomPrenomUtilisateur' | translate}}.."
+                         class="form-control">
+                  <small *ngIf="objnomprenom.touched && objnomprenom.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="tel" class="">{{'CommunTranslate.Users.Telephone' | translate}} * </label>
+                  <input #objtel="ngModel"
+                         value="{{valeurTel}}"
+                         ngModel="{{valeurTel}}"
+                         required="required"
+                         type="number"
+                         name="tel"
+                         id="tel"
+                         placeholder="{{'CommunTranslate.Users.NumeroTelephoneUtilisateur' | translate}}.."
+                         class="form-control">
+                  <small *ngIf="objtel.touched && objtel.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3" >
+                <div class="position-relative form-group">
+                  <label for="identifiant" class="">E-mail *</label>
+                  <input #objidentifiant="ngModel"
+                         value="{{valeurIdentifiant}}"
+                         ngModel="{{valeurIdentifiant}}"
+                         placeholder="{{'CommunTranslate.Users.EmailUtilisateur' | translate}}..."
+                         required="required"
+                         type="text"
+                         name="identifiant"
+                         id="identifiant"
+                         class="form-control">
+                  <small *ngIf="objidentifiant.touched && objidentifiant.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="sexe" class="">{{'CommunTranslate.Users.Sexe' | translate}} *</label>
+                  <select #objsexe="ngModel"
+                          value="{{valeursexe}}"
+                          ngModel="{{valeursexe}}"
+                          required="required"
+                          name="sexe"
+                          id="sexe"
+                          class="form-control">
+                    <option value="{{null}}" [selected]="true">{{'CommunTranslate.Users.SexeUtilisateur' | translate}}..</option>
+                    <option value="Masculin">{{'CommunTranslate.Users.Masculin' | translate}}</option>
+                    <option value="Féminin">{{'CommunTranslate.Users.Feminin' | translate}}</option>
+                  </select>
+                  <small *ngIf="objsexe.touched && objsexe.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="email" class="">{{'CommunTranslate.Users.Identifiant' | translate}} *</label>
+                  <input #objemail="ngModel"
+                         email
+                         value="{{valeurEmail}}"
+                         ngModel="{{valeurEmail}}"
+                         required="required"
+                         type="email"
+                         name="email"
+                         id="email"
+                         [disabled]="labelButtonSave=='Modifier'"
+                         placeholder="{{'CommunTranslate.Users.IdentifierUniqueUtilisateur' | translate}}.."
+                         class="form-control">
+                  <small *ngIf="objemail.touched && objemail.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="password" class="">{{'CommunTranslate.Users.MotPasse' | translate}} *</label>
+                  <input #objpwd="ngModel"
+                         value="{{valeurPassword}}"
+                         ngModel="{{valeurPassword}}"
+                         [required]="labelButtonSave=='Enregistrer'"
+                         name="password"
+                         id="password"
+                         placeholder="{{'CommunTranslate.Users.insererMotPasse' | translate}}"
+                         type="password"
+                         class="form-control"
+                         [ngClass]="{'ng-invalid': objpwd.touched && objpasswordconfirm.touched && objpwd.value!=objpasswordconfirm.value}">
+                  <small *ngIf="objpwd.touched && objpwd.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                  <small *ngIf="labelButtonSave!='Enregistrer'">{{'CommunTranslate.Users.ChampObligatoireModification' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="passwordconfirm" class="">{{'CommunTranslate.Users.ConfirmeMotPasse' | translate}}</label>
+                  <input #objpasswordconfirm="ngModel"
+                         name="passwordconfirm"
+                         id="passwordconfirm"
+                         placeholder="{{'CommunTranslate.Users.ConfirmeMotPasse' | translate}}"
+                         ngModel
+                         [required]="labelButtonSave=='Enregistrer'"
+                         type="password"
+                         class="form-control">
+                  <small *ngIf="objpasswordconfirm.touched && objpwd.value!=objpasswordconfirm.value"
+                         style="color: red">{{'CommunTranslate.Users.MotPasseIdentique' | translate}}</small>
+                  <small *ngIf="labelButtonSave!='Enregistrer'">{{'CommunTranslate.Users.ChampObligatoireModification' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="actif" class="">{{'CommunTranslate.Users.Actif' | translate}}</label>
+                  <select #objactif="ngModel"
+                          value="{{valeurActif}}"
+                          ngModel="{{valeurActif}}"
+                          required="required"
+                          name="actif"
+                          id="actif"
+                          class="form-control">
+                    <option value="{{null}}" [selected]="true">{{'CommunTranslate.Users.EtatCompte' | translate}}..</option>
+                    <option value="OUI">{{'CommunTranslate.Users.OUI' | translate}}</option>
+                    <option value="NON">{{'CommunTranslate.Users.NON' | translate}}</option>
+                  </select>
+                  <small *ngIf="objactif.touched && objactif.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+
+              <div class="col-md-5">
+                <div class="position-relative form-group">
+                  <label for="departments" class="">{{'CommunTranslate.Users.DirectionServiceBase' | translate}} *</label>
+                  <select #objdepartement="ngModel"
+                          id="departments"
+                          name="departments"
+                          value="{{valeurDepartement}}"
+                          ngModel="{{valeurDepartementID}}"
+                          required="required"
+                          class="form-control">
+                    <option value="{{null}}" [selected]="true">{{'CommunTranslate.Users.DirectionBaseUtilisateur' | translate}}</option>
+                    <ng-container *ngFor="let itemGroup1 of dataGroup; let i=index">
+                      <option [selected]="selectFunctionOccupe(itemGroup1.id, itemGroup1.libelleGroupe)"
+                              *ngIf="itemGroup1.typGroup=='Unité organisationnelle'" value="{{itemGroup1.id}}">
+                        {{itemGroup1.libelleGroupe}}
+                      </option>
+                    </ng-container>
+                  </select>
+                  <small *ngIf="objdepartement.touched && objdepartement.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="funcSupp" class="">{{'CommunTranslate.Users.FonctionSuperieure' | translate}} *</label>
+                  <select #sniFuncHiegth="ngModel"
+                          id="funcSupp"
+                          name="funcSupp"
+                          value="{{valeurFunctionHeigth}}"
+                          ngModel="{{valeurFunctionHeigth}}"
+                          class="form-control"
+                          (change)="onSelectectFuncHiegth(sniFuncHiegth.value)">
+                    <option value="{{null}}" [selected]="true">{{'CommunTranslate.Users.FonctionSupperieurFonction' | translate}}</option>
+                    <option *ngFor="let itemGroup of repechGroupAppMultiple; let i=index" [value]="itemGroup.libelleGroupe">
+                      {{itemGroup.libelleGroupe}}
+                    </option>
+                  </select>
+                  <small *ngIf="sniFuncHiegth.touched && sniFuncHiegth.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="nameSupp" class="">{{'CommunTranslate.Users.SuperieureHierarchique' | translate}}</label>
+                  <input type="text"
+                         value="{{valeurSuppHigth}}"
+                         id="nameSupp"
+                         name="nameSupp"
+                         disabled="disabled"
+                         [ngModel]="valeurSuppHigthContenu"
+                         class="form-control">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="position-relative form-group">
+                  <label class="">
+                    {{'CommunTranslate.Users.FonctionOccupee' | translate}} *
+                    <button type="button"
+                            class="btn mr-2 border-0 btn btn-success"
+                            style="font-weight: bold; padding: 5px; font-size: smaller"
+                            (click)="onGroupApp()"
+                    >{{'CommunTranslate.Users.ChargerGroupesAppartenanceExistant' | translate}} *
+                    </button>
+                  </label>
+
+                  <form [formGroup]="myForm">
+                    <ng-multiselect-dropdown name="groupApp"
+                                             [placeholder]="'CommunTranslate.Users.SelectionnerFonctionOccupeeUtilisateur' | translate"
+                                             [settings]="dropdownSettings"
+                                             [data]="groupApp" formControlName="groupApp"
+                                             (onDropDownClose)="onDropDownClose()"
+                                             (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+                  </form>
+                </div>
+              </div>
+
+
+              <!-- LOCALISATION-->
+              <div class="col-md-12 card">
+                <div class="card-header-tab card-header form-row">
+                  <div class="card-header-title font-size-lg text-capitalize font-weight-bolder col-md-6">
+                    <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+                    <ng-container *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.Users.LocalisationNiveauCZV' | translate}}</ng-container>
+                    <ng-container *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.Users.Localisation' | translate}}</ng-container>
+                  </div>
+                </div>
+
+                <div class="form-row" style="padding: 15px;">
+
+                  <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+                    <div class="position-relative form-group">
+                      <label for="regionselect" class="">{{'CommunTranslate.Users.Region' | translate}}</label>
+                      <select #objregion
+                              id="regionselect"
+                              class="form-control"
+                              (change)="chooseDepartemen(objregion.value)">
+                        <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate}}...{{valeurRegion}}</option>
+                        <option value="{{itemRegions.id}}" *ngFor="let itemRegions of listRegions ">
+                          {{itemRegions.libelleRegionFR}}
+                          <input name="region" ngModel="{{valeurRegion}}" value="{{valeurRegion}}"
+                                 style="display: none">
+                        </option>
+                      </select>
+
+                    </div>
+                  </div>
+
+                  <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+                    <div class="position-relative form-group">
+                      <label class="">{{'CommunTranslate.Users.Departement' | translate}} </label>
+                      <select #objdepartment
+                              id="departementselect"
+                              class="form-control"
+                              (change)="chooseCommune(objdepartment.value)">
+                        <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate}}...{{valeurDepartementGeo}}</option>
+                        <option value="{{itemDepartement.id}}" *ngFor="let itemDepartement of listDepartement">
+                          {{itemDepartement.libelleDepartementFR}}
+                          <input name="departement" ngModel="{{valeurDepartementGeo}}" value="{{valeurDepartementGeo}}"
+                                 style="display: none">
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+                    <div class="position-relative form-group">
+                      <label class="">
+                        <ng-container *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.Users.Arrondissement' | translate}}</ng-container>
+                        <ng-container *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.Users.Commune' | translate}}</ng-container>
+                      </label>
+                      <select #objCommune
+                              id="coommuneselect"
+                              class="form-control"
+                              (change)="checkValueCommune(objCommune.value)">
+                        <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate}}...{{valeurCommune}}</option>
+                        <option value="{{itemCommune.id}}" *ngFor="let itemCommune of listCommunes ">
+                          {{itemCommune.libelleCommuneFR}}
+                          <input name="Commune" ngModel="{{valeurCommune}}" value="{{valeurCommune}}"
+                                 style="display: none">
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3" *ngIf="modeApply.MODE=='cahis'">
+                    <div class="position-relative form-group">
+                      <label class="">CZV</label>
+                      <select #objCZV
+                              id="czv"
+                              class="form-control"
+                              (change)="checkValueobjCZV(objCZV.value)">
+                        <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate}}...{{valeurCZV}}</option>
+                        <option value="{{itemCZV.id}}" *ngFor="let itemCZV of listCZVFinal ">
+                          {{itemCZV.libelleCZVSFR}}
+                          <input name="czv" ngModel="{{valeurCZV}}" value="{{valeurCZV}}" style="display: none">
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2" *ngIf="valeurRegion!=''">
+                    <button class="btn btn-success btn-lg" style="float: left; padding: 4px"
+                            (click)="onReitialisationLocalisation()">{{'CommunTranslate.Users.ReinitialiserLocalisation' | translate}}
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </form>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>{{'CommunTranslate.Users.ListeUtilisateursSystemeEnregistres' | translate}}</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <div class="main-card mb-3 card">
+          <div class="card-header-tab card-header">
+
+            <button class="btn btn-info" placement="left" ngbTooltip="{{'CommunTranslate.Users.RafraichirVotreTableau' | translate}}" (click)="onLoading()" style="display: inline-block; float: right"><i class="fa fa-undo"></i></button>
+
+
+            <h5 class="card-title" style="display: inline-block">
+              {{'CommunTranslate.Users.ListeUtilisateursEnregistrés' | translate}}
+            </h5>
+
+            <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+                   value="10" *ngIf="listUsers.length>0 && (term ==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+            <p *ngIf="listUsers.length>0 && (term ==undefined || term=='')" style="display: inline-block; margin-left: 60px">
+              <em> {{'RecurentWord.navigationDonnees' | translate}} : </em> <strong>{{listUsers.length}} / {{listForPaginaition.length}}</strong>
+            </p>
+
+            <div class="btn-actions-pane-right text-capitalize">
+              <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+            </div>
+
+          </div>
+
+          <div class="card-body">
+
+            <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+              <thead>
+              <tr>
+                <th>{{'CommunTranslate.Users.NomPrenom' | translate}}</th>
+                <th>{{'CommunTranslate.Users.Telephone' | translate}}</th>
+                <th>{{'CommunTranslate.Users.Identifiant' | translate}}</th>
+                <th>{{'CommunTranslate.Users.Sexe' | translate}}</th>
+                <th>{{'CommunTranslate.Users.Direction' | translate}}</th>
+                <th>{{'CommunTranslate.Users.Fonction' | translate}}</th>
+                <th>{{'CommunTranslate.Users.SuperieureHierarchique' | translate}}</th>
+                <th>E-mail</th>
+                <th>{{'CommunTranslate.Users.Actif' | translate}}</th>
+                <th style="width: 10px;">
+                  <button class="btn"><i class="fa fa-edit"></i></button>
+                </th>
+                <th style="width: 10px;">
+                  <button class="btn"><i class="fa fa-trash"></i></button>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let itemUsers of (term==undefined || term=='' ? listUsers : listForPaginaition) | filter : term ; let i = index">
+                <td>{{itemUsers.nomPrenom}}</td> <!-- Nom et prénom-->
+                <td>{{itemUsers.tel}}</td> <!--Téléphone-->
+                <td>{{itemUsers.email}}</td> <!--E-mail-->
+                <td>{{itemUsers.sexe}}</td> <!--Sexe-->
+
+                <td>
+                  <ng-container *ngFor="let itemGrp of itemUsers.appartenanceGroup">
+                    <!--{{itemGrp.typeGroupes}}-->
+                    <span *ngIf="itemGrp.typeGroupes=='Unité organisationnelle'">
+                                    {{itemGrp.libelleGroupe}}
+                                </span>
+                  </ng-container>
+                </td> <!--Direction-->
+
+                <td>
+                  <ng-container *ngFor="let itemGrp of itemUsers.appartenanceGroup">
+                    <!--{{itemGrp.typeGroupes}}-->
+                    <span *ngIf="itemGrp.typeGroupes=='Fonction' || itemGrp.typeGroupes=='Groupe de travail'">
+                                    {{itemGrp.libelleGroupe}} |
+                                </span>
+                  </ng-container>
+                </td> <!--Fonction-->
+
+                <td>
+                            <span *ngIf="itemUsers.suppHierachique==null || itemUsers.suppHierachique==''">
+                                Lui meme
+                            </span>
+                  <span *ngIf="itemUsers.suppHierachique!=null || itemUsers.suppHierachique!=''">
+                                {{itemUsers.suppHierachique}}
+                            </span>
+                </td> <!--Supérieure hiérarchique-->
+
+                <td>{{itemUsers.identifiant}}</td> <!--Identifiant-->
+                <td>
+                  <span *ngIf="itemUsers.actif=='OUI'" class="badge badge-success">{{itemUsers.actif}}</span>
+                  <span *ngIf="itemUsers.actif=='NON'" class="badge badge-danger">{{itemUsers.actif}}</span>
+                </td> <!--Actif-->
+
+
+                <td>
+                  <button title="{{'CommunTranslate.Users.edit' | translate}}" class="btn btn-info" (click)="onSelectUser(itemUsers)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </td>
+                <td>
+                  <button title="{{'CommunTranslate.Users.delete' | translate}}" class="btn btn-danger" (click)="onDeleteUser(itemUsers.id)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+
+              <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term ==undefined || term=='')">
+                <td colspan="11">
+                  <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"
+                                  [collectionSize]="countItemAffcihe" [(page)]="page"
+                                  [boundaryLinks]="true"></ngb-pagination>
+                </td>
+              </tr>
+              <tr *ngIf="listUsers.length==0">
+                <td colspan="11">
+                  {{'CommunTranslate.Users.AucuneDonneesEnregistrees' | translate}}
+                </td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+
+</div>

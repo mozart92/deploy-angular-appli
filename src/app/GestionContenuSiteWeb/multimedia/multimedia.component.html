@@ -1,0 +1,284 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation">
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Enregistrement des fichers">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+        <form name="formMedia" (ngSubmit)="formMedia.valid && onSaveMedia(formMedia)" #formMedia="ngForm">
+          <input name="id" value="{{valeurId}}" style="display: none" ngModel/>
+          <div class="mb-3 card">
+            <div class="card-header-tab card-header form-row">
+
+              <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+                <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+                <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+              </div>
+
+
+              <div class="col-md-6 text-right">
+                <button type="submit" class="btn btn-info btn-lg"
+                        [disabled]="formMedia.invalid">{{labelButtonSave}}</button>&nbsp;
+                <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">
+                  Annuler
+                </button>
+              </div>
+
+            </div>
+
+            <div class="form-row" style="padding: 15px;">
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="labelTitreMFR" class="">{{TitreMFR}}</label>
+                  <input #objlabelTitreMFR="ngModel"
+                         type="text"
+                         value="{{valeurlabelTitreMFR}}"
+                         id="labelTitreMFR"
+                         name="labelTitreMFR"
+                         ngModel="{{valeurlabelTitreMFR}}"
+                         required="required"
+                         class="form-control">
+                  <small *ngIf="objlabelTitreMFR.touched && objlabelTitreMFR.invalid" style="color: red">Champ vide ou
+                    incorrecte, veillez vérifier</small>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="labelTitreMEN" class="">{{TitreMEN}}</label>
+                  <input #objlabelTitreMEN="ngModel"
+                         type="text"
+                         value="{{valeurlabelTitreMEN}}"
+                         id="labelTitreMEN"
+                         name="labelTitreMEN"
+                         ngModel="{{valeurlabelTitreMEN}}"
+                         required="required"
+                         class="form-control">
+                  <small *ngIf="objlabelTitreMEN.touched && objlabelTitreMEN.invalid" style="color: red">Champ vide ou
+                    incorrecte, veillez vérifier</small>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="labelDescriptionMFR" class="">{{DescriptionMFR}}</label>
+                  <input #objlabelDescriptionMFR="ngModel"
+                         type="text"
+                         value="{{valeurlabelDescriptionMFR}}"
+                         id="labelDescriptionMFR"
+                         name="labelDescriptionMFR"
+                         ngModel="{{valeurlabelDescriptionMFR}}"
+                         required="required"
+                         class="form-control">
+                  <small *ngIf="objlabelDescriptionMFR.touched && objlabelDescriptionMFR.invalid" style="color: red">Champ
+                    vide ou incorrecte, veillez vérifier</small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="labelDescriptionMEN" class="">{{DescriptionMEN}}</label>
+                  <input #objlabelDescriptionMEN="ngModel"
+                         type="text"
+                         value="{{valeurlabelDescriptionMEN}}"
+                         id="labelDescriptionMEN"
+                         name="labelDescriptionMEN"
+                         ngModel="{{valeurlabelDescriptionMEN}}"
+                         required="required"
+                         class="form-control">
+                  <small *ngIf="objlabelDescriptionMEN.touched && objlabelDescriptionMEN.invalid" style="color: red">Champ
+                    vide ou incorrecte, veillez vérifier</small>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="file" class="">Joindre un fichier a cet article</label>
+                  <div class="custom-file">
+                    <label for="file" class="custom-file-label">{{valeurFichierFinal}}</label>
+                    <input #objlabelFichierAttacheM="ngModel"
+                           type="file"
+                           value="{{valeurlabelFichierAttacheM}}"
+                           id="file"
+                           (change)="uploadFiles($event.target.files)"
+                           name="labelFichierAttacheM"
+                           ngModel="{{valeurlabelFichierAttacheM}}"
+                           class="form-control custom-file-input">
+                    <small *ngIf="objlabelFichierAttacheM.touched && objlabelFichierAttacheM.invalid"
+                           style="color: red">Champ vide ou incorrecte, veillez vérifier</small>
+                  </div>
+                  <app-upload-files [filesList]="file"
+                                    (sendDataDownload)="receiveInfoUpload($event)">
+                  </app-upload-files>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <div class="position-relative form-group">
+                  <label for="labelTypeMedia" class="">{{TypeMedia}}</label>
+                  <input #objlabelTypeMedia="ngModel"
+                         value="{{valeurlabelTypeMedia}}"
+                         name="labelTypeMedia"
+                         ngModel="{{valeurlabelTypeMedia}}"
+                         id="labelTypeMedia"
+                         class="form-control"
+                         readonly
+                  />
+                  <!--<small *ngIf="objlabelTypeMedia.touched && objlabelTypeMedia.invalid" style="color: red">Champ vide ou  incorrecte, veillez verifier</small>-->
+                </div>
+              </div>
+
+
+              <!-- <div class="col-md-4">
+                 <div class="position-relative form-group">
+                   <label for="labelTypeMedia"  class="">{{TypeMedia}}</label>
+                   <select #objlabelTypeMedia="ngModel"
+                           value="{{valeurlabelTypeMedia}}"
+                           name="labelTypeMedia"
+                           ngModel="{{valeurlabelTypeMedia}}"
+                           required="required"
+                           id="labelTypeMedia"
+                           class="form-control">
+                     <option value="{{null}}" [selected]="true" >Choisir ...</option>
+                     <option value="VIDEO">VIDEO</option>
+                     <option value="SON">SON</option>
+                     <option value="IMAGE">IMAGE</option>
+                     <option value="FICHIER">FICHIER (PDF, DOC, XLS, PTT)</option>
+                   </select>
+                   <small *ngIf="objlabelTypeMedia.touched && objlabelTypeMedia.invalid" style="color: red">Champ vide ou  incorrecte, veillez verifier</small>
+                 </div>
+               </div>
+               -->
+            </div>
+          </div>
+
+        </form>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des fichiers enregistrés</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <div class="main-card mb-3 card">
+          <div class="card-body"><h5 class="card-title">Liste des multimédias enregistrés</h5>
+
+
+            <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+              <thead>
+              <tr>
+
+                <th>Titre (FR)</th>
+                <th>Titre (EN)</th>
+                <th>Description (FR)</th>
+                <th>Description (EN)</th>
+                <th>Type Média</th>
+                <th>Fichier</th>
+                <th style="width: 25px;">
+                  <button class="btn"><i class="fa fa-edit"></i></button>
+                </th>
+                <th style="width: 25px;">
+                  <button class="btn"><i class="fa fa-trash"></i></button>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let values of listMedia; let i = index">
+                <td>{{values.titreFR}}</td>
+                <td>{{values.titreEN}}</td>
+                <td>{{values.descriptionFR | formatTextToolLong:30}}</td>
+                <td>{{values.descriptionEN | formatTextToolLong:30}}</td>
+                <td>{{values.typeMedia}}</td>
+                <td>{{values.fichierUploader | formatTextToolLong:20}}.....</td>
+                <td>
+                  <button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onSelectMedia(values)"><i
+                    class="fa fa-edit"></i></button>
+                </td>
+                <td>
+                  <button title="{{titreBoutonDelete}}" class="btn btn-danger" (click)="onDeleteMedia(values.id)"><i
+                    class="fa fa-trash"></i></button>
+                </td>
+              </tr>
+
+
+              </tbody>
+
+              <!--
+                      <tr>
+                        <td colspan="5">
+                          <jw-pagination [items]="categories" (changePage)="onChangePage($event)"></jw-pagination>
+                        </td>
+                      </tr>-->
+
+
+            </table>
+
+
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des images enregistrées</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <p style="text-align: center">Aucune image n'a été enregistrée</p>
+
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des vidéos enregistrées</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <p style="text-align: center">Aucune vidéo n'a été enregistrée </p>
+
+
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des fichiers enregistrés</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <p style="text-align: center">Aucun fichier n'a ete enregistré n'a ete enregistrée</p>
+
+      </ng-template>
+    </ngb-tab>
+
+
+  </ngb-tabset>
+
+
+</div>

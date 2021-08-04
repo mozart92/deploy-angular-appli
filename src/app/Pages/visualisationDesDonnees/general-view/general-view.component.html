@@ -1,0 +1,410 @@
+<!--<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>-->
+<ng-template #content let-modal >
+  <div>
+    <div class="modal-header" style="background-color: #3f6ad8">
+      <h4 class="modal-title" style="color: white">{{'CommunTranslate.viewGeneraleStat.selectionElementStatistiquesAfficher' | translate}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="position:relative;">
+      <ul class="todo-list-wrapper list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let itemlegende of legendeAffichageCarteForConfig; let i=index">
+          <div class="todo-indicator bg-primary"></div>
+          <div class="widget-content p-0">
+            <div class="widget-content-wrapper">
+              <div class="widget-content-left flex2">
+                <div class="widget-heading">{{itemlegende}}</div>
+              </div>
+              <div class="widget-content-right ml-3">
+                <ng-container *ngIf="checkIdFunctionCurrentExistInConfig()!=undefined">
+                  <ng-container *ngIf="checkIfElementSelection(itemlegende)">
+                    <mat-checkbox class="example-margin" [value]="itemlegende" [checked]="true" (change)="changeValueEvent($event)">{{'CommunTranslate.viewGeneraleStat.checked' | translate}}</mat-checkbox>
+                  </ng-container>
+                  <ng-container *ngIf="!checkIfElementSelection(itemlegende)">
+                    <mat-checkbox class="example-margin" [value]="itemlegende" [checked]="false" (change)="changeValueEvent($event)">{{'CommunTranslate.viewGeneraleStat.checked' | translate}}</mat-checkbox>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="checkIdFunctionCurrentExistInConfig()==undefined">
+                  <mat-checkbox class="example-margin" [value]="itemlegende" [checked]="false" (change)="changeValueEvent($event)">{{'CommunTranslate.viewGeneraleStat.checked' | translate}}</mat-checkbox>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">{{'RecurentWord.Fermer' | translate}}</button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+
+<ng-template #content2 let-modal >
+  <div>
+    <div class="modal-header bg-success">
+      <h4 class="modal-title" style="color: white">{{'CommunTranslate.viewGeneraleStat.elementStatistiqueSiteWeb' | translate}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="position:relative;">
+      <ul class="todo-list-wrapper list-group list-group-flush">
+        <ng-container *ngFor="let itemlegende of elementStatForSiteWeb; let i=index">
+          <li class="list-group-item" *ngIf="itemlegende.indicateurSiteWeb==true">
+            <div class="todo-indicator bg-success"></div>
+            <div class="widget-content p-0">
+              <div class="widget-content-wrapper">
+                <div class="widget-content-left flex2">
+                  <div class="widget-heading">{{itemlegende.labelChamp}}</div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+      <p *ngIf="isConfigIndicateurForSiteWeb==false">{{'CommunTranslate.viewGeneraleStat.aucunIndicateurStatistiqueSiteConfigure' | translate}}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">{{'RecurentWord.Close' | translate}}</button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+
+
+
+<div class="row justify-content-center" style="margin-bottom: 35px; background-color: seashell;">
+
+
+  <div class="col-md-auto" >
+    <div class="btn-group-sm btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+         [(ngModel)]="model" style="box-shadow: 1px 3px 4px 0px black;">
+      <label ngbButtonLabel class="btn-square btn-danger" style="border-right: #ca87ae solid 2px;">
+        <input ngbButton type="radio" [value]="'Mode Taux'" (click)="onChangeMode('Mode Taux')"><i class="fa fa-hashtag"></i>&nbsp; {{'RecurentWord.ModeTaux' | translate}}
+      </label>
+      <label ngbButtonLabel class="btn-square btn-danger">
+        <input ngbButton type="radio" [value]="'Mode Pourcentage'" (click)="onChangeMode('Mode Pourcentage')"><i class="fa fa-percent"></i>&nbsp; {{'RecurentWord.ModePourcentage' | translate}}
+      </label>
+    </div>
+  </div>
+
+
+  <div class="col-md-auto">
+    <div class="btn-group-sm btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+         [(ngModel)]="modelForActivationFiche" style="box-shadow: 1px 3px 4px 0px black;">
+      <label ngbButtonLabel class="btn-square btn-warning" style="border-right: #ca87ae solid 2px;">
+        <input ngbButton type="radio" [value]="'actifConfigFiche'" (click)="onActiveConfigFFiche('actifConfigFiche')"><i class="fa fa-wrench"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.ActiverConfigIndiceStatFiche' | translate}}
+      </label>
+      <label ngbButtonLabel class="btn-square btn-warning">
+        <input ngbButton type="radio" [value]="'DesactifConfigFiche'" (click)="onActiveConfigFFiche('DesactifConfigFiche')"><i class="fa fa-power-off"></i> {{'CommunTranslate.viewGeneraleStat.DesactiverConfigIndiceStatFiche' | translate}}
+      </label>
+    </div>
+  </div>
+
+  <div class="col-md-auto" *ngIf="configForElementStatCloneForVisibilityApply.length>0">
+    <button type="button"
+            class="btn mr-2 border-0 btn btn-success"
+            style="box-shadow: 1px 2px 6px 0px #000000ab;"
+            (click)="ApplicConfig()"
+    ><i class="fa fa-check"></i> {{'CommunTranslate.viewGeneraleStat.AppliquerConfig' | translate}}</button>
+  </div>
+  <div class="col-md-auto" *ngIf="configForElementStatCloneForVisibilityApply.length>0 && currentUser=='systeme.admin@syrem-ctd.cm' && serviceGeneral.MODE == 'syrem'" >
+    <button type="button"
+            class="btn mr-2 border-0 btn btn-danger"
+            style="box-shadow: 1px 2px 6px 0px #000000ab;"
+            (click)="ApplicConfigForSiteWeb(content2)"
+    ><i class="fa fa-check"></i> {{'CommunTranslate.viewGeneraleStat.AppliquerConfigGrandPublic' | translate}}</button>
+  </div>
+</div>
+
+
+
+<div class="row" >
+  <div class="col-md-6">
+    <div class="position-relative form-group" style="margin-bottom: 0px">
+      <label class="" style="">{{'CommunTranslate.viewGeneraleStat.Planification' | translate}}
+        <button type="button"
+                class="btn mr-2 border-0 btn btn-success"
+                style=" padding: 5px;"
+                (click)="onPlanificationInSelect('encour')"
+        ><i class="fa fa-hourglass-start"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.ChargerPlanificationsCours' | translate}}</button>
+        <button type="button"
+                class="btn mr-2 border-0 btn btn-success"
+                style="padding: 5px;"
+                (click)="onPlanificationInSelect('achervee')"
+        ><i class="fa fa-hourglass-start"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.ChargerPlanificationsArchivees' | translate}}</button>
+      </label>
+      <select #objPlanning
+              id="planning"
+              class="form-control"
+              required="required"
+              (change)="chooseDataOfFile(objPlanning.value)">
+        <option value="{{null}}" [selected]="true">{{selectPlanning}}</option>
+        <ng-container *ngIf="showSelect=='encour'">
+          <ng-container *ngFor="let itemPlanning of listPlanning ">
+            <option value="{{itemPlanning.id}}" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+              {{itemPlanning.libellePlanning}}
+            </option>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="showSelect=='achervee'">
+          <ng-container *ngFor="let itemPlanning of listPlanning ">
+            <option value="{{itemPlanning.idOrigin}}" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+              {{itemPlanning.libellePlanning}}
+            </option>
+          </ng-container>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="position-relative form-group">
+      <label class="" style="">{{'CommunTranslate.viewGeneraleStat.FichesCollecte' | translate}}</label>
+      <select #objfile
+              id="fileconcerne"
+              class="form-control"
+              required="required"
+              (change)="onAffichestat(objfile.value, content)">
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.viewGeneraleStat.SelectionnerFichierCollecte' | translate}}...</option>
+        <option value="{{itemfiletrie.id}}" *ngFor="let itemfiletrie of listFileTrie ">
+          {{itemfiletrie.nomFiche}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+
+<form class="form-inline" style="margin-bottom: 10px;width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="form-group">
+    <label for="dateStart" style="">{{'CommunTranslate.viewGeneraleStat.FiltrerPartir' | translate}}  </label>
+    <input #objDateStart="ngModel"
+           type="date"
+           [ngClass]="{'errorChamp':objDateEnd.touched && objDateStart.value==''}"
+           name="dateStart"
+           ngModel
+           id="dateStart"
+           [disabled]="isSelectElementDefault==false || (dataFinalesFOrStat.length<=0 && dataNotFound==true)"
+           class="form-control mx-sm-3" >
+
+  </div>
+  <div class="form-group">
+    <label for="dateEnd" style=""> {{'RecurentWord.A' | translate}} </label>
+    <input #objDateEnd="ngModel"
+           type="date"
+           name="dateEnd"
+           ngModel
+           id="dateEnd"
+           [disabled]="isSelectElementDefault==false || (dataFinalesFOrStat.length<=0 && dataNotFound==true)"
+           (change)="objDateStart.value!='' && onSearchByDate(objDateStart.value, objDateEnd.value,objPlanning.value, objfile.value)"
+           class="form-control mx-sm-3">
+  </div>
+  <div class="form-group" >
+    <select #objIndexGlobale="ngModel"
+            id="objIndexGlobale"
+            name="objIndexGlobale"
+            ngModel
+            [disabled]="isSelectElementDefault==false || (dataFinalesFOrStat.length<=0 && dataNotFound==true)"
+            class="form-control mx-sm-3"
+            (change)="onChangeIndice(objIndexGlobale.value,objPlanning.value, objfile.value, content)"
+    >
+      <option value="{{null}}" [selected] ="true" >{{'CommunTranslate.viewGeneraleStat.ChoisirIndicEvaluatifs' | translate}} </option>
+      <option value="{{itemlegende}}" *ngFor="let itemlegende of legendeAffichageCarte; let i=index">{{itemlegende}}</option>
+    </select>
+  </div>
+  <button type="button"
+          placement="left-bottom"
+          ngbTooltip="{{'CommunTranslate.viewGeneraleStat.CalculDesLocalisations' | translate}}"
+          class="btn mr-2 border-0 btn btn-primary"
+          style="font-weight: bold"
+          [disabled]="isSelectElementDefault==false || (dataFinalesFOrStat.length<=0 && dataNotFound==true)"
+          (click)="onElementsMoreLevel(objPlanning.value, objfile.value)"
+  ><i class="fa fa-long-arrow-up"></i>&nbsp; {{zoneEleve}} <i class="fa fa-angle-down"></i></button>
+  <button type="button"
+          [disabled]="isSelectElementDefault==false || (dataFinalesFOrStat.length<=0 && dataNotFound==true)"
+          class="btn mr-2 border-0 btn btn-primary"
+          style="font-weight: bold"
+          (click)="onViewGeneral(objPlanning.value, objfile.value)"
+  ><i class="fa fa-eye"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.vueGeneralesNotifications' | translate}}</button>
+
+</form>
+
+
+<div class="main-card mb-3 card toggle-content" #objview>
+  <div class="no-gutters row">
+    <div class="col-md-12" style="margin-top: 10px">
+      <h5 style="text-align: center; font-size: small"><strong>{{elementStatFicheDefault}}</strong>  {{'CommunTranslate.viewGeneraleStat.deLaCollecte' | translate}} <strong>{{elementStatFicheDefaultFromSon}}</strong> </h5>
+    </div>
+    <div class="col-md-4">
+      <div class="widget-content">
+        <div class="widget-content-wrapper">
+          <div class="widget-content-right ml-0 mr-3">
+            <div class="widget-numbers text-danger">{{regionMoreTouchNumber}} <strong *ngIf="mode=='Mode Pourcentage' && isvisible==false">%</strong></div>
+          </div>
+          <div class="widget-content-left">
+            <div class="widget-heading">{{regionMoreTouchLibelle}}</div>
+            <div class="widget-subheading">{{elementStatFicheDefault}}, {{'CommunTranslate.viewGeneraleStat.RegionPlusElevee' | translate}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="widget-content">
+        <div class="widget-content-wrapper">
+          <div class="widget-content-right ml-0 mr-3">
+            <div class="widget-numbers text-danger">{{departementMoreTouchNumber}} <strong *ngIf="mode=='Mode Pourcentage' && isvisible==false">%</strong></div>
+          </div>
+          <div class="widget-content-left">
+            <div class="widget-heading">{{departementMoreTouchLibelle}}</div>
+            <div class="widget-subheading">{{elementStatFicheDefault}}, {{'CommunTranslate.viewGeneraleStat.DepartementPluEleve' | translate}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="widget-content">
+        <div class="widget-content-wrapper">
+          <div class="widget-content-right ml-0 mr-3">
+            <div class="widget-numbers text-danger">{{communeMoreTouchNumber}} <strong *ngIf="mode=='Mode Pourcentage' && isvisible==false">%</strong></div>
+          </div>
+          <div class="widget-content-left">
+            <div class="widget-heading">{{communeMoreTouchLibelle}}</div>
+            <div class="widget-subheading">{{elementStatFicheDefault}}, {{'CommunTranslate.viewGeneraleStat.CommunePlusElevee' | translate}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="dataFinalesFOrStat.length<=0 && dataNotFound==true" style="text-align: center">
+  <p>{{'CommunTranslate.viewGeneraleStat.AucunVisuelDisponibleCausePossible' | translate}}</p>
+</div>
+<div class="row" style="overflow: hidden" *ngIf="dataFinalesFOrStat.length>0 && dataNotFound==true">
+  <div class="col-md-6" style="height: 590px;overflow-y: scroll">
+    <ng-container *ngFor="let itemregion of listregions; let i = index">
+      <div class="shadow-sm main-card mb-3 card" style="padding-bottom: 10px; ">
+        <div class="no-gutters row">
+          <div class="col-md-12" style="border-bottom-style: dotted; margin-bottom: 15px;">
+            <button type="button"
+                    class="btn mr-2 border-0 btn btn-secondary"
+                    style="height: 28px;"
+            >
+              <i class="fa fa-angle-double-down"></i>
+            </button>
+            <h6 style="font-weight: bold; font-style: italic; text-align: center; margin-top: 5px; display: inline-block;font-size: larger;">{{itemregion.libelleRegionFR}}</h6>
+            <button
+              type="button"
+              class="btn mr-2 btn-info"
+              placement="left-bottom"
+              ngbTooltip="{{'CommunTranslate.viewGeneraleStat.VoirDetailsDepartements' | translate}}"
+              style="height: 28px; opacity: 0.5; float: right"
+              (click)="departmentWithDataStat(itemregion.id)"
+              [attr.aria-expanded]="!isCollapsed"
+            >
+              <i class="fa fa-info"></i>
+            </button>
+
+          </div>
+
+          <div class="col-md-4" *ngFor="let legende of itemregion.donnee">
+            <div class="ml-0 mr-3">
+              <div class="widget-number">{{legende.taux}} <strong *ngIf="mode=='Mode Pourcentage' && isvisible==false">%</strong></div>
+            </div>
+            <div class="">
+              <div class="widget-text">{{legende.label}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container>
+        <div class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column"
+             [ngbCollapse]="false">
+          <ng-container *ngFor="let itemdepartement of listDepartementalRestreint; let y = index">
+            <div class="vertical-timeline-item dot-danger vertical-timeline-element"
+                 *ngIf="itemregion.id == itemdepartement.region.id">
+              <div>
+                <span class="vertical-timeline-element-icon bounce-in"></span>
+                <div class="vertical-timeline-element-content bounce-in">
+                  <h4 class="timeline-title">
+                    {{itemdepartement.libelleDepartementFR}}
+                    <i class="fa fa-angle-down"
+                       style="float: right; cursor: pointer"
+                    ></i>
+                  </h4>
+                  <div class="badge badge-danger ml-2" style="color: #033C73; background-color: #ffe0b2;padding: 8px" *ngFor="let detailDonneDepartement of itemdepartement.donnee">
+                    {{detailDonneDepartement.label}} : {{detailDonneDepartement.taux}}<strong *ngIf="mode=='Mode Pourcentage' && isvisible==false">%</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--(click)="isCollapsedCommune = !isCollapsedCommune"
+            [attr.aria-expanded]="!isCollapsedCommune"
+            disabled-->
+            <div class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column"
+                 [ngbCollapse]="isCollapsedCommune" style="margin-left: 15px">
+              <ng-container *ngFor="let itemcommune of listcommune; let z = index">
+                <div class="vertical-timeline-item dot-danger vertical-timeline-element" *ngIf="itemdepartement.id == itemcommune.departement.id">
+                  <div>
+                    <span class="vertical-timeline-element-icon bounce-in"></span>
+                    <div class="vertical-timeline-element-content bounce-in">
+                      <h4 class="timeline-title">
+                        {{itemcommune.libelleCommuneFR}}
+                      </h4>
+                      <div class="badge badge-danger ml-2">Affecté : 1000</div>
+                      <div class="badge badge-warning ml-2">Deces : 1000</div>
+                      <div class="badge badge-success ml-2">Guerie : 1000</div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12" *ngIf="legendeAffichageCarte.length>0">
+        <div class="position-relative form-group" >
+          <label for="legende">{{'CommunTranslate.viewGeneraleStat.AfficherSelon' | translate}}  : </label>
+          <select #objElementStaDefault
+                  style="width: 100%; height: 40px; border-style: dashed"
+                  id="legende"
+                  name="legende"
+                  ngModel
+                  class="form-group"
+                  (change)="onChoiseLegende(objElementStaDefault)"
+          >
+            <option value="{{null}}" [selected] ="true" >{{'RecurentWord.choisi' | translate}}... ({{'CommunTranslate.viewGeneraleStat.ElementStatistiqueDefaut' | translate}} <strong><em>({{legendeAffichageCarte[legendeAffichageCarte.length -1]}})</em></strong>) </option>
+            <option value="{{itemlegende}}" *ngFor="let itemlegende of legendeAffichageCarte; let i=index">{{itemlegende}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <fusioncharts
+          type="cameroon"
+          width="600"
+          height="500"
+          dataFormat="json"
+          [dataSource]="dataSource"
+        ></fusioncharts>
+      </div>
+    </div>
+  </div>
+</div>
+
+

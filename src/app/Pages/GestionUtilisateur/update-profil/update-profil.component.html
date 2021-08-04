@@ -1,0 +1,331 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+<ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Informations sur votre compte utilisateur">
+        <ng-template ngbTabContent>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+          <div class="col-lg-12">
+            <div class="main-card mb-3 card">
+              <div class="row">
+                <div class="col-md-5">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded-circle" src="./assets/images/avatars/1.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">{{currentUserConnect.email}}</div>
+                            <div class="widget-subheading">{{currentUserConnect.nomPrenom}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Nom et Prénom</div>
+                            <div class="widget-subheading">{{currentUserConnect.nomPrenom}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Téléphone</div>
+                            <div class="widget-subheading">{{currentUserConnect.tel}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Email</div>
+                            <div class="widget-subheading">{{currentUserConnect.email}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Genre</div>
+                            <div class="widget-subheading">{{currentUserConnect.sexe}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Identifiant</div>
+                            <div class="widget-subheading">{{currentUserConnect.identifiant}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Supérieur hierachique</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.suppHierachique==null || currentUserConnect.suppHierachique==''">Aucun</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.suppHierachique!=null">{{currentUserConnect.suppHierachique}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-5">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Fonction hierachique</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.funcHierachique==null">Aucune</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.funcHierachique!=null">{{currentUserConnect.funcHierachique}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Groupes d'appartenance</div>
+                            <div class="widget-subheading" *ngFor="let itemGroup of currentUserConnect.groupes">{{itemGroup.libelleGroupe}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Localisation Régionale de base</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.regionUser==null">Aucune</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.regionUser!=null">{{currentUserConnect.regionUser}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Localisation Départementale de base</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.departementUser==null">Aucune</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.departementUser!=null">{{currentUserConnect.departementUser}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading" *ngIf="modeApply.MODE=='cahis'">Localisation Arrondissement de base</div>
+                            <div class="widget-heading" *ngIf="modeApply.MODE=='syrem'">Localisation Communale de base</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.communeUser==null">Aucune</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.communeUser!=null">{{currentUserConnect.communeUser}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item" *ngIf="modeApply.MODE=='cahis'">
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left mr-3">
+                            <img width="42" class="rounded" src="./assets/images/avatars/2.jpg" alt="">
+                          </div>
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Localisation CZV</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.communeUser==null">Aucune</div>
+                            <div class="widget-subheading" *ngIf="currentUserConnect.communeUser!=null">{{currentUserConnect.czvUser}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+        <ng-template ngbTabTitle>Modifier votre profil</ng-template>
+        <ng-template ngbTabContent>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+          <form name="formuser" (ngSubmit)="formuser.valid && onUpdateProfilUser(formuser)" #formuser="ngForm">
+            <div class="row">
+              <div class="col-md-12 shadow p-3 mb-5 bg-white rounded"
+                   style="margin-right: auto; margin-left: auto">
+                <div class="row">
+                  <div class="col-md-3 shadow-sm p-3 mb-5 bg-white rounded" style="display: table">
+                    <p style="border-style: dashed">
+                      <img src="./assets/images/avatars/1.jpg" style="width: 100%; height: 100%"/>
+                    </p>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="col-md-12">
+                      <p style="text-align: center; font-size: larger">
+                        <strong>Modifier votre profil</strong>
+                      </p>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label for="nomprenom" class="">Nom et prénom</label>
+                        <input #objnomprenom="ngModel"
+                               [value]="currentUserConnect.nomPrenom"
+                               [ngModel]="currentUserConnect.nomPrenom"
+                               type="text"
+                               name="nomprenom"
+                               id="nomprenom"
+                               placeholder="Nom & prenom utilisateur.."
+                               class="form-control">
+                        <small *ngIf="objnomprenom.touched && objnomprenom.invalid" style="color: red">Champ
+                          obligatoire, veuillez remplir</small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label for="tel" class="">Téléphone</label>
+                        <input #objtel="ngModel"
+                               [value]="currentUserConnect.tel"
+                               [ngModel]="currentUserConnect.tel"
+                               type="number"
+                               name="tel"
+                               id="tel"
+                               placeholder="Numero téléphone utilisateur.."
+                               class="form-control">
+                        <small *ngIf="objtel.touched && objtel.invalid" style="color: red">Champ
+                          obligatoire, veuillez remplir</small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label for="sexe" class="">Sexe</label>
+                        <select #objsexe="ngModel"
+                                [value]="currentUserConnect.sexe"
+                                [ngModel]="currentUserConnect.sexe"
+                                name="sexe"
+                                id="sexe"
+                                class="form-control">
+                          <option value="{{null}}" [selected]="true">Sexe utilisateur..</option>
+                          <option value="Masculin">Masculin</option>
+                          <option value="Féminin">Féminin</option>
+                        </select>
+                        <small *ngIf="objsexe.touched && objsexe.invalid" style="color: red">Champ
+                          obligatoire, veuillez remplir</small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <div class="position-relative form-group">
+                          <label for="oldPassword" class="">Ancien mot de passe</label>
+                          <input #objOldpwd="ngModel"
+                                 ngModel
+                                 name="oldPassword"
+                                 id="oldPassword"
+                                 placeholder="Insérer votre ancien mot de passe"
+                                 type="password"
+                                 class="form-control"/>
+                        </div>
+                        <label for="password" class=""> Nouveau Mot de passe</label>
+                        <input #objpwd="ngModel"
+                               ngModel
+                               name="password"
+                               id="password"
+                               placeholder="Insérer votre nouveau mot de passe"
+                               type="password"
+                               class="form-control"
+                               [ngClass]="{'ng-invalid': objpwd.touched && objpasswordconfirm.touched && objpwd.value!=objpasswordconfirm.value}">
+                        <small *ngIf="objpwd.touched && objpwd.invalid" style="color: red">Champ
+                          obligatoire, veuillez remplir</small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label for="passwordconfirm" class="">Confirmé nouveau le mot de passe</label>
+                        <input #objpasswordconfirm="ngModel"
+                               name="passwordconfirm"
+                               id="passwordconfirm"
+                               placeholder="Comfirmer votre nouveau mot de passe"
+                               ngModel
+                               type="password"
+                               class="form-control">
+                        <small *ngIf="objpasswordconfirm.touched && objpwd.value!=objpasswordconfirm.value"
+                               style="color: red">Mot de passe pas identique</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success btn-lg"
+                            style="float: right"
+                            [disabled]="objpasswordconfirm.touched && objpwd.value!=objpasswordconfirm.value">
+                      Mettre à jour votre profil
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

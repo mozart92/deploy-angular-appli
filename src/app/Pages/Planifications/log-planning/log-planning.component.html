@@ -1,0 +1,60 @@
+<app-page-title [heading]="heading | translateContenu : headingEN : currentLangue" [subheading]="subheading | translateContenu : subheadingEN : currentLangue" [icon]="icon"></app-page-title>
+
+<p style="text-align: center" *ngIf="isnotFount==false && listPlanningLog.length==0">{{aucunePlanificationFR | translateContenu : aucunePlanificationEN : currentLangue}}</p>
+<ng-template #content let-modal>
+    <div class="modal-header" style="background-color: darkred">
+        <h4 class="modal-title" style="color: white">{{prolongerPlanningFR | translateContenu : prolongerPlanningEN : currentLangue}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <input #objDate="ngModel" required="required" name="dateProlonge" ngModel type="date"
+               style="width: 100%; height: 50px;font-size: 20px"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="objDate.invalid" (click)="onProlongePlanning(objDate, modal)"
+                style="background-color: #0ba360">{{validerFR | translateContenu : validerEN : currentLangue}}
+        </button>
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')"
+                style="background-color: darkred">{{cLoseFR | translateContenu : cLoseEN : currentLangue}}
+        </button>
+    </div>
+</ng-template>
+
+
+<div class="row">
+    <div class="col-sm-6" *ngFor="let itemPLanningLog of listPlanningLog" style="margin-bottom: 5px">
+        <div class="card text-center text-white">
+            <div class="card-header" [ngClass]="{'bg-warning':itemPLanningLog.programmation.typeCloture=='Manuelle',
+                                           'bg-danger':itemPLanningLog.programmation.typeCloture=='Automatique'
+                                                       }">
+               <u>{{alertFR | translateContenu : alertEN : currentLangue}} {{itemPLanningLog.programmation.typeCloture}} :   </u>   {{itemPLanningLog.programmation.libellePlanning | translateContenu : itemPLanningLog.programmation.libellePlanningEN : currentLangue}}
+            </div>
+            <div class="card-body" [ngClass]="{'bg-warning':itemPLanningLog.programmation.typeCloture=='Manuelle',
+                                         'bg-danger':itemPLanningLog.programmation.typeCloture=='Automatique'
+                                                       }">
+                <p class="card-text">{{planificationArriveeFinFR | translateContenu : planificationArriveeFinEN : currentLangue}}
+                    :<strong>{{itemPLanningLog.programmation.dateDebut}}</strong> {{clotureeLeFR | translateContenu : clotureeLeEN : currentLangue}} :
+                    <strong>{{itemPLanningLog.programmation.dateFin}}</strong>.</p>
+                <h5 class="card-title text-white">{{etatPlanificationFR | translateContenu : etatPlanificationEN : currentLangue}}</h5>
+                <ul>
+                    <li><em style="color: yellow">{{itemPLanningLog.dataSend}}</em> : {{donneesEnvoyeeFR | translateContenu : donneesEnvoyeeEN : currentLangue}}</li>
+                    <li><em style="color: yellowgreen">{{itemPLanningLog.dataValide}}</em> : {{donneesEncourFR | translateContenu : donneesEncourEN : currentLangue}}
+                    </li>
+                    <li><em style="color: greenyellow">{{itemPLanningLog.dataValide}}</em> : {{donneesValideesFR | translateContenu : donneesValideesEN : currentLangue}}</li>
+
+                </ul>
+            </div>
+            <div class="card-footer text-white" style="display: table-cell" [ngClass]="{'bg-warning':itemPLanningLog.programmation.typeCloture=='Manuelle',
+                                                             'bg-danger':itemPLanningLog.programmation.typeCloture=='Automatique'
+                                                             }">
+                <button style="cursor: pointer" (click)="onCallModal(content, itemPLanningLog.programmation)">{{prolongeeFR | translateContenu : prolongeeEN : currentLangue}}</button>
+                <button style="cursor: pointer" (click)="onArchiver(itemPLanningLog.programmation)">
+                    <em *ngIf="itemPLanningLog.programmation.typeCloture=='Automatique'">{{cloturerArchiveeFR | translateContenu : cloturerArchiveeEN : currentLangue}}</em>
+                    <em *ngIf="itemPLanningLog.programmation.typeCloture=='Manuelle'">{{archiveeFR | translateContenu : archiveeEN : currentLangue}}</em>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

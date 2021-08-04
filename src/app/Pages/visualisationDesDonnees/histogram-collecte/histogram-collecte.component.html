@@ -1,0 +1,152 @@
+<app-page-title [heading]="'CommunTranslate.DiagrammeQuantitatif.EvaluationGraphiqueDonneesCollectees' | translate" [subheading]="'CommunTranslate.DiagrammeQuantitatif.visualiserDonneesDifferentesFormesGraphique' | translate" [icon]="icon"></app-page-title>
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="position-relative form-group">
+      <label for="libelleRegionFR" class="" style="font-weight: bold"> {{'CommunTranslate.DiagrammeComparatif.SelectionnerRegionVisualisation' | translate}}  </label>
+      <select #libelleRegionFR="ngModel"
+              id="libelleRegionFR"
+              type="text"
+              class="form-control"
+              name="libelleRegionFR"
+              ngModel
+              required="required"
+              (change)="onChooseRegionForVisuel(libelleRegionFR.value, objPlanning.value, objfile.value)"
+      >
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.DiagrammeComparatif.SelectionnerRegionVisualisation' | translate}}...</option>
+        <option value="Adamaoua">{{'CommunTranslate.RegionsCameroon.AdamaouaCameroun' | translate}}</option>
+        <option value="Centre">{{'CommunTranslate.RegionsCameroon.CentreCameroun' | translate}}</option>
+        <option value="Est">{{'CommunTranslate.RegionsCameroon.EstCameroun' | translate}}</option>
+        <option value="Extreme-Nord">{{'CommunTranslate.RegionsCameroon.ExtremeNordCameroun' | translate}}</option>
+        <option value="Littoral">{{'CommunTranslate.RegionsCameroon.LittoralCameroun' | translate}}</option>
+        <option value="Nord">{{'CommunTranslate.RegionsCameroon.NordCameroun' | translate}}</option>
+        <option value="Nord-Ouest">{{'CommunTranslate.RegionsCameroon.NordOuestCameroun' | translate}}</option>
+        <option value="Sud">{{'CommunTranslate.RegionsCameroon.SudCameroun' | translate}}</option>
+        <option value="Ouest">{{'CommunTranslate.RegionsCameroon.OuestCameroun' | translate}}</option>
+        <option value="Sud-Ouest">{{'CommunTranslate.RegionsCameroon.SudOuestCameroun' | translate}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="position-relative form-group" style="margin-bottom: 0px">
+      <label class="" style="font-weight: bold">{{'CommunTranslate.viewGeneraleStat.Planification' | translate}}
+        <button type="button"
+                class="btn mr-2 border-0 btn btn-success"
+                style="font-weight: bold; padding: 5px; font-size: smaller"
+                (click)="onPlanificationInSelect('encour')"
+        ><i class="fa fa-hourglass-start"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.ChargerPlanificationsCours' | translate}}</button>
+        <button type="button"
+                class="btn mr-2 border-0 btn btn-success"
+                style="font-weight: bold; padding: 5px; font-size: smaller"
+                (click)="onPlanificationInSelect('achervee')"
+        ><i class="fa fa-hourglass-start"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.ChargerPlanificationsArchivees' | translate}}</button>
+      </label>
+      <select #objPlanning
+              id="planning"
+              class="form-control"
+              required="required"
+              (change)="chooseDataOfFile(objPlanning.value)">
+        <option value="{{null}}" [selected]="true">{{selectPlanning}}</option>
+        <ng-container *ngIf="showSelect=='encour'">
+          <ng-container *ngFor="let itemPlanning of listPlanning ">
+            <option value="{{itemPlanning.id}}" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+              {{itemPlanning.libellePlanning}}
+            </option>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="showSelect=='achervee'">
+          <ng-container *ngFor="let itemPlanning of listPlanning ">
+            <option value="{{itemPlanning.idOrigin}}" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+              {{itemPlanning.libellePlanning}}
+            </option>
+          </ng-container>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="position-relative form-group">
+      <label class="" style="font-weight: bold">{{'CommunTranslate.viewGeneraleStat.FichesCollecte' | translate}}</label>
+      <select #objfile
+              id="fileconcerne"
+              class="form-control"
+              required="required"
+              (change)="onAffichestat(objfile.value, libelleRegionFR.value)">
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.viewGeneraleStat.SelectionnerFichierCollecte' | translate}}...</option>
+        <option value="{{itemfiletrie.id}}" *ngFor="let itemfiletrie of listFileTrie ">
+          {{itemfiletrie.nomFiche}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="dataFinalesFOrStat.length<=0 && dataNotFound==true" style="text-align: center">
+  <p>{{'CommunTranslate.viewGeneraleStat.AucunVisuelDisponibleCausePossible' | translate}}.</p>
+</div>
+
+
+<div class="row" *ngIf="dataFinalesFOrStat.length>0 && dataNotFound==true">
+  <div class="col-md-12">
+    <form class="form-inline" style="margin-bottom: 10px">
+      <div class="form-group">
+        <label for="dateStart" style="font-weight: bold">{{'CommunTranslate.viewGeneraleStat.FiltrerPartir' | translate}}</label>
+        <input #objDateStart="ngModel"
+               type="date"
+               [ngClass]="{'errorChamp':objDateEnd.touched && objDateStart.value==''}"
+               name="dateStart"
+               ngModel
+               id="dateStart"
+               class="form-control mx-sm-3" >
+
+      </div>
+      <div class="form-group">
+        <label for="dateEnd" style="font-weight: bold"> {{'RecurentWord.A' | translate}} </label>
+        <input #objDateEnd="ngModel"
+               type="date"
+               name="dateEnd"
+               ngModel
+               id="dateEnd"
+               (change)="objDateStart.value!='' && onSearchByDate(objDateStart.value, objDateEnd.value,objPlanning.value, objfile.value)"
+               class="form-control mx-sm-3">
+      </div>
+      <button type="button"
+              class="btn mr-2 border-0 btn btn-primary"
+              style="font-weight: bold"
+              (click)="onViewGeneral(objPlanning.value, objfile.value)"
+      ><i class="fa fa-eye"></i>&nbsp;{{'CommunTranslate.viewGeneraleStat.vueGeneralesNotifications' | translate}}</button>
+    </form>
+  </div>
+
+  <div class="col-md-{{pieChartLabels.length>3 ? '12' : '6' }}">
+    <div class="card main-card mb-3">
+      <div class="card-header" style="font-size: x-small">
+        {{tilteDiagramPie}} : <strong> {{currentfile}} </strong>, {{'CommunTranslate.DiagrammeComparatif.pourRegion' | translate}} : <strong>{{currentregion}}</strong>
+      </div>
+      <div class="card-body">
+        <app-pie-chart
+          [pieChartLabels]="pieChartLabels"
+          [pieChartData]="pieChartData"
+          [pieChartColors]="pieChartColors"
+        >
+        </app-pie-chart>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-{{barChartLabels.length>3 ? '12' : '6' }}">
+    <div class="card main-card mb-3">
+      <div class="card-header" style="font-size: x-small">
+        {{tilteDiagramBaton}} : <strong> {{currentfile}} </strong>, {{'CommunTranslate.DiagrammeComparatif.pourRegion' | translate}} : <strong>{{currentregion}}</strong>
+      </div>
+      <div class="card-body">
+        <app-dynamic-chart
+          [barChartLabels]="barChartLabels"
+          [barChartData]="barChartData"
+        >
+        </app-dynamic-chart>
+      </div>
+    </div>
+  </div>
+</div>

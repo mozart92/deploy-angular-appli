@@ -1,0 +1,208 @@
+<app-page-title [heading]="'ModeCahis.laboratoire.heading' | translate " [subheading]="'ModeCahis.laboratoire.heading' | translate " [icon]="icon"></app-page-title>
+
+
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveLaboratoire(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.laboratoire.labelTitreFormulaire' | translate }}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate }}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.laboratoire.labelLibelleLaboratoire' | translate }} (FR)*</label>
+          <input #libelleLaboratoireFR="ngModel"
+                 id="libelleLaboratoireFR"
+                 value="{{valeurLibelleLaboratoireFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleLaboratoireFR"
+                 placeholder="{{'ModeCahis.laboratoire.InsererFrancaisLaboratoire' | translate }}..."
+                 ngModel="{{valeurLibelleLaboratoireFR}}"
+                 required="required">
+          <small *ngIf="libelleLaboratoireFR.touched && libelleLaboratoireFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleLaboratoireEN" class="">{{'ModeCahis.laboratoire.labelLibelleLaboratoire' | translate }} (EN)*</label>
+          <input   #libelleLaboratoireEN="ngModel"
+                   id="libelleLaboratoireEN"
+                   value="{{valeurLibelleLaboratoireEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleLaboratoireEN"
+                   placeholder="{{'ModeCahis.laboratoire.InsererAnglaisLaboratoire' | translate }}..."
+                   ngModel="{{valeurLibelleLaboratoireEN}}"
+                   required="required">
+          <small *ngIf="libelleLaboratoireEN.touched && libelleLaboratoireEN.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="CZVSID" class="">{{labelChampSelect}}*</label>
+          <select #objczsvID="ngModel"
+                  name="CZVSID"
+                  id="CZVSID"
+                  required="required"
+                  class="form-control"
+                  value="{{valeurCzsv}}"
+                  ngModel="{{valeurCzsv}}">
+            <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate }}</option>
+            <option value="{{itemCZVS.id}}" *ngFor="let itemCZVS of listCZVS; let z = indexZ">
+              {{itemCZVS.libelleCZVSFR | translateContenu : itemCZVS.libelleCZVSEN : currentLangue}}
+            </option>
+          </select>
+          <small *ngIf="objczsvID.touched && objczsvID.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="longitude" class="">{{'ModeCahis.laboratoire.labelLongitude' | translate }}*</label>
+          <input #longitude="ngModel"
+                 id="longitude"
+                 value="{{valeurLongitude}}"
+                 class="form-control"
+                 type="number"
+                 name="longitude"
+                 placeholder="{{'ModeCahis.laboratoire.InsererLongitude' | translate }}"
+                 ngModel="{{valeurLongitude}}"
+                 required="required">
+          <small *ngIf="longitude.touched && longitude.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="laltitude" class="">{{'ModeCahis.laboratoire.labelLaltitude' | translate }}*</label>
+          <input #laltitude="ngModel"
+                 id="laltitude"
+                 value="{{valeurLaltitude}}"
+                 class="form-control"
+                 type="number"
+                 name="laltitude"
+                 placeholder="{{'ModeCahis.laboratoire.InsererLaltitude' | translate }}..."
+                 ngModel="{{valeurLaltitude}}"
+                 required="required">
+          <small *ngIf="laltitude.touched && laltitude.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="altitude" class="">{{'ModeCahis.laboratoire.InsererAltitude' | translate }}*</label>
+          <input #altitude="ngModel"
+                 id="altitude"
+                 value="{{valeurAltitude}}"
+                 class="form-control"
+                 type="number"
+                 name="altitude"
+                 placeholder="{{'ModeCahis.laboratoire.InsererAltitude' | translate }}..."
+                 ngModel="{{valeurAltitude}}"
+                 required="required">
+          <small *ngIf="altitude.touched && altitude.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.laboratoire.labelTitreTableau' | translate }}
+    </div>
+
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listLaboratoire.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listLaboratoire.length>0 && (term==undefined || term=='')" style="display: inline-block; margin-left: 60px">
+      <em>{{'RecurentWord.navigationDonnees' | translate }} : </em> <strong>{{listLaboratoire.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th style="font-weight: bold">#</th>
+        <th>{{'ModeCahis.laboratoire.labelLibelleLaboratoire' | translate }} (FR)</th>
+        <th>{{'ModeCahis.laboratoire.labelLibelleLaboratoire' | translate }} (EN)</th>
+        <th>CZVS</th>
+        <th>{{'ModeCahis.laboratoire.labelLongitude' | translate }}</th>
+        <th>{{'ModeCahis.laboratoire.labelLaltitude' | translate }}</th>
+        <th>{{'ModeCahis.laboratoire.InsererAltitude' | translate }}</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemLaboratoire  of (term==undefined || term=='' ? listLaboratoire : listForPaginaition) | filter : term ; let i = index">
+        <td style="font-weight: bold">{{i+1}}</td>
+        <td>{{itemLaboratoire.libelleLaboratoireFR}}</td>
+        <td>{{itemLaboratoire.libelleLaboratoireEN}}</td>
+        <td>{{itemLaboratoire.czvsModel.libelleCZVSFR | translateContenu : itemLaboratoire.czvsModel.libelleCZVSEN : currentLangue }}</td>
+        <td>{{itemLaboratoire.longitude}}</td>
+        <td>{{itemLaboratoire.laltitude}}</td>
+        <td>{{itemLaboratoire.altitude}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate }}" class="btn btn-info" (click)="onSelect(itemLaboratoire)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate }}" class="btn btn-danger" (click)="onDeleteLaboratoire(itemLaboratoire.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION">
+        <td colspan="8" *ngIf="listLaboratoire.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate }}  </p>
+        </td>
+      </tr>
+
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="8">
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

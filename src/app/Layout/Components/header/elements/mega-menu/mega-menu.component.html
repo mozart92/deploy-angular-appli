@@ -1,0 +1,548 @@
+<div class="app-header-left">
+  <app-search-box (click)="hideMegamenu()"></app-search-box>
+  <ul [ngStyle]="{'opacity': value ? '0' : '1'}" class="header-megamenu nav">
+
+    <li class="nav-item" *ngIf="servicegeneral.isAuthorizate('Menu de programmation')">
+      <div class="btn-group" ngbDropdown>
+        <button class="btn btn-link" ngbDropdownToggle>
+          <span>
+            <i class="nav-link-icon pe-7s-timer"></i>
+            {{programmationFR | translateContenu : programmationEN : currentLangue}}
+          </span>
+        </button>
+        <div ngbDropdownMenu>
+
+          <div class="scroll-area-xs">
+            <perfect-scrollbar [autoPropagation]="true">
+              <button routerLink="/pages/nouveau-questionnaire" type="button" class="dropdown-item"
+                      *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Nouvelle base de notification') : servicegeneral.isAuthorizate('Gestion des questionnaires')">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">{{nouvelleBaseNotificationFR | translateContenu : nouvelleBaseNotificationEN : currentLangue}}</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">{{gestionQuestionnairesFR | translateContenu : gestionQuestionnairesEN : currentLangue}}</ng-container>
+              </button>
+              <button routerLink="/pages/nouvelle-fiche" type="button" class="dropdown-item"
+                      *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Nouvelle fiche de notification') : servicegeneral.isAuthorizate('Gestion des sections du questionnaire')">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">{{nouvelleFicheNotificationFR | translateContenu : nouvelleFicheNotificationEN : currentLangue}}</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">{{gestionSectionsQuestionnaireFR | translateContenu : gestionSectionsQuestionnaireEN : currentLangue}}</ng-container>
+              </button>
+              <button routerLink="/pages/new-planification" type="button" class="dropdown-item"
+                      *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('nouvelle programmation') : servicegeneral.isAuthorizate('nouvelle planification')">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">{{programmationBaseNotificationFR | translateContenu : programmationBaseNotificationEN : currentLangue}}</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">{{planificationCollecteFR | translateContenu : planificationCollecteEN : currentLangue}}</ng-container>
+              </button>
+              <button routerLink="/pages/all-planifications" type="button" class="dropdown-item">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">{{listeToutesProgrammationsFR | translateContenu : listeToutesProgrammationsEN : currentLangue}}</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">{{listePlanificationsCoursFR | translateContenu : listePlanificationsCoursEN : currentLangue}}</ng-container>
+              </button>
+              <button routerLink="/pages/niveau-validation" type="button" class="dropdown-item"
+                      *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Mise a jour des programmation') : servicegeneral.isAuthorizate('Mise a jour des planifications')">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">{{insertionNiveauxvalidationFR | translateContenu : insertionNiveauxvalidationEN : currentLangue}}</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">{{insertionNiveauxvalidationFR | translateContenu : insertionNiveauxvalidationEN : currentLangue}}</ng-container>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Diffuser un bulletin information') && modeApply.MODE=='cahis'">
+                {{diffuserBulletinInformationFR | translateContenu : diffuserBulletinInformationEN : currentLangue}}
+              </button>
+            </perfect-scrollbar>
+          </div>
+
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item" *ngIf="servicegeneral.isAuthorizate('Menu de Configuration')">
+      <div class="dropdown-menu-rounded btn-group" ngbDropdown>
+        <button type="button" class="btn btn-link" ngbDropdownToggle>
+          <span>
+            <i class="nav-link-icon pe-7s-settings"></i>
+            {{configurationFR | translateContenu : configurationEN : currentLangue}}
+          </span>
+        </button>
+        <div class="dropdown-menu-lg" ngbDropdownMenu>
+
+          <button routerLink="/pages/regions" type="button" class="dropdown-item"
+                  *ngIf="servicegeneral.isAuthorizate('Gestion Regions')"><i
+            class="dropdown-icon lnr-file-empty"></i>
+            {{regionsFR | translateContenu : regionsEN : currentLangue}}
+          </button>
+          <button routerLink="/pages/departements" type="button" class="dropdown-item"
+                  *ngIf="servicegeneral.isAuthorizate('Gestion Departements')"><i
+            class="dropdown-icon lnr-file-empty"></i>{{departementsFR | translateContenu : departementsEN : currentLangue}}
+          </button>
+          <button routerLink="/pages/communes" type="button" class="dropdown-item"
+                  *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Gestion Arrondissements') : servicegeneral.isAuthorizate('Gestion Communes')"><i
+            class="dropdown-icon lnr-file-empty"></i>
+            <ng-container *ngIf="modeApply.MODE=='cahis'">{{arrondissementsFR | translateContenu : arrondissementsEN : currentLangue}}</ng-container>
+            <ng-container *ngIf="modeApply.MODE=='syrem'">{{communesFR | translateContenu : communesEN : currentLangue}}</ng-container>
+
+          </button>
+
+          <ng-container *ngIf="modeApply.MODE=='cahis'">
+
+            <button routerLink="/gestion/czvs" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion CZVs')"><i
+              class="dropdown-icon lnr-file-empty"></i>CZVs
+            </button>
+            <button routerLink="/gestion/villages" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Villages')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{villagesFR | translateContenu : villagesEN : currentLangue}}
+            </button>
+            <div class="dropdown-divider"></div>
+            <button routerLink="/gestion/especes" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Especes')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{especesFR | translateContenu : especesEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/laboratoires" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion abatoire')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{abatoireFR | translateContenu : abatoireEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/pathologies" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Pathologies')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{pathologiesFR | translateContenu : pathologiesEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/nature-prelevement" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Nature prelevement')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{naturePrelevementFR | translateContenu : naturePrelevementEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/analyse-laboratoire" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Type analyse laboratoire')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{typeAnalyseLaboratoireFR | translateContenu : typeAnalyseLaboratoireEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/maladies" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Liste des Maladies')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{listeMaladiesFR | translateContenu : listeMaladiesEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/OIE" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion pays OIE')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{paysOIEFR | translateContenu : paysOIEEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/sources-contamination" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Source de contamination')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{sourceContaminationFR | translateContenu : sourceContaminationEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/mesures-controles" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Mesures de controle')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{mesuresControleFR | translateContenu : mesuresControleEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/types-vaccin" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Type de vaccins')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{typeVaccinsFR | translateContenu : typeVaccinsEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/types-production" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Gestion Type de production')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{typeProductionFR | translateContenu : typeProductionEN : currentLangue}}
+            </button>
+            <button routerLink="/gestion/systeme-production" type="button" class="dropdown-item"
+                    *ngIf="servicegeneral.isAuthorizate('Systeme de production')"><i
+              class="dropdown-icon lnr-file-empty"></i>{{systemeProductionFR | translateContenu : systemeProductionEN : currentLangue}}
+            </button>
+
+          </ng-container>
+
+          <div class="dropdown-divider"></div>
+
+          <button routerLink="/pages/groupe-user" type="button" class="dropdown-item"
+                  *ngIf="servicegeneral.isAuthorizate('Gestion Groupes utilisateurs')"><i
+            class="dropdown-icon lnr-file-empty"></i>{{groupesUtilisateursFR | translateContenu : groupesUtilisateursEN : currentLangue}}
+          </button>
+          <button routerLink="/pages/new-user" type="button" class="dropdown-item"
+                  *ngIf="servicegeneral.isAuthorizate('Gestion Utilisateurs')"><i
+            class="dropdown-icon lnr-file-empty"></i>{{utilisateursFR | translateContenu : utilisateursEN :currentLangue}}
+          </button>
+          <button routerLink="/pages/profils-user" type="button" class="dropdown-item"
+                  *ngIf="servicegeneral.isAuthorizate('Profils utilisateurs')"><i
+            class="dropdown-icon lnr-file-empty"></i>{{profilsUtilisateursFR | translateContenu : profilsUtilisateursEN : currentLangue}}
+          </button>
+        </div>
+      </div>
+    </li>
+
+
+    <li class="nav-item" *ngIf="servicegeneral.isAuthorizate('Menu gestion contenu site web')">
+      <div class="btn-group" ngbDropdown>
+        <button class="btn btn-link" ngbDropdownToggle>
+          <span>
+            <i class="nav-link-icon pe-7s-timer"></i>
+            <ng-container *ngIf="modeApply.MODE=='cahis'">{{gestionContenuFR | translateContenu : gestionContenuEN : currentLangue}}</ng-container>
+            <ng-container *ngIf="modeApply.MODE=='syrem'">{{gestionSiteWebFR | translateContenu : gestionSiteWebEN : currentLangue}}</ng-container>
+          </span>
+        </button>
+        <div ngbDropdownMenu>
+
+          <div class="scroll-area-xs">
+            <perfect-scrollbar [autoPropagation]="true">
+              <button routerLink="/GestionContenu/categories" type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Gestion des catégories')">{{gestionCategoriesFR | translateContenu : gestionCategoriesEN : currentLangue}}
+              </button>
+              <button routerLink="/GestionContenu/menus" type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Gestion des menus')">{{gestionMenusFR | translateContenu : gestionMenusEN : currentLangue}}
+              </button>
+              <button routerLink="/GestionContenu/articles" type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Gestion des articles')">{{gestionArticlesFR | translateContenu : gestionArticlesEN : currentLangue}}
+              </button>
+              <div class="dropdown-divider"></div>
+              <button routerLink="/GestionContenu/multimedia" type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Gestion des médias')">{{gestionMediasFR | translateContenu : gestionMediasEN : currentLangue}}
+              </button>
+              <button routerLink="/GestionContenu/faq" type="button" class="dropdown-item"
+                      *ngIf="servicegeneral.isAuthorizate('Gestion des FAQ')">{{gestionFAQfr | translateContenu : gestionFAQen : currentLangue}}
+              </button>
+            </perfect-scrollbar>
+          </div>
+
+        </div>
+      </div>
+    </li>
+
+
+    <!--<li class="dropdown nav-item" ngbDropdown *ngIf="servicegeneral.isAuthorizate('Menu gestion contenu site web')">
+      <a aria-haspopup="true"  data-toggle="dropdown" class="nav-link" aria-expanded="false" ngbDropdownToggle>
+        <i class="nav-link-icon pe-7s-file"></i>&nbsp;
+        <span style="cursor: pointer;">{{gstContenuFR | translateContenu: gstContenuEN: currentLangue}}</span>
+
+      </a>
+      <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-rounded dropdown-menu-lg rm-pointers dropdown-menu" ngbDropdownMenu>
+
+        <button type="button" tabindex="0" class="dropdown-item vsm-item" *ngIf="servicegeneral.isAuthorizate('Gestion des catégories')">
+          <a routerLinkActive="active-item" routerLink="/GestionContenu/categories"
+             class="vsm-link"><span class="vsm-title">{{gstCategorieFR | translateContenu: gstCategorieEN: currentLangue}}</span></a>
+        </button>
+        <button type="button" tabindex="0" class="dropdown-item vsm-item" *ngIf="servicegeneral.isAuthorizate('Gestion des menus')">
+          <a routerLinkActive="active-item" routerLink="/GestionContenu/menus"
+             class="vsm-link"><span class="vsm-title">{{gstMenuFR | translateContenu: gstMenuEN: currentLangue}}</span></a>
+        </button>
+        <button type="button" tabindex="0" class="dropdown-item vsm-item" *ngIf="servicegeneral.isAuthorizate('Gestion des articles')">
+          <a routerLinkActive="active-item" routerLink="/GestionContenu/articles"
+             class="vsm-link"><span class="vsm-title">{{gstArticleFR | translateContenu: gstArticleEN: currentLangue}}</span></a>
+        </button>
+
+
+
+        <div tabindex="-1" class="dropdown-divider"></div>
+
+        <button type="button" tabindex="0" class="dropdown-item vsm-item" *ngIf="servicegeneral.isAuthorizate('Gestion des médias')">
+          <a routerLinkActive="active-item" routerLink="/GestionContenu/multimedia"
+             class="vsm-link"><span class="vsm-title">{{gstMediaFR | translateContenu: gstMediaFR: currentLangue}}</span></a>
+        </button>
+        <button type="button" tabindex="0" class="dropdown-item vsm-item" *ngIf="servicegeneral.isAuthorizate('Gestion des FAQ')">
+          <a routerLinkActive="active-item" routerLink="/GestionContenu/faq"
+             class="vsm-link"><span class="vsm-title">{{gstFaqFR | translateContenu: gstFaqEN: currentLangue}}</span></a>
+        </button>
+
+
+      </div>
+    </li>-->
+
+
+  </ul>
+</div>
+
+<!--
+<ng-template #headerMegaPopover>
+  <div class="dropdown-mega-menu">
+    <div class="grid-menu grid-menu-3col">
+      <div class="no-gutters row">
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Villages</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Menages</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Eleveurs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Laboratoires</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Cabinets vétérinaires privés</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Cliniques régionales</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Ferme parentale</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Provenderies</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Poissonneries</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Fermes production aquacole</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Etangs piscicoles</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Bacs aquacoles</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Cages flottantes</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Unité production alevins</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Magasins stockage prod. élevage</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Débarcadères</span>
+              </a>
+            </li>
+
+
+          </ul>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Magasins vente mat. élevage</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Broyeurs/mélangeurs alim. bétail</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Centre collecte de lait</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Centre collecte du miel</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Unité transformation de lait</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Point d'abreuvage</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Abattoirs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Tuerie</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Aire d’abattage</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Marchés à bétail</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Marchés de porcs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Marchés de volailles</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Marchés petits ruminants</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Autres Marchés</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Fumoirs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Séchoirs</span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <ul class="nav flex-column">
+
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Halle vente de poissons</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Chambres Froides</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Parcs de vaccination</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Parcs de quarantaine</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Chenils</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Forage pastoraux</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Puits pastoraux</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Mare artificielle</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Tanneries</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>PISV</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Point de transit</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Zone de transhumance</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Parc nationaux</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Piste de bétails</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a disabled="disabled" [routerLink]="" class="nav-link">
+                <i class="nav-link-icon lnr-book"></i>
+                <span>Bain d'étiqueur</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+-->

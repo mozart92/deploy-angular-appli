@@ -1,0 +1,779 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+
+<!--<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>-->
+<ng-template #content let-modal>
+  <form [formGroup]="uploadForm" (ngSubmit)="uploadSubmit()">
+    <div>
+      <div class="modal-header" style="background-color: #3f6ad8">
+        <h4 class="modal-title" style="color: white">sélèctionner vos images à joindre à cette donnée</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="position:relative;">
+            <mat-card>
+              <mat-card-subtitle>
+                <input
+                       type="file"
+                       class="form-control"
+                       #objInput="ngModel"
+                       ngModel
+                       multiple
+                       name="file"
+                       (change)="onFileChange($event)"
+                       style="height: 50px;
+                            font-style: italic;
+                            border: 2px #c14545 solid;
+                            background-color: #dcd8d8;
+                            width: auto;
+                            min-width: 10em;
+                            margin: 0 auto;
+                            color: white;"
+                >
+              </mat-card-subtitle>
+              <mat-card-content>
+                <div *ngFor="let url of images; let i = index" style="
+                                                width: 200px;
+                                                height: 150px;
+                                                display: inline-block;
+                                                margin-bottom: 7px;
+                                                margin-right: 7px;
+                                                position: relative;
+                                              ">
+                <span
+                  (click)="onDeleteImageFile(i)"
+                  style="
+                        display: block;
+                        width: 20px;
+                        height: 20px;
+                        position: absolute;
+                        background-color: #d92550;
+                        top: 10px;
+                        text-align: center;
+                        right: 5px;
+                        cursor: pointer;
+                        color: white;
+                      "
+                >X</span>
+                  <img [src]="url" height="150" width="200px" style="margin: 3px;">
+                </div>
+              </mat-card-content>
+            </mat-card>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" type="submit" *ngIf="images.length > 0">Envoyer</button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Annuler</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+
+
+
+
+
+
+
+<div class="text-right" *ngIf="idFicheInput!=null">
+  <button type="button" (click)="onRetourne()" class="btn btn-danger btn-lg" style="margin-bottom: 30px"><i
+    class="fa fa-arrow-left"></i> {{'RecurentWord.retourne' | translate}}
+  </button>
+</div>
+<div class="tabs-animation">
+  <!--*ngIf="returnDataSave==undefined"-->
+
+  <form name="formProgramm" #formProgramm="ngForm" (ngSubmit)="formProgramm.valid && onSaveContenuImpro(formProgramm) "
+        style="font-size: 20px" >
+    <!--*ngIf="returnDataSave==undefined"-->
+    <ng-container>
+
+      <ng-container *ngFor="let itemElement of listElements; let i = index">
+
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null &&
+                              itemElement.typeChamp!='localisation' &&
+                              itemElement.typeChamp!='localisationVillage' &&
+                              itemElement.typeChamp!='geolocalisation' &&
+                              itemElement.typeChamp!='coordonnee' &&
+                              itemElement.typeChamp!='metaDonnees' &&
+                              itemElement.typeChamp!='cadrequestion' && listElements.length>0">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title" *ngIf="itemElement.labelChamp!='principal'">{{itemElement.labelChamp | translateContenu : itemElement.labelChampEN : currentLangue}}</h5>
+
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+
+
+            <ng-container *ngFor="let itemInput of listElements; let y= indexY">
+              <div class="col-md-{{12/(itemElement.propriete | nomCardreDefault) }}"
+                   *ngIf="itemElement.labelChamp==itemInput.cadreAffichage ">
+                <div class="position-relative form-group">
+                  <label *ngIf="itemInput.typeChamp!='file'" class="">{{(itemInput.labelChamp | translateContenu : itemInput.labelChampEN : currentLangue )  | formatTypeInput:'label':itemInput.typeChamp}} </label>
+
+                  <input type="{{itemInput.typeChamp | formatTypeInput:'type'}}"
+                         class="form-control"
+                         #objInput="ngModel"
+                         name="{{itemInput.labelChamp | formatTypeInput:'name':itemInput.typeChamp}}"
+                         *ngIf="itemInput.typeChamp!='select' &&
+                          itemInput.typeChamp!='textarea' &&
+                          itemInput.typeChamp!='laboratoires' &&
+                          itemInput.typeChamp!='especes' &&
+                          itemInput.typeChamp!='pathologies' &&
+                          itemInput.typeChamp!='naturePrelevement' &&
+                          itemInput.typeChamp!='typeAnalyse' &&
+                          itemInput.typeChamp!='oie' &&
+                          itemInput.typeChamp!='sourceContamination' &&
+                          itemInput.typeChamp!='mesureControle' &&
+                          itemInput.typeChamp!='typeVaccin' &&
+                          itemInput.typeChamp!='typeProduction' &&
+                          itemInput.typeChamp!='systemeProduction' &&
+                          itemInput.typeChamp!='maladies' &&
+                          itemInput.typeChamp!='file'"
+                          ngModel
+                         [required]="itemInput.typeChamp=='ElementStatic' || itemInput.typeChamp=='ElementStaticPourcent'"
+                  >
+
+                  <!--<input formControlName="document" (change)="onShowImageInsert()" type="file" ng2FileSelect accept=".png" [uploader]="uploader" [multiple]="true"/>-->
+                  <select class="form-control"
+                          #objSelect="ngModel"
+                          name="{{itemInput.labelChamp}}"
+                          *ngIf="itemInput.typeChamp=='select' ||
+                          itemInput.typeChamp=='laboratoires' ||
+                          itemInput.typeChamp=='especes' ||
+                          itemInput.typeChamp=='pathologies' ||
+                          itemInput.typeChamp=='naturePrelevement' ||
+                          itemInput.typeChamp=='typeAnalyse' ||
+                          itemInput.typeChamp=='oie' ||
+                          itemInput.typeChamp=='sourceContamination' ||
+                          itemInput.typeChamp=='mesureControle' ||
+                          itemInput.typeChamp=='typeVaccin' ||
+                          itemInput.typeChamp=='typeProduction' ||
+                          itemInput.typeChamp=='maladies' ||
+                          itemInput.typeChamp=='systemeProduction'"
+                          [ngModel]="objSelect.pristine ? '*****' : objSelect.value"
+                  >
+                    <option value="*****" [selected]="true">{{'RecurentWord.choisi' | translate}}...</option>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='select'">
+                      <!--{{itemInput.propriete | json}}-->
+                      <option value="{{itemOption}}"
+                              *ngFor="let itemOption of itemInput.propriete">{{itemOption}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='laboratoires'">
+                      <option value="{{itemLaboratoire.libelleLaboratoireFR}}"
+                              *ngFor="let itemLaboratoire of listLaboratoires">{{itemLaboratoire.libelleLaboratoireFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='especes'">
+                      <ng-container *ngIf="itemInput.propriete!=''">
+                        <ng-container *ngFor="let itemEspece of listEspeces">
+                          <option value="{{itemEspece.libelleEspeceFR}}"
+                                  *ngIf="itemInput.propriete==itemEspece.grpEspeces">{{itemEspece.libelleEspeceFR}}</option>
+                        </ng-container>
+                      </ng-container>
+                      <ng-container *ngIf="itemInput.propriete==''">
+                        <ng-container *ngFor="let itemEspece of listEspeces">
+                          <option value="{{itemEspece.libelleEspeceFR}}">{{itemEspece.libelleEspeceFR}}</option>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='pathologies'">
+                      <option value="{{itemPathologie.libellePathologieFR}}"
+                              *ngFor="let itemPathologie of listPathologies">{{itemPathologie.libellePathologieFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='naturePrelevement'">
+                      <option value="{{itemNaturePrelevement.libelleNaturePrelevementFR}}"
+                              *ngFor="let itemNaturePrelevement of listNaturePrelevement">{{itemNaturePrelevement.libelleNaturePrelevementFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='typeAnalyse'">
+                      <option value="{{itemTypeAnalyse.libelleAnalyseLaboratoireFR}}"
+                              *ngFor="let itemTypeAnalyse of listTypeAnalyse">{{itemTypeAnalyse.libelleAnalyseLaboratoireFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='maladies'">
+                      <ng-container *ngIf="itemInput.propriete!=''">
+                        <ng-container *ngFor="let itemMaladie of listMaladies">
+                          <option value="{{itemMaladie.libelleMaladieFR}}"
+                                  *ngIf="itemInput.propriete==itemMaladie.groupMalagie">{{itemMaladie.libelleMaladieFR}}</option>
+                        </ng-container>
+                      </ng-container>
+                      <ng-container *ngIf="itemInput.propriete==''">
+                        <ng-container *ngFor="let itemMaladie of listMaladies">
+                          <option value="{{itemMaladie.libelleMaladieFR}}">{{itemMaladie.libelleMaladieFR}}</option>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='oie'">
+                      <option value="{{itemOIE.libelleOIEFR}}"
+                              *ngFor="let itemOIE of listOIE">{{itemOIE.libelleOIEFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='sourceContamination'">
+                      <option value="{{itemSourceContamination.libelleSourceContaminationFR}}"
+                              *ngFor="let itemSourceContamination of listSourceContamination">{{itemSourceContamination.libelleSourceContaminationFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='mesureControle'">
+                      <option value="{{itemMesureControle.libelleMesuresControleFR}}"
+                              *ngFor="let itemMesureControle of listMesureControle">{{itemMesureControle.libelleMesuresControleFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='typeVaccin'">
+                      <option value="{{itemTypeVaccin.libelleTypeVaccinFR}}"
+                              *ngFor="let itemTypeVaccin of listTypeVaccin">{{itemTypeVaccin.libelleTypeVaccinFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='typeProduction'">
+                      <option value="{{itemTypeProduction.libelleTypeProductionFR}}"
+                              *ngFor="let itemTypeProduction of listTypeProduction">{{itemTypeProduction.libelleTypeProductionFR}}</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="itemInput.typeChamp=='systemeProduction'">
+                      <option value="{{itemSystemProduction.libelleSystemProductionFR}}"
+                              *ngFor="let itemSystemProduction of listSystemProduction">{{itemSystemProduction.libelleSystemProductionFR}}</option>
+                    </ng-container>
+
+                  </select>
+
+                  <textarea
+                    #objTextArreal="ngModel"
+                    class="form-control"
+                    name="{{itemInput.labelChamp}}"
+                    *ngIf="itemInput.typeChamp=='textarea'"
+                    [ngModel]="objTextArreal.pristine ? '*****' : objTextArreal.value"
+                  >
+                  </textarea>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+
+        <!-- LOCALISATION Niveau CZV-->
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='localisation'">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">
+                <ng-container *ngIf="modeApply.MODE=='cahis'">Localisation Niveau CZV</ng-container>
+                <ng-container *ngIf="modeApply.MODE=='syrem'">Localisation</ng-container>
+              </h5>
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+            <!--3-->
+            <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+              <div class="position-relative form-group">
+                <label for="localisationCZVRegion" class="">Région</label>
+                <select #objregion
+                        id="localisationCZVRegion"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentRegion!=null"
+                        (change)="chooseDepartemen(objregion.value)">
+                  <ng-container *ngIf="currentRegion!=null">
+                    <option value="{{currentRegion}}">{{currentRegion}}</option>
+                    <input name="Region" ngModel="{{currentRegion}}" value="{{currentRegion}}" style="display: none">
+                  </ng-container>
+                  <option [selected]="true" *ngIf="currentRegion!=null">{{currentRegion}}</option>
+                  <ng-container *ngIf="currentRegion==null">
+                    <option value="{{null}}" [selected]="true">choisir....</option>
+                    <option value="{{itemRegions.id}}" *ngFor="let itemRegions of listRegions ">
+                      {{itemRegions.libelleRegionFR}}
+                      <input name="Region" ngModel="{{valeurRegion}}" value="{{valeurRegion}}" required="required"
+                             style="display: none">
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+              <div class="position-relative form-group">
+                <label for="localisationCZVDepartement" class="">Département </label>
+                <select #objdepartment
+                        id="localisationCZVDepartement"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentDepartement!=null"
+                        (change)="chooseCommune(objdepartment.value)">
+                  <ng-container *ngIf="currentDepartement!=null">
+                    <option value="{{currentDepartement}}" [selected]="true">{{currentDepartement}}</option>
+                    <input name="Departement" ngModel="{{currentDepartement}}" value="{{currentDepartement}}"
+                           style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentDepartement==null">
+                    <ng-container *ngIf="currentRegion!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemDepartement of listDepartementForTries ">
+                        <option value="{{itemDepartement.id}}" *ngIf="currentRegion==itemDepartement.region.libelleRegionFR">
+                          {{itemDepartement.libelleDepartementFR}}
+                          <input name="Departement" ngModel="{{valeurDepartement}}" value="{{valeurDepartement}}"
+                                 style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentRegion==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemDepartement.id}}" *ngFor="let itemDepartement of listDepartement ">
+                        {{itemDepartement.libelleDepartementFR}}
+                        <input name="Departement" ngModel="{{valeurDepartement}}" value="{{valeurDepartement}}"
+                               style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-{{modeApply.MODE=='cahis' ? '3' : '4'}}">
+              <div class="position-relative form-group">
+                <label for="localisationCZVArrondissement" class="">
+                  <ng-container *ngIf="modeApply.MODE=='cahis'">Arrondissement</ng-container>
+                  <ng-container *ngIf="modeApply.MODE=='syrem'">Communes</ng-container>
+                </label>
+                <select #objCommune
+                        id="localisationCZVArrondissement"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentCommune!=null"
+                        (change)="checkValueCommune(objCommune.value)">
+                  <ng-container *ngIf="currentCommune!=null">
+                    <option value="{{currentCommune}}" [selected]="true">{{currentCommune}}</option>
+                    <input name="Commune" ngModel="{{currentCommune}}" value="{{currentCommune}}" style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentCommune==null">
+                    <ng-container *ngIf="currentDepartement!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemCommune of listCommunes ">
+                        <option value="{{itemCommune.id}}" *ngIf="currentDepartement==itemCommune.departement.libelleDepartementFR">
+                          {{itemCommune.libelleCommuneFR}}
+                          <input name="Commune" ngModel="{{valeurCommune}}" value="{{valeurCommune}}" style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentDepartement==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemCommune.id}}" *ngFor="let itemCommune of listCommunes ">
+                        {{itemCommune.libelleCommuneFR}}
+                        <input name="Commune" ngModel="{{valeurCommune}}" value="{{valeurCommune}}" style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-3" *ngIf="modeApply.MODE=='cahis'">
+              <div class="position-relative form-group">
+                <label for="localisationCzv" class="">CZV</label>
+                <select #objCZV
+                        id="localisationCzv"
+                        class="form-control"
+                        [required]="modeApply.MODE=='cahis'"
+                        [disabled]="currentCZV!=null"
+                        (change)="checkValueobjCZV(objCZV.value)">
+                  <ng-container *ngIf="currentCZV!=null">
+                    <option value="{{currentCZV}}" [selected]="true">{{currentCZV}}</option>
+                    <input name="CZV" ngModel="{{currentCZV}}" value="{{currentCZV}}" style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentCZV==null">
+                    <ng-container *ngIf="currentCommune!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemCZV of listCZV">
+                        <option value="{{itemCZV.id}}" *ngIf="currentCommune==itemCZV.arrondissement.libelleCommuneFR">
+                          {{itemCZV.libelleCZVSFR}}
+                          <input name="CZV" ngModel="{{valeurCZV}}" value="{{valeurCZV}}" style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentCommune==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemCZV.id}}" *ngFor="let itemCZV of listCZVFinal ">
+                        {{itemCZV.libelleCZVSFR}}
+                        <input name="CZV" ngModel="{{valeurCZV}}" value="{{valeurCZV}}" style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- LOCALISATION Niveau Village-->
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='localisationVillage' && modeApply.MODE=='cahis'">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">Localisation Niveau Village</h5>
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+
+            <div class="col-md-3 ">
+              <div class="position-relative form-group">
+                <label for="localisationVillageRegion" class="">Région</label>
+                <select #objregion
+                        id="localisationVillageRegion"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentRegion!=null"
+                        (change)="chooseDepartemen(objregion.value)">
+                  <ng-container *ngIf="currentRegion!=null">
+                    <option value="{{currentRegion}}">{{currentRegion}}</option>
+                    <input name="Region" ngModel="{{currentRegion}}" value="{{currentRegion}}" style="display: none">
+                  </ng-container>
+                  <option [selected]="true" *ngIf="currentRegion!=null">{{currentRegion}}</option>
+                  <ng-container *ngIf="currentRegion==null">
+                    <option value="{{null}}" [selected]="true">choisir....</option>
+                    <option value="{{itemRegions.id}}" *ngFor="let itemRegions of listRegions ">
+                      {{itemRegions.libelleRegionFR}}
+                      <input name="Region" ngModel="{{valeurRegion}}" value="{{valeurRegion}}" required="required"
+                             style="display: none">
+                    </option>
+                  </ng-container>
+
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="position-relative form-group">
+                <label for="localisationVillageDepartement" class="">Département</label>
+                <select #objdepartment
+                        id="localisationVillageDepartement"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentDepartement!=null"
+                        (change)="chooseCommune(objdepartment.value)">
+                  <ng-container *ngIf="currentDepartement!=null">
+                    <option value="{{currentDepartement}}" [selected]="true">{{currentDepartement}}</option>
+                    <input name="Departement" ngModel="{{currentDepartement}}" value="{{currentDepartement}}"
+                           style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentDepartement==null">
+                    <ng-container *ngIf="currentRegion!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemDepartement of listDepartementForTries ">
+                        <option value="{{itemDepartement.id}}" *ngIf="currentRegion==itemDepartement.region.libelleRegionFR">
+                          {{itemDepartement.libelleDepartementFR}}
+                          <input name="Departement" ngModel="{{valeurDepartement}}" value="{{valeurDepartement}}" style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentRegion==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemDepartement.id}}" *ngFor="let itemDepartement of listDepartement ">
+                        {{itemDepartement.libelleDepartementFR}}
+                        <input name="Departement" ngModel="{{valeurDepartement}}" value="{{valeurDepartement}}"
+                               style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-2">
+              <div class="position-relative form-group">
+                <label for="localisationVillageArrondissement" class="">Arrondissement</label>
+                <select #objCommune
+                        id="localisationVillageArrondissement"
+                        class="form-control"
+                        required="required"
+                        [disabled]="currentCommune!=null"
+                        (change)="checkValueCommune(objCommune.value)">
+                  <ng-container *ngIf="currentCommune!=null">
+                    <option value="{{currentCommune}}" [selected]="true">{{currentCommune}}</option>
+                    <input name="Commune" ngModel="{{currentCommune}}" value="{{currentCommune}}" style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentCommune==null">
+                    <ng-container *ngIf="currentDepartement!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemCommune of listCommunesForTrie ">
+                        <option value="{{itemCommune.id}}" *ngIf="currentDepartement==itemCommune.departement.libelleDepartementFR">
+                          {{itemCommune.libelleCommuneFR}}
+                          <input name="Commune" ngModel="{{valeurCommune}}" value="{{valeurCommune}}" style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentDepartement==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemCommune.id}}" *ngFor="let itemCommune of listCommunes ">
+                        {{itemCommune.libelleCommuneFR}}
+                        <input name="Commune" ngModel="{{valeurCommune}}" value="{{valeurCommune}}" style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-2">
+              <div class="position-relative form-group">
+                <label for="localisationVillageCzv" class="">CZV</label>
+                <select #objCZV
+                        id="localisationVillageCzv"
+                        class="form-control"
+                        required="required"
+                        [required]="modeApply.MODE=='cahis'"
+                        [disabled]="currentCZV!=null"
+                        (change)="checkValueobjCZV(objCZV.value)">
+                  <ng-container *ngIf="currentCZV!=null">
+                    <option value="{{currentCZV}}" [selected]="true">{{currentCZV}}</option>
+                    <input name="CZV" ngModel="{{currentCZV}}" value="{{currentCZV}}" style="display: none">
+                  </ng-container>
+                  <ng-container *ngIf="currentCZV==null">
+                    <ng-container *ngIf="currentCommune!=null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <ng-container *ngFor="let itemCZV of listCZV">
+                        <option value="{{itemCZV.id}}" *ngIf="currentCommune==itemCZV.arrondissement.libelleCommuneFR">
+                          {{itemCZV.libelleCZVSFR}}
+                          <input name="CZV" ngModel="{{valeurCZV}}" value="{{valeurCZV}}" style="display: none">
+                        </option>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="currentCommune==null">
+                      <option value="{{null}}" [selected]="true">choisir...</option>
+                      <option value="{{itemCZV.id}}" *ngFor="let itemCZV of listCZVFinal ">
+                        {{itemCZV.libelleCZVSFR}}
+                        <input name="CZV" ngModel="{{valeurCZV}}" value="{{valeurCZV}}" style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-2">
+              <div class="position-relative form-group">
+                <label for="localisationVillage" class="">Village</label>
+                <select #objVillage
+                        id="localisationVillage"
+                        class="form-control"
+                        required="required"
+                        [required]="modeApply.MODE=='cahis'"
+                        (change)="checkValueobjVillage(objVillage.value)">
+                  <ng-container *ngIf="currentCZV!=null">
+                    <option value="{{null}}" [selected]="true">choisir...</option>
+                    <ng-container *ngFor="let itemVillage of listVillage">
+                      <option value="{{itemVillage.libelleVillageFR}}" *ngIf="itemVillage.czvsModel.libelleCZVSFR==currentCZV">
+                        {{itemVillage.libelleVillageFR}}
+                        <input name="Village" ngModel="{{valeurVillage}}" value="{{valeurVillage}}" style="display: none">
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="currentCZV==null">
+                    <option value="{{null}}" [selected]="true">choisir...</option>
+                    <option value="{{itemVillage.libelleVillageFR}}" *ngFor="let itemVillage of listVillageFinal ">
+                      {{itemVillage.libelleVillageFR}}
+                      <input name="Village" ngModel="{{valeurVillage}}" value="{{valeurVillage}}" style="display: none">
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!--GEOLOCALISATION-->
+        <!-- <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='geolocalisation'">
+           <div class="card-header-tab card-header form-row">
+             <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+               <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+               <h5 class="card-title">Localisation Geographique</h5>
+             </div>
+             <div class="form-row" style="padding: 15px;position: relative">
+               <p style="left: 50px">
+                 <img src="assets/images/map2.png" width="1000px" height="400px" title="image map"/>
+               </p>
+
+             </div>
+           </div>
+         </div>-->
+
+        <!-- COORRDONNEES GPS-->
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='coordonnee'">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">Coordonnée GPS</h5>
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+
+            <div class="col-md-4">
+              <div class="position-relative form-group">
+                <label class="">Longitude </label>
+                <input #objLongitude="ngModel" type="number" class="form-control" name="Longitude" [ngModel]="objLongitude.pristine ? '*****' : objLongitude.value" >
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="position-relative form-group">
+                <label class="">Laltitude </label>
+                <input #objLaltitude="ngModel" type="number" class="form-control" name="laltitude" [ngModel]="objLaltitude.pristine ? '*****' : objLaltitude.value" >
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="position-relative form-group">
+                <label class="">Altitude</label>
+                <input #objAltitude="ngModel" type="number" class="form-control" name="altitude" [ngModel]="objAltitude.pristine ? '*****' : objAltitude.value" >
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- MATA DONNEES UTILISATEUR......-->
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='metaDonnees'">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">Méta données utilisateur</h5>
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+
+            <div class="col-md-3">
+              <div class="position-relative form-group">
+                <label class="">Saisie Par : </label>
+                <input type="text" class="form-control" name="Saisie par" value="{{currentUser}}"
+                       ngModel="{{currentUser}}" required="required" >
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="position-relative form-group">
+                <label class="">Saisie le : </label>
+                <input type="date" class="form-control" value="{{currentDate}}" name="Saisie le" ngModel="{{currentDate}}" required="required">
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="position-relative form-group">
+                <label class="">Source</label>
+                <input type="text" class="form-control" name="Source" ngModel required="required">
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="position-relative form-group">
+                <label class="">Confiance Aux Données</label>
+                <select type="text" class="form-control" name="Confiance aux donnees" ngModel required="required">
+                  <option value="{{null}}" [selected]="true">Choisir...</option>
+                  <option value="Médiocre">Médiocre</option>
+                  <option value="Moyen">Moyen</option>
+                  <option value="Bon">Bon</option>
+                  <option value="Trés bon">Trés bon</option>
+                </select>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- CADRE POUR LES QUESTION REPONSE ET POUR LES OUI ET NON-->
+        <div class="mb-4 card" *ngIf="itemElement.cadreAffichage==null && itemElement.typeChamp=='cadrequestion'">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">{{itemElement.labelChamp}}</h5>
+            </div>
+          </div>
+
+          <div class="form-row" style="padding: 15px;">
+
+            <ng-container *ngFor="let itemInput of listElements; let y= indexY">
+              <div class="col-md-12" *ngIf="itemElement.labelChamp==itemInput.cadreAffichage ">
+                <div class="position-relative form-group">
+
+                  <div class="row" *ngIf="itemInput.typeChamp=='questionreponse'">
+                    <div class="col-md-8">
+                      <label class="">{{itemInput.labelChamp}}</label>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="{{itemInput.typeChamp}}"
+                             class="form-control"
+                             name="{{itemInput.alias}}"
+                             *ngIf="itemInput.typeChamp!='select' && itemInput.typeChamp!='textarea'"
+                             [ngModel]="objInput.pristine ? '*****' : objInput.value"
+                             #objInput="ngModel"
+                      >
+                    </div>
+                  </div>
+
+
+                  <div class="row" *ngIf="itemInput.typeChamp=='ouinon'">
+                    <div class="col-md-8">
+                      <label class="">{{itemInput.labelChamp}}</label>
+                    </div>
+                    <div class="col-md-4">
+                      <select
+                        class="form-control"
+                        name="{{itemInput.alias}}"
+                        [ngModel]="objInput.pristine ? '*****' : objInput.value"
+                        #objInput="ngModel"
+                      >
+                        <option value="{{null}}" [selected]="true">Choisir...</option>
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+
+
+    </ng-container>
+
+
+    <div class="col-md-6 text-right">
+      <button type="submit" class="btn btn-success btn-lg" style="float: left; margin-bottom: 30px"
+              *ngIf="listElements!=null && idFicheInput==null">Envoyer
+      </button>
+    </div>
+
+  </form>
+ <!-- *ngIf="returnDataSave!=undefined"-->
+
+
+</div>

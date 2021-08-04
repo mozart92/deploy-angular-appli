@@ -1,0 +1,363 @@
+<div [class]="'app-sidebar sidebar-shadow ' + (config$ | async).sidebarTheme" (mouseover)="sidebarHoverMouseIn()"
+     (mouseout)="sidebarHoverMouseOut()">
+  <div class="app-header__logo">
+    <div class="logo-src-cahis" *ngIf="modeApply.MODE=='cahis'"></div>
+    <div class="logo-src-syrem" *ngIf="modeApply.MODE=='syrem'"></div>
+    <div class="header__pane ml-auto">
+      <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+              [ngClass]="{'is-active' : globals.toggleSidebar}" (click)="toggleSidebar();">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="app-sidebar-content">
+    <div class="app-sidebar-scroll">
+      <perfect-scrollbar [autoPropagation]="true" class="scroll-container" [config]="config" [scrollIndicators]="true"
+                         style="max-width: 600px; max-height: 600px;">
+        <div class="v-sidebar-menu vsm-default">
+          <div class="vsm-list">
+            <ngb-accordion [destroyOnHide]="false" [closeOthers]="true" #acc="ngbAccordion"
+                           activeIds="{{extraParameter}}">
+              <ngb-panel>
+                <ng-template ngbPanelHeader>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='cahis'">{{'ModeSyrem.SideBar.plannificationsDiffusion' | translate }}</div>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='syrem'">{{'ModeCahis.SideBar.programmationCollectes' | translate }}</div>
+                </ng-template>
+              </ngb-panel>
+              <ngb-panel id="plannification1">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-timer"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.programmations' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.planification' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/all-planifications" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.enCours' | translate}}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.enCours' | translate}}</span>
+                        </a>
+                      </div>
+                      <!--*ngIf="servicegeneral.isAuthorizate('Programmation une base de notification')"-->
+                      <div class="vsm-item" *ngIf=" modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('nouvelle programmation') : servicegeneral.isAuthorizate('nouvelle planification') ">
+                        <a routerLink="/pages/new-planification" routerLinkActive="active-item" class="vsm-link" >
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.nouvelleProgrammation' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.nouvellePlanification' | translate }}</span>
+                        </a>
+                      </div>
+
+                      <div class="vsm-item" *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Mise a jour des programmation') : servicegeneral.isAuthorizate('Mise a jour des planifications')">
+                        <a routerLink="/pages/niveau-validation" routerLinkActive="active-item" class="vsm-link" >
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.miseJourProgrammation' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.miseJourPlanifications' | translate }}</span>
+                        </a>
+                      </div>
+                      <div class="vsm-item" *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Programme acherve') : servicegeneral.isAuthorizate('planifications achervees')">
+                        <a routerLink="/programme/alert" routerLinkActive="active-item" class="vsm-link" >
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.programmesAcherve' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.planificationsAchervees' | translate }}</span>
+                        </a>
+                      </div>
+                      <div class="vsm-item" *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Programme Archivees') : servicegeneral.isAuthorizate('planifications archivees')">
+                        <a routerLink="/programme/acherve" routerLinkActive="active-item" class="vsm-link" >
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.programmeArchivees' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.planificationsArchivees' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="plannification2" *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Nouvelle base de notification') : servicegeneral.isAuthorizate('Gestion des questionnaires')">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-server"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.baseNotifications' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.FicheCollecte.BaseQuestionnaires' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/nouveau-questionnaire" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.nouvelleBase' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.creerQuestionnaire' | translate }}</span>
+                        </a>
+                      </div>
+                     <!-- <div class="vsm-item">
+                        <a [routerLink]="['/dashboards/advertisement/']" routerLinkActive="active-item"
+                           class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">Liste des bases</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">Liste des bases</span>
+                        </a>
+                      </div>-->
+
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+
+              <ngb-panel id="plannification3" *ngIf="modeApply.MODE=='cahis' ? servicegeneral.isAuthorizate('Nouvelle fiche de notification') : servicegeneral.isAuthorizate('Gestion des sections du questionnaire')">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-file"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.ficheNotification' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.sectionQuestionnaire' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/nouvelle-fiche" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.nouvelleFiche' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeSyrem.SideBar.creerSection' | translate }}</span>
+                        </a>
+                      </div>
+                      <!--<div class="vsm-item">
+                        <a [routerLink]="['/dashboards/advertisement/']" routerLinkActive="active-item"
+                           class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">Liste des fiches</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">Liste des fiches</span>
+                        </a>
+                      </div>-->
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="plannification4" *ngIf="servicegeneral.isAuthorizate('Diffusion du bulletin') && modeApply.MODE=='cahis'">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-next-2"></i>
+                    <span class="vsm-title">{{'ModeCahis.SideBar.diffusionBulletin' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <!--<div class="vsm-item">
+                        <a routerLink="/dashboards/analytics" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{nouvelleDiffusionFR | translateContenu : nouvelleDiffusionEN : currentLangue}}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{nouvelleDiffusionFR | translateContenu : nouvelleDiffusionEN : currentLangue}}</span>
+                        </a>
+                      </div>-->
+                      <div class="vsm-item">
+                        <a [routerLink]="['/list-bulletins']" routerLinkActive="active-item"
+                           class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'ModeCahis.SideBar.listeBulletins' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'ModeCahis.SideBar.listeBulletins' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+
+              <ngb-panel>
+                <ng-template ngbPanelHeader>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.validationDonnees' | translate }}</div>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.validationDonnees' | translate }}</div>
+                </ng-template>
+              </ngb-panel>
+              <ngb-panel id="validation1">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-mail"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.mesDonneesCollectees' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.mesDonneesCollectees' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                    <span class="badge badge-danger">{{serviceData.NOTIFICATION_DATA_REMPLIS}}</span>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/data-envoyer" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.boiteEnvoie' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.boiteEnvoie' | translate }}</span>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="validation2">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-mail"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.donneesValider' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.donneesValider' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                    <span class="badge badge-danger">{{serviceData.NOTIFICATION_DATA_RECUS}}</span>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/data-receive" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.boiteReception' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.boiteReception' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+
+              <ngb-panel id="validation3">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-mail"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.LogPlnning.donneesValidees' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.LogPlnning.donneesValidees' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                    <span class="badge badge-danger">{{serviceData.NOTIFICATION_DATA_DEJA_SEND}}</span>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/donnees-deja-validees" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.boiteDonneeDejaValidee' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.boiteDonneeDejaValidee' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="validation4">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-mail"></i>
+                    <span class="vsm-title" >{{'CommunTranslate.SideBar.ToutesDonnees' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                    <span class="badge badge-danger">{{serviceData.NOTIFICATION_ALL_MY_DATAS}}</span>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/toutes-mes-donnees" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title">{{'CommunTranslate.SideBar.ToutesDonnees' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+
+
+              <ngb-panel>
+                <ng-template ngbPanelHeader>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.visualisationDonnees' | translate }}</div>
+                  <div class="vsm-header" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.visualisationDonnees' | translate }}</div>
+                </ng-template>
+              </ngb-panel>
+              <ngb-panel id="visualisation1">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-graph"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.tableauxBord' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.tableauxBord' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/general-view" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.vueGeneraleNotifications' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.vueGeneraleNotifications' | translate }}</span>
+                        </a>
+                      </div>
+                      <div class="vsm-item" *ngIf="servicegeneral.isAuthorizate('Diagrammes quantitatifs')">
+                        <a routerLink="/pages/histogram-collecte" routerLinkActive="active-item" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.diagrammesQuantitatifs' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'"> {{'CommunTranslate.SideBar.diagrammesQuantitatifs' | translate }} </span>
+                        </a>
+                      </div>
+                      <div class="vsm-item" *ngIf="servicegeneral.isAuthorizate('Diagramme comparatif')">
+                        <a routerLink="/pages/diagram-comparatif" routerLinkActive="active-item" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.diagrammeComparatif' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.diagrammeComparatif' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+
+              <ngb-panel id="visualisation4" *ngIf="servicegeneral.isAuthorizate('Exporter les donnees')">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-download"></i>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.exporterDonnees' | translate }}</span>
+                    <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.exporterDonnees' | translate }}</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item">
+                        <a routerLink="/pages/exportation-datas" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.exporterDonneesAchirvees' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.exporterDonneesAchirvees' | translate }}</span>
+                        </a>
+                      </div>
+                      <div class="vsm-item">
+                        <a routerLink="/export/donnees/encour" routerLinkActive="active-item"
+                           [routerLinkActiveOptions]="{exact: true}" class="vsm-link">
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='cahis'">{{'CommunTranslate.SideBar.exporterDonneesEncours' | translate }}</span>
+                          <span class="vsm-title" *ngIf="modeApply.MODE=='syrem'">{{'CommunTranslate.SideBar.exporterDonneesEncours' | translate }}</span>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

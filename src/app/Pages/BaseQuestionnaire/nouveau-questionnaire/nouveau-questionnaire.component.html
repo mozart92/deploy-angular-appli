@@ -1,0 +1,235 @@
+<app-page-title [heading]="heading | translateContenu : headingFR : currentLangue" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+
+
+    <ngb-tabset [destroyOnHide]="false">
+        <ngb-tab title="{{enregistrementBasesQuestionnairesFR | translateContenu : enregistrementBasesQuestionnairesEN : currentLangue}}">
+            <ng-template ngbTabContent>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+    <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveBaseQuestionnaire(f.value)" novalidate>
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header form-row">
+
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+                    <h5 class="card-title">{{labelTitreFormulaire | translateContenu : labelTitreFormulaireEN : currentLangue}}</h5>
+                </div>
+
+                <div class="col-md-6 text-right">
+                    <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+                    <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{annulerFR | translateContenu : annulerEN : currentLangue}}</button>
+
+                </div>
+
+            </div>
+
+            <div class="form-row" style="padding: 15px;">
+
+
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        <label for="nomBase" class="">{{nomBaseLabel | translateContenu : nomBaseLabelEN : currentLangue}} (FR)*</label>
+                        <input  #nomBase="ngModel"
+                                value="{{valeurSNomBase}}"
+                                class="form-control"
+                                name="nomBase"
+                                id="nomBase"
+                                ngModel="{{valeurSNomBase}}"
+                                type="text"
+                                placeholder="{{insererLibelleBaseCollecteFR | translateContenu : insererLibelleBaseCollecteEN : currentLangue}} (FR)"
+                                required="required">
+                        <small *ngIf="nomBase.touched && nomBase.invalid" style="color: red">{{champVideIncorrecteFR | translateContenu : champVideIncorrecteEN : currentLangue}}</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        <label  class="">{{lienMenuLabel | translateContenu : lienMenuLabelEN : currentLangue}} (FR)*</label>
+                        <input  #lienMenu="ngModel"
+                                value="{{valeurSLienMenu}}"
+                                class="form-control"
+                                name="lienMenu"
+                                id="lienMenu"
+                                type="text"
+                                placeholder="Inserer lien base collecte (FR)"
+                                ngModel="{{valeurSLienMenu}}"
+                                required="required">
+                        <small *ngIf="lienMenu.touched && lienMenu.invalid" style="color: red">{{champVideIncorrecteFR | translateContenu : champVideIncorrecteEN : currentLangue}}</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="position-relative form-group">
+                        <label for="description" class="">{{descriptionLabel | translateContenu : descriptionLabelEN : currentLangue}} (FR)</label>
+                        <input #description="ngModel"
+                                value="{{valeurSDescription}}"
+                               class="form-control"
+                               name="description"
+                               id="description"
+                               placeholder="{{brieveDescriptionBaseCollecteFR | translateContenu : brieveDescriptionBaseCollecteEN : currentLangue}} (FR)"
+                               ngModel="{{valeurSDescription}}"
+                               >
+                    </div>
+                </div>
+
+
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="nomBaseEN" class="">{{nomBaseLabel | translateContenu : nomBaseLabelEN : currentLangue}} (EN)*</label>
+                  <input  #nomBaseEN="ngModel"
+                          value="{{valeurSNomBase}}"
+                          class="form-control"
+                          name="nomBaseEN"
+                          id="nomBaseEN"
+                          ngModel="{{valeurSNomBase}}"
+                          placeholder="{{insererBaseCollecteFR | translateContenu : insererBaseCollecteEN : currentLangue}} (EN)"
+                          type="text">
+                  <small *ngIf="nomBaseEN.touched && nomBaseEN.invalid" style="color: red">{{champVideIncorrecteFR | translateContenu : champVideIncorrecteEN : currentLangue}}</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label  class="">{{lienMenuLabel | translateContenu : lienMenuLabelEN : currentLangue}} (EN)*</label>
+                  <input  #lienMenuEN="ngModel"
+                          value="{{valeurSLienMenu}}"
+                          class="form-control"
+                          name="lienMenuEN"
+                          id="lienMenuEN"
+                          type="text"
+                          placeholder="{{insererBaseCollecteFR | translateContenu : insererBaseCollecteEN : currentLangue}} (EN)"
+                          ngModel="{{valeurSLienMenu}}">
+                  <small *ngIf="lienMenuEN.touched && lienMenuEN.invalid" style="color: red">{{champVideIncorrecteFR | translateContenu : champVideIncorrecteEN : currentLangue}}</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="position-relative form-group">
+                  <label for="descriptionEN" class="">{{descriptionLabel | translateContenu : descriptionLabelEN : currentLangue}} (EN)</label>
+                  <input #descriptionEN="ngModel"
+                         value="{{valeurSDescriptionEN}}"
+                         class="form-control"
+                         name="descriptionEN"
+                         id="descriptionEN"
+                         placeholder="{{brieveDescriptionBaseCollecteFR | translateContenu : brieveDescriptionBaseCollecteEN : currentLangue}} (EN)"
+                         ngModel="{{valeurSDescriptionEN}}"
+                  >
+                </div>
+              </div>
+
+
+                <div class="col-md-2">
+                    <div class="position-relative form-group">
+                        <label  class="">{{statutLabel | translateContenu : statutLabelEN : currentLangue}}*</label>
+                        <select #statut="ngModel"
+                                value="{{valeurSStatut}}"
+                                name="statut"
+                                id="statut"
+                                class="form-control"
+                                ngModel="{{valeurSStatut}}"
+                                required="required">
+                            <option value="{{null}}" [selected]="true">{{selectStatut | translateContenu : selectStatutEN : currentLangue}}</option>
+                            <option value="Actif">{{actifFR | translateContenu : actifEN : currentLangue}}</option>
+                            <option value="Non disponible">{{nonDisponibleFR | translateContenu : nonDisponibleEN : currentLangue}}</option>
+                            <option value="En cours de paramétrage">{{enCoursParametrageFR | translateContenu : enCoursParametrageEN : currentLangue}}</option>
+                            <option value="Archivé">{{archiveFR | translateContenu : archiveEN : currentLangue}}</option>
+                        </select>
+                        <small *ngIf="statut.touched && statut.invalid" style="color: red">{{champVideIncorrecteFR | translateContenu : champVideIncorrecteEN : currentLangue}}</small>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+
+            </ng-template>
+        </ngb-tab>
+
+
+        <ngb-tab>
+            <ng-template ngbTabTitle>{{listeBaseQuestionnairesEnregistresFR | translateContenu : listeBaseQuestionnairesEnregistresEN : currentLangue}}</ng-template>
+            <ng-template ngbTabContent>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+    <div class="main-card mb-3 card">
+      <div class="card-header-tab card-header">
+        <button class="btn btn-info" placement="left" ngbTooltip="{{rafraichirTableauFR | translateContenu : rafraichirTableauEN : currentLangue}}" (click)="onLoading()" style="float: right"><i class="fa fa-undo"></i></button>
+
+        <h5 class="card-title" style="display: inline-block">
+          {{labelTitreTableau | translateContenu : labelTitreTableauEN : currentLangue}}
+        </h5>
+
+        <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+               value="{{10}}" *ngIf="basequestionnaires.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+
+        <p *ngIf="basequestionnaires.length>0 && (term==undefined || term=='')" style="display: inline-block">
+          <em>Navigation des données affichées : </em> <strong>{{basequestionnaires.length}} / {{listForPaginaition.length}}</strong>
+        </p>
+
+        <div class="btn-actions-pane-right text-capitalize">
+          <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+        </div>
+      </div>
+        <div class="card-body">
+
+            <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{nomBaseCollecteFR | translateContenu : nomBaseCollecteEN : currentLangue}} (FR)</th>
+                    <th>{{nomBaseCollecteFR | translateContenu : nomBaseCollecteEN : currentLangue}} (EN)</th>
+                    <th>{{lienMenuFR | translateContenu : lienMenuEN : currentLangue}} (FR)</th>
+                    <th>{{lienMenuFR | translateContenu : lienMenuEN : currentLangue}} (EN)</th>
+                    <th>{{descriptionFR | translateContenu : descriptionEN : currentLangue}} (FR)</th>
+                    <th>{{descriptionFR | translateContenu : descriptionEN : currentLangue}} (EN)</th>
+                    <th>{{statusFR | translateContenu : statusEN : currentLangue}}</th>
+                    <!--<th style="width: 25px;"><button class="btn"><i class="fa fa-eye"></i></button></th>-->
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngIf="basequestionnaires.length > 0">
+                  <tr  *ngFor=" let itemBD of (term==undefined || term=='' ? basequestionnaires : listForPaginaition) | filter : term; let i = index">
+                    <td style="font-weight: bold">{{i+1}}</td>
+                    <td>{{itemBD.nomBase | formatTextToolLong:20}}</td>
+                    <td>{{itemBD.nomBaseEN | formatTextToolLong:20}}</td>
+                    <td>{{itemBD.lienMenu | formatTextToolLong:20}}</td>
+                    <td>{{itemBD.lienMenuEN | formatTextToolLong:20}}</td>
+                    <td>{{itemBD.description | formatTextToolLong:20}}</td>
+                    <td>{{itemBD.descriptionEN}}</td>
+                    <td>{{itemBD.statut}}</td>
+                    <!--<td ><button title="{{titreBoutonEdit}}" class="btn btn-secondary" (click)="onSelectBaseQuestionnaire(itemBD)"><i class="fa fa-eye"></i></button></td>-->
+                    <td ><button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onSelectBaseQuestionnaire(itemBD)"><i class="fa fa-edit"></i></button></td>
+                    <td ><button title="{{titreBoutonDelete}}" class="btn btn-danger" (click)="onDeleteBDanwser(itemBD.id)"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+                </ng-container>
+                </tbody>
+
+                <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+                    <td colspan="11">
+                        <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+                    </td>
+                </tr>
+
+              <tr *ngIf="basequestionnaires.length==0">
+                <td colspan="11">
+                  Aucune donnée
+                </td>
+              </tr>
+
+            </table>
+
+
+        </div>
+    </div>
+
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

@@ -1,0 +1,145 @@
+<app-update-datas [dataEnter]="inputData" (isReturn)="onComeBackEditeData($event)" *ngIf="inputData!=null"></app-update-datas>
+
+
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon" *ngIf="inputData==null"></app-page-title>
+
+<div class="tabs-animation" *ngIf="inputData==null">
+
+
+  <ng-template #content let-modal style="overflow: auto">
+    <div class="modal-header" style="overflow: auto">
+      <h4 class="modal-title">Details données de la sélection</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="overflow: auto">
+      <table style="width: 100%;" id="example2" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+          <th *ngFor="let itemEntete of enteteTab">{{itemEntete }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+          <td *ngFor="let item of bodyTab; let y = index">{{item}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer" style="overflow: auto">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #longContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+
+  <!--LISTE DES FICHES DEJA ENREGISTRE-->
+  <div class="main-card mb-3 card card-box">
+  <div class="main-card mb-3 card" [ngClass]="{'tab-box-datas': isShowTabBox }">
+    <div class="card-body">
+
+      <div class="card-header-tab card-header">
+        <button class="btn btn-info" placement="left" ngbTooltip="Rafraichir votre tableau" (click)="onLoading()"
+                style="float: right"><i class="fa fa-undo"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <h5 class="card-title">{{labelTitreTableau}}</h5>
+
+        <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+               value="{{10}}" *ngIf="listDataSend.length>0 && (term ==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+
+        <p *ngIf="listDataSend.length>0 && (term ==undefined || term=='')" style="display: inline-block; margin-left: 60px" >
+          <em>Navigation des données affichées : </em> <strong>{{listDataSend.length}} / {{listForPaginaition.length}}</strong>
+        </p>
+
+        <div class="btn-actions-pane-right text-capitalize">
+          <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+        </div>
+      </div>
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+          <th>Donnée soumise par</th>
+          <th>Date de validation</th>
+          <th>Fiche concernée</th>
+          <th>Aperçu du contenu</th>
+          <th style="width: 25px;"><button class="btn" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-eye"></i></button></th>
+
+          <th style="width: 25px;"><button class="btn" style="font-weight: bold"><i class="fa fa-comments"></i></button></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let itemdatasend of (term ==undefined || term=='' ? listDataSend : listForPaginaition) | filter : term ; let y = index">
+          <td><strong>{{itemdatasend.utilisateursCreate.nomPrenom | uppercase}}</strong></td><!--libelle planning-->
+          <td>{{itemdatasend.create_le | date:"short"}}</td><!--Date fin-->
+          <td>{{itemdatasend.ficheCollecte.nomFiche}}</td><!--libelle planning-->
+          <td>{{itemdatasend.reponseJson | formatTextToolLong}}</td><!--Date fin-->
+          <td><button title="Visualiser la donnée" class="btn btn-info" (click)="onShowContenuData(content, itemdatasend)"><i class="fa fa-eye"></i></button></td>
+          <td ><button class="mb-2 mr-2 btn btn-alternate" style="width: 100%" (click)="toggleDrawer(itemdatasend.id)"><i class="fa fa-comments"></i><span class="barge-perso badge badge-alternate badge-dot badge-dot-lg "> {{itemdatasend.nbreCommentaire}} </span></button></td>
+        </tr>
+        </tbody>
+
+        <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term ==undefined || term=='')">
+          <td colspan="9">
+            <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [collectionSize]="countItemAffcihe"
+                            [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+          </td>
+        </tr>
+
+        <tr *ngIf="listDataSend.length==0" style="text-align: center">
+          <td colspan="11">
+            Aucune donnée
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+
+
+  <div class="main-card mb-3 card" id="delay" [ngClass]="{'details-datas': isShowDetailsDatas }">
+    <div class="card-body">
+      <h5 class="card-title">
+        <i class="icon pe-7s-back" style="cursor: pointer; margin-right: 10px" (click)="OnComeBack()" ></i>
+        Detail des données</h5>
+      <div>
+        <div class="row" *ngFor="let itemHeard of enteteTab">
+          <div class="col-md-9 border-bottom border-right border-top font-weight-bolder font-italic">
+            {{itemHeard}}
+          </div>
+          <div class="col-md-3 border-bottom border-top">
+            {{dataConvert[itemHeard]}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- FIN DES LISTES DEJA ENREGISTRE-->
+
+</div>
+
+
+
+

@@ -1,0 +1,137 @@
+<app-page-title [heading]="'ModeCahis.typeVaccins.heading' | translate " [subheading]="'ModeCahis.typeVaccins.subheading' | translate " [icon]="icon"></app-page-title>
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveTypeVaccin(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.typeVaccins.labelTitreFormulaire' | translate }}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate }}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="codeTypeVaccin" class="">{{'ModeCahis.typeVaccins.labelCodeTypeVaccin' | translate }}*</label>
+          <input #codeTypeVaccin="ngModel"
+                 id="codeTypeVaccin"
+                 value="{{valeurCodeTypeVaccin}}"
+                 class="form-control"
+                 type="text"
+                 name="codeTypeVaccin"
+                 placeholder="{{'ModeCahis.typeVaccins.InsererCodeTypeVaccin' | translate }}..."
+                 ngModel="{{valeurCodeTypeVaccin}}"
+                 required="required">
+          <small *ngIf="codeTypeVaccin.touched && codeTypeVaccin.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.typeVaccins.labelLibelleTypeVaccin' | translate }} (FR)*</label>
+          <input #libelleTypeVaccinFR="ngModel"
+                 id="libelleTypeVaccinFR"
+                 value="{{valeurLibelleTypeVaccinFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleTypeVaccinFR"
+                 placeholder="{{'ModeCahis.typeVaccins.InsererFrancaisTypeVaccin' | translate }}..."
+                 ngModel="{{valeurLibelleTypeVaccinFR}}"
+                 required="required">
+          <small *ngIf="libelleTypeVaccinFR.touched && libelleTypeVaccinFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleTypeVaccinEN" class="">{{'ModeCahis.typeVaccins.labelLibelleTypeVaccin' | translate }} (EN)*</label>
+          <input   #libelleTypeVaccinEN="ngModel"
+                   id="libelleTypeVaccinEN"
+                   value="{{valeurLibelleTypeVaccinEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleTypeVaccinEN"
+                   placeholder="{{'ModeCahis.typeVaccins.InsererAnglaisTypeVaccin' | translate }}..."
+                   ngModel="{{valeurLibelleTypeVaccinEN}}"
+                   required="required">
+          <small *ngIf="libelleTypeVaccinEN.touched && libelleTypeVaccinEN.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.typeVaccins.labelTitreTableau' | translate }}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listTypeVaccin.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listTypeVaccin.length>0 && (term==undefined || term=='')" style="display: inline-block; margin-left: 50px">
+      <em> {{'RecurentWord.navigationDonnees' | translate }} : </em> <strong>{{listTypeVaccin.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>{{'ModeCahis.typeVaccins.labelCodeTypeVaccin' | translate }}</th>
+        <th>{{'ModeCahis.typeVaccins.labelLibelleTypeVaccin' | translate }} (FR)</th>
+        <th>{{'ModeCahis.typeVaccins.labelLibelleTypeVaccin' | translate }} (EN)</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemTypeVaccin  of (term==undefined || term=='' ? listTypeVaccin : listForPaginaition) | filter : term">
+        <td>{{itemTypeVaccin.codeTypeVaccin}}</td>
+        <td>{{itemTypeVaccin.libelleTypeVaccinFR}}</td>
+        <td>{{itemTypeVaccin.libelleTypeVaccinEN}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate }}" class="btn btn-info" (click)="onSelect(itemTypeVaccin)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate }}" class="btn btn-danger" (click)="onDeleteTypeVaccin(itemTypeVaccin.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="5" *ngIf="listTypeVaccin.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate }} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="5">
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

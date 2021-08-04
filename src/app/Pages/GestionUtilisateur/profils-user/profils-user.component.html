@@ -1,0 +1,455 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+
+<ngb-tabset [destroyOnHide]="false">
+  <ngb-tab title="Groupes et Privilèges">
+    <ng-template ngbTabContent>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <form #formViewPrivil="ngForm" name="formViewPrivil">
+        <div class="mb-3 card">
+          <div class="card-header-tab card-header form-row">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+            </div>
+          </div>
+
+
+          <div class="form-row" style="padding: 15px;">
+            <div class="col-md-12">
+              <div class="position-relative form-group">
+                <label for="grpPrivilege" class="">{{groupeConcerneLabel}} *</label>
+                <select #objGrpConcerne="ngModel"
+                        id="grpPrivilege"
+                        name="grpPrivilege"
+                        ngModel
+                        required="required"
+                        class="form-control"
+                        (change)="objGrpConcerne.valid && onSelectMyprivilege(objGrpConcerne.value)"
+                >
+                  <option value="">Choisir...</option>
+                  <ng-container *ngFor="let itemGroup of dataGroup; let i=index">
+                    <option value="{{itemGroup.id}}">
+                      {{itemGroup.libelleGroupe}}
+                    </option>
+                  </ng-container>
+                </select>
+                <small style="color: red"
+                       *ngIf="objGrpConcerne.touched && objGrpConcerne.invalid">{{groupeConcerneerrorMessage}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="mb-3 card">
+          <div class="form-row" style="padding: 20px">
+
+            <div class="col-md-3">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" disabled class="custom-control-input" id="configGenerale2">
+                <label class="custom-control-label" for="configGenerale2"><strong>Configuration</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemProfilGrp of listProfilGroup">
+
+                <div class="custom-control custom-switch" *ngIf="itemProfilGrp.modulesPage=='configuration'">
+                  <input type="checkbox"
+                         [disabled]="objGrpConcerne.invalid"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel="{{itemProfilGrp.idGroup}}"
+                         value="{{itemProfilGrp.idGroup}}"
+                         name="{{itemProfilGrp.libillePage}}"
+                         class="custom-control-input"
+                         (change)="objGrpConcerne.valid && onSendPrivilage(objGrpConcerne.value, formViewPrivil.value)"
+                         id="configconfigGenerale2_{{itemProfilGrp.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configconfigGenerale2_{{itemProfilGrp.id}}">{{itemProfilGrp.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" disabled class="custom-control-input" id="programGenerale">
+                <label class="custom-control-label" for="programGenerale"><strong>Programmation</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemProfilGroupForProgram of listProfilGroup">
+                <div class="custom-control custom-switch"
+                     *ngIf="itemProfilGroupForProgram.modulesPage=='programmation'">
+                  <input type="checkbox"
+                         [disabled]="objGrpConcerne.invalid"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel="{{itemProfilGroupForProgram.idGroup}}"
+                         value="{{itemProfilGroupForProgram.idGroup}}"
+                         name="{{itemProfilGroupForProgram.libillePage}}"
+                         class="custom-control-input"
+                         (change)="objGrpConcerne.valid && onSendPrivilage(objGrpConcerne.value, formViewPrivil.value)"
+                         id="configprogramGenerale_{{itemProfilGroupForProgram.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configprogramGenerale_{{itemProfilGroupForProgram.id}}">{{itemProfilGroupForProgram.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" disabled class="custom-control-input" id="visualGenerale1">
+                <label class="custom-control-label" for="visualGenerale1"><strong>visualisation</strong></label>
+              </div>
+              <ng-container *ngFor="let itemPrivilGroupForVisuel of listProfilGroup">
+                <div class="custom-control custom-switch" *ngIf="itemPrivilGroupForVisuel.modulesPage=='visualisation'">
+                  <input type="checkbox"
+                         [disabled]="objGrpConcerne.invalid"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel="{{itemPrivilGroupForVisuel.idGroup}}"
+                         value="{{itemPrivilGroupForVisuel.idGroup}}"
+                         name="{{itemPrivilGroupForVisuel.libillePage}}"
+                         class="custom-control-input"
+                         (change)="objGrpConcerne.valid && onSendPrivilage(objGrpConcerne.value, formViewPrivil.value)"
+                         id="configvisualGenerale1_{{itemPrivilGroupForVisuel.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configvisualGenerale1_{{itemPrivilGroupForVisuel.id}}">{{itemPrivilGroupForVisuel.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" disabled class="custom-control-input" id="GestionContenu">
+                <label class="custom-control-label" for="GestionContenu"><strong>Gestion Contenu</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemPrivilGroupForVisuel of listProfilGroup">
+                <div class="custom-control custom-switch"
+                     *ngIf="itemPrivilGroupForVisuel.modulesPage=='Gestion Contenu'">
+                  <input type="checkbox"
+                         [disabled]="objGrpConcerne.invalid"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel="{{itemPrivilGroupForVisuel.idGroup}}"
+                         value="{{itemPrivilGroupForVisuel.idGroup}}"
+                         name="{{itemPrivilGroupForVisuel.libillePage}}"
+                         class="custom-control-input"
+                         (change)="objGrpConcerne.valid && onSendPrivilage(objGrpConcerne.value, formViewPrivil.value)"
+                         id="configGestionContenu_{{itemPrivilGroupForVisuel.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configGestionContenu_{{itemPrivilGroupForVisuel.id}}">{{itemPrivilGroupForVisuel.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  </ngb-tab>
+
+
+  <ngb-tab>
+    <ng-template ngbTabTitle>Paramètres page d'accées</ng-template>
+    <ng-template ngbTabContent>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      <div class="mb-3 card">
+        <div class="card-header-tab card-header form-row">
+          <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6">
+            <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+            <h5 class="card-title">Ajout des privilèges des groupes utilisateurs</h5>
+          </div>
+
+          <div class="col-md-6 text-right">
+            <button type="submit" class="btn btn-info btn-lg"
+                    (click)="onSubmitInfosModulPage(objmodulPage.value, objNamePage.value)">Valider
+            </button>&nbsp;
+            <button type="submit" class="btn btn-danger btn-lg" [disabled]="formDeletePrivil.untouched"
+                    (click)="onDeletePrivil(formDeletePrivil.value)">Supprimer page
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row" style="padding: 15px;">
+
+          <div class="col-md-6">
+            <div class="position-relative form-group">
+              <label for="modulPage" class="">Module concerné*</label>
+              <select #objmodulPage="ngModel"
+                      id="modulPage"
+                      name="modulPage"
+                      ngModel
+                      required="required"
+                      class="form-control">
+                <option value="{{null}}" [selected]="true">Choisir ...</option>
+                <option value="programmation">Programmation</option>
+                <option value="configuration">Configuration</option>
+                <option value="visualisation">Visualisation</option>
+                <option value="Gestion Contenu">Gestion Contenu</option>
+              </select>
+              <small style="color:red" *ngIf="objmodulPage.touched && objmodulPage.invalid">"Champ oblication, veiller
+                remplir"</small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="position-relative form-group">
+              <label for="namePage" class="">intitulé de la page à accédér*</label>
+              <input #objNamePage="ngModel"
+                     value=""
+                     class="form-control"
+                     name="namePage"
+                     ngModel
+                     id="namePage"
+                     type="text"
+                     required="required">
+              <small *ngIf="objNamePage.touched && objNamePage.invalid" style="color: red">Champ obligation, veuillez
+                remplir</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <form #formDeletePrivil="ngForm" name="formDeletePrivil">
+        <div class="mb-3 card">
+          <div class="form-row" style="padding: 20px">
+
+            <div class="col-md-3">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" disabled class="custom-control-input" id="configGenerale0">
+                <label class="custom-control-label" for="configGenerale2"><strong>Configuration</strong></label>
+              </div>
+              <ng-container *ngFor="let itemProfilGrp of listProfilGroup">
+                <div class="custom-control custom-checkbox" *ngIf="itemProfilGrp.modulesPage=='configuration'">
+                  <input type="checkbox"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel
+                         name="{{itemProfilGrp.libillePage}}"
+                         class="custom-control-input"
+                         id="configDeleteconfigGenerale2_{{itemProfilGrp.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configDeleteconfigGenerale2_{{itemProfilGrp.id}}">{{itemProfilGrp.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" disabled class="custom-control-input" id="programGenerale2">
+                <label class="custom-control-label" for="programGenerale2"><strong>Programmation</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemProfilGroup of listProfilGroup">
+                <div class="custom-control custom-checkbox" *ngIf="itemProfilGroup.modulesPage=='programmation'">
+                  <input type="checkbox"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel
+                         name="{{itemProfilGroup.libillePage}}"
+                         class="custom-control-input"
+                         id="configDeleteprogramGenerale2_{{itemProfilGroup.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configDeleteprogramGenerale2_{{itemProfilGroup.id}}">{{itemProfilGroup.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="col-md-3">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" disabled class="custom-control-input" id="visualGenerale2">
+                <label class="custom-control-label" for="visualGenerale2"><strong>visualisation</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemPrivilGroup of listProfilGroup">
+                <div class="custom-control custom-checkbox" *ngIf="itemPrivilGroup.modulesPage=='visualisation'">
+                  <input type="checkbox"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel
+                         name="{{itemPrivilGroup.libillePage}}"
+                         class="custom-control-input"
+                         id="configDeletevisualGenerale_{{itemPrivilGroup.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configDeletevisualGenerale_{{itemPrivilGroup.id}}">{{itemPrivilGroup.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="col-md-3">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" disabled class="custom-control-input" id="GestionContenu2">
+                <label class="custom-control-label" for="GestionContenu2"><strong>Gestion Contenu</strong></label>
+              </div>
+
+              <ng-container *ngFor="let itemPrivilGroup of listProfilGroup">
+                <div class="custom-control custom-checkbox" *ngIf="itemPrivilGroup.modulesPage=='Gestion Contenu'">
+                  <input type="checkbox"
+                         #objItemPrivilConfig="ngModel"
+                         ngModel
+                         name="{{itemPrivilGroup.libillePage}}"
+                         class="custom-control-input"
+                         id="configDeleteGestionContenu2_{{itemPrivilGroup.id}}"
+                  />
+                  <label class="custom-control-label"
+                         for="configDeleteGestionContenu2_{{itemPrivilGroup.id}}">{{itemPrivilGroup.libillePage}}</label>
+                </div>
+              </ng-container>
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+
+
+    </ng-template>
+  </ngb-tab>
+
+
+  <!-- <ngb-tab>
+       <ng-template ngbTabTitle>Email Setting</ng-template>
+       <ng-template ngbTabContent>
+           <p>This is Email Setting</p>
+       </ng-template>
+   </ngb-tab>-->
+
+  <!--<ngb-tab title="Disabled" [disabled]="true">
+      <ng-template ngbTabContent>
+          <p>This is Disabled</p>
+      </ng-template>
+  </ngb-tab>-->
+
+</ngb-tabset>
+
+
+<!--
+    <div class="main-card mb-3 card">
+        <div class="card-body"><h5 class="card-title">{{labelTitreTableau}}</h5>
+
+
+            <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+                <thead>
+                <tr>
+                    <th>NOM DU PROFIL</th>
+                    <th>GROUPE CONCERNE</th>
+                    <th>CONFIGURATION</th>
+                    <th>PROGRAMMATION</th>
+                    <th>VISUALISATION</th>
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  *ngFor=" let regions of pageOfItems">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td ><button title="{{titreBoutonEdit}}" class="btn btn-info" ><i class="fa fa-edit"></i></button></td>
+                    <td ><button title="{{titreBoutonDelete}}" class="btn btn-danger" ><i class="fa fa-trash"></i></button></td>
+                </tr>
+
+
+                </tbody>
+
+
+               &lt;!&ndash; <tr>
+                    <td colspan="7">
+                        <jw-pagination [items]="regions" (changePage)="onChangePage($event)"></jw-pagination>
+                    </td>
+                </tr>&ndash;&gt;
+
+
+            </table>
+
+
+        </div>
+    </div>-->
+
+
+<!--
+<div class="col-md-4">
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesProgrammation">
+        <label class="custom-control-label" for="switchesProgrammation"><strong>Programmation</strong></label>
+    </div>
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesPlanifications">
+        <label class="custom-control-label" for="switchesPlanifications">Gestion des Planifications</label>
+    </div>
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesVisualisationPlaning">
+        <label class="custom-control-label" for="switchesVisualisationPlaning">Visualisation des plannifications</label>
+    </div>
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesQuestionnaire">
+        <label class="custom-control-label" for="switchesQuestionnaire">Gestion des bases de questionnaire</label>
+    </div>
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesFichesCollecte">
+        <label class="custom-control-label" for="switchesFichesCollecte">Gestion des Fiches de collecte</label>
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="switchesListeQuestionnanaire">
+        <label class="custom-control-label" for="switchesListeQuestionnanaire">Consulter liste des bases questionnaires</label>
+    </div>
+</div>
+-->
+
+
+<!--
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="switchesDepartements">
+    <label class="custom-control-label" for="switchesDepartements">Gestion des départements</label>
+</div>
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="switchesCommunes">
+    <label class="custom-control-label" for="switchesCommunes">Gestion des communes</label>
+</div>
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="switchesGroupes">
+    <label class="custom-control-label" for="switchesGroupes">Gestion des groupes</label>
+</div>
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="switchesUtilisateurs">
+    <label class="custom-control-label" for="switchesUtilisateurs">Gestion des utilisateurs</label>
+</div>
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="switchesProfils">
+    <label class="custom-control-label" for="switchesProfils">Gestion des profils</label>
+</div>&ndash;&gt;
+
+-->
+
+
+<!--<div class="col-md-4">
+                   <div class="custom-control custom-switch">
+                       <input type="checkbox" class="custom-control-input" id="switchesVisualisation">
+                       <label class="custom-control-label" for="switchesVisualisation"><strong>Visualisation</strong></label>
+                   </div>
+                   <div class="custom-control custom-switch">
+                       <input type="checkbox" class="custom-control-input" id="switchesConsultationDonnees">
+                       <label class="custom-control-label" for="switchesConsultationDonnees">Consultation des données</label>
+                   </div>
+                   <div class="custom-control custom-switch">
+                       <input type="checkbox" class="custom-control-input" id="switchesExploitationDonnees">
+                       <label class="custom-control-label" for="switchesExploitationDonnees">Exploitation des données</label>
+                   </div>
+
+                   <div class="custom-control custom-switch">
+                       <input type="checkbox" class="custom-control-input" id="switchesExportationDonnees">
+                       <label class="custom-control-label" for="switchesExportationDonnees">Exportation des données</label>
+                   </div>
+               </div>-->

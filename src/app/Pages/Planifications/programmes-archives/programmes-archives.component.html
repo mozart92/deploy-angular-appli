@@ -1,0 +1,180 @@
+<app-page-title [heading]="headingFR | translateContenu:headingEN:currentLangue"
+                [subheading]="subheadingFR | translateContenu:subheadingEN:currentLangue" [icon]="icon"
+                *ngIf="dataToSend==null"></app-page-title>
+
+
+<p style="text-align: center" *ngIf="listPlannification.length==0 && isvisible==false">{{aucunePlanificationAcherveeFR | translateContenu : aucunePlanificationAcherveeEN : currentLangue}}</p>
+
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar" *ngIf="dataToSend==null">
+  <div class="row">
+
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">{{onPlanningForRead.libellePlanning}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table style="width: 100%;" id="example2" class="table table-hover table-striped table-bordered data-export">
+          <thead class="thead-dark">
+          <tr>
+            <th>{{datestartFR | translateContenu:datestartEN:currentLangue}}</th>
+            <th>{{dateEndFR | translateContenu:dateEndEN:currentLangue}}</th>
+            <th>{{dateEffectifFR | translateContenu:dateEffectifEN:currentLangue}}</th>
+            <th>{{frequenceFR | translateContenu:frequenceEN:currentLangue}}</th>
+            <th>{{typeClotureFR | translateContenu:typeClotureEN:currentLangue}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{onPlanningForRead.dateDebut}}</td>
+            <td>{{onPlanningForRead.dateFin}}</td>
+            <td>{{onPlanningForRead.dateEffictif}}</td>
+            <td>{{onPlanningForRead.frequence}}</td>
+            <td>{{onPlanningForRead.typeCloture}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{observationsFR | translateContenu:observationsEN:currentLangue}}</h5>
+                <p class="card-text">{{onPlanningForRead.observations | translateContenu : onPlanningForRead.observationsEN : currentLangue}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{objectifsFR | translateContenu:objectifsEN:currentLangue}}</h5>
+                <p class="card-text">{{onPlanningForRead.objectif | translateContenu : onPlanningForRead.objectifEN : currentLangue}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="row" style="margin-top: 30px;margin-bottom: 20px">
+          <div class="col-md-6">
+            <div class="col-md-12">
+              <h5 style="font-weight: bold">{{baseQuestionnairesPlanificationFR | translateContenu : baseQuestionnairesPlanificationEN : currentLangue}}</h5>
+            </div>
+            <div class="col-md-12">
+              <ul class="todo-list-wrapper list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let itemPlanningDetail of onPlanningForRead.baseQuestionnaires">
+                  <div class="todo-indicator bg-primary"></div>
+                  <div class="widget-content p-0">
+                    <div class="widget-content-wrapper">
+                      <div class="widget-content-left flex2">
+                        <div class="widget-heading">{{itemPlanningDetail.nomBase | translateContenu : itemPlanningDetail.nomBaseEN : currentLangue}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-12">
+              <h5 style="font-weight: bold">{{niveauxValidationPlanificationFR | translateContenu : niveauxValidationPlanificationEN : currentLangue}}</h5>
+            </div>
+            <div class="col-md-12">
+              <ul class="todo-list-wrapper list-group list-group-flush">
+                <li class="list-group-item" *ngFor="let itemNivrauValidation of listGroupByPlanning">
+                  <div class="todo-indicator bg-primary"></div>
+                  <div class="widget-content p-0">
+                    <div class="widget-content-wrapper">
+                      <div class="widget-content-left flex2">
+                        <div class="widget-heading">{{itemNivrauValidation.groupe.libelleGroupe}}</div>
+                      </div>
+                      <div class="widget-content-right ml-3">
+                        <div class="badge badge-pill badge-success">{{niveauFR | translateContenu : niveauEN : currentLangue}} {{itemNivrauValidation.niveau}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="row">
+          <div class="col-md-12">
+            <h5 style="font-weight: bold; text-align: center">{{evaluationRegionnalePromptitudeFR | translateContenu : evaluationRegionnalePromptitudeEN : currentLangue}}</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{regionFR | translateContenu : regionEN : currentLangue}}</th>
+                <th scope="col">{{promptitudeFR | translateContenu : promptitudeEN : currentLangue}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let itemRegion of listregions; let i = index">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{itemRegion.libelleRegionFR | translateContenu : itemRegion.libelleRegionEN : currentLangue}}</td>
+                <td class="{{itemRegion.donnee[0].label}}"
+                    style="color: white; font-weight: bold; font-size: larger; vertical-align: center">{{itemRegion.donnee[0].taux}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <fusioncharts
+              type="cameroon"
+              width="500"
+              height="455"
+              dataFormat="json"
+              [dataSource]="dataSource"
+            ></fusioncharts>
+          </div>
+          <div class="col-md-12">
+            <div class="row" style="width: 50%; margin-left: auto; margin-right: auto">
+              <div class="col-md-4">
+                <span class="badge badge-pill badge-success" style="width: 100%!important;">{{transmisTempsFR | translateContenu : transmisTempsEN : currentLangue}}</span>
+              </div>
+              <div class="col-md-4">
+                <span class="badge badge-pill badge-warning" style="width: 100%!important;">{{transmisRetardFR | translateContenu : transmisRetardEN : currentLangue}}</span>
+              </div>
+              <div class="col-md-4">
+                <span class="badge badge-pill badge-danger" style="width: 100%!important;">{{nonTransmisFR | translateContenu : nonTransmisEN : currentLangue}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light"
+                (click)="modal.close('Close click')">{{closeFR | translateContenu:closeEN:currentLangue}}</button>
+      </div>
+    </ng-template>
+
+
+    <ng-container *ngFor="let itemPlanning of listPlannification; let i = index">
+
+      <div class="card mb-3" style="width: 350px;margin-left: 10px" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+
+        <div class="row no-gutters">
+          <div class="col-md-12">
+            <div class="card-body">
+              <h5 class="card-title">{{duFR | translateContenu : duEN : currentLangue}} {{itemPlanning.dateDebut | date : 'd-MM-yyyy'}} {{auFR | translateContenu : auEN : currentLangue}} {{itemPlanning.dateFin | date : 'd-MM-yyyy'}}</h5>
+              <p class="card-text">{{itemPlanning.libellePlanning | translateContenu : itemPlanning.libellePlanningEN : currentLangue}}</p>
+            </div>
+            <div class="col-md-12" style="padding-bottom: 15px; padding-top: 15px">
+              <button class="btn-shadow btn-wide btn-pill btn btn-focus" *ngIf="!show" (click)="onShowDetail(itemPlanning, content)">{{detailFR | translateContenu:detailEN:currentLangue}}</button>&nbsp;&nbsp;
+              <button class="btn-shadow btn-wide btn-pill btn btn-info" [routerLink]="['bulletins-informations', itemPlanning.id]" *ngIf="modeApply.MODE=='cahis'">{{bulletinInformationsFR | translateContenu : bulletinInformationsEN : currentLangue}}</button>&nbsp;
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>

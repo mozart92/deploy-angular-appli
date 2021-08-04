@@ -1,0 +1,383 @@
+<div class="app-drawer-wrapper" [ngClass]="{'drawer-open' : toggleDrawer}">
+  <div class="drawer-nav-btn">
+    <button type="button" class="hamburger hamburger--elastic" [ngClass]="{'is-active' : globals.toggleDrawer}"
+            (click)="toggleDrawer()">
+      <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+    </button>
+  </div>
+  <div class="drawer-content-wrapper">
+    <section class="scrollbar-container">
+      <perfect-scrollbar [autoPropagation]="true">
+        <!--<h3 class="drawer-heading">BULLETIN D'INFORMATION EN COURS</h3>
+        <div class="">-->
+        <!-- <div class="row">-->
+        <!--<div class="col-sm-12 col-lg-12">-->
+        <div class="card-hover-shadow-2x mb-3 card">
+          <div class="card-header-tab card-header">
+            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+              <i class="header-icon lnr-printer icon-gradient bg-ripe-malin"> </i>
+              Commentaire(s) lié(s) à la donnée
+            </div>
+            <div class="btn-actions-pane-right text-capitalize actions-icon-btn" ngbDropdown>
+              <button class="btn btn-icon btn-icon-only btn-link" ngbDropdownToggle>
+                <!-- <fa-icon [icon]="faTh"></fa-icon>-->
+              </button>
+              <div ngbDropdownMenu>
+                <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox">
+                </i><span>Menus</span></button>
+                <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty">
+                </i><span>Settings</span>
+                </button>
+                <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book">
+                </i><span>Actions</span>
+                </button>
+                <div tabindex="-1" class="dropdown-divider"></div>
+                <div class="p-1 text-right">
+                  <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
+                  <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scroll-area-sm">
+            <perfect-scrollbar [autoPropagation]="true">
+              <div class="chat-wrapper p-1">
+                <div class="row">
+                  <ng-container *ngFor="let itemCommentaire of listCommentaires">
+
+                    <div class="col-md-12">
+                      <div class="chat-box-wrapper" *ngIf="currentUser!=itemCommentaire.participants.email">
+                        <div>
+                          <div class="avatar-icon-wrapper mr-1">
+                            <div class="badge badge-bottom btn-shine badge-success badge-dot badge-dot-lg"></div>
+                            <div class="avatar-icon avatar-icon-lg rounded">
+                              <img src="./assets/images/avatars/1.jpg" alt="" placement="right"
+                                   ngbTooltip="{{itemCommentaire.participants.nomPrenom}}">
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="chat-box" [ngClass]="{'chat-box-perso' : itemCommentaire.initiateur.email==itemCommentaire.participants.email}">
+                            {{itemCommentaire.contenu}}
+                          </div>
+                          <small class="opacity-6">
+                            <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+                            {{itemCommentaire.dateEnvoi | date:"short"}} | {{itemCommentaire.participants.nomPrenom}}
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="float-right" *ngIf="currentUser==itemCommentaire.participants.email">
+                        <div class="chat-box-wrapper chat-box-wrapper-right">
+                          <div>
+                            <div class="chat-box" style="background-color: #b07e00; color: white">
+                              {{itemCommentaire.contenu}}
+                            </div>
+                            <small class="opacity-6">
+                              <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+                              {{itemCommentaire.dateEnvoi | date:"short"}} | {{itemCommentaire.participants.nomPrenom}}
+                            </small>
+                          </div>
+                          <div>
+                            <div class="avatar-icon-wrapper ml-1">
+                              <div class="badge badge-bottom btn-shine badge-success badge-dot badge-dot-lg"></div>
+                              <div class="avatar-icon avatar-icon-lg rounded">
+                                <img src="./assets/images/avatars/1.jpg" alt="" placement="left"
+                                     ngbTooltip="{{itemCommentaire.participants.nomPrenom}}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+
+                <!--<div class="chat-box-wrapper">
+                  <div>
+                    <div class="avatar-icon-wrapper mr-1">
+                      <div class="badge badge-bottom btn-shine badge-success badge-dot badge-dot-lg"></div>
+                      <div class="avatar-icon avatar-icon-lg rounded">
+                        <img src="./assets/images/avatars/1.jpg" alt="">
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="chat-box">But I must explain to you how all this mistaken idea of denouncing
+                      pleasure and
+                      praising pain was born and I will give you a complete account of the system.
+                    </div>
+                    <small class="opacity-6">
+                      <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+                      11:01 AM | Yesterday
+                    </small>
+                  </div>
+                </div>
+
+
+                <div class="float-right">
+                  <div class="chat-box-wrapper chat-box-wrapper-right">
+                    <div>
+                      <div class="chat-box">Denouncing pleasure and praising pain was born and I will give you a
+                        complete
+                        account.
+                      </div>
+                      <small class="opacity-6">
+                        <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+                        11:01 AM | Yesterday
+                      </small>
+                    </div>
+                    <div>
+                      <div class="avatar-icon-wrapper ml-1">
+                        <div class="badge badge-bottom btn-shine badge-success badge-dot badge-dot-lg"></div>
+                        <div class="avatar-icon avatar-icon-lg rounded">
+                          <img src="./assets/images/avatars/1.jpg" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="float-right">
+                  <div class="chat-box-wrapper chat-box-wrapper-right">
+                    <div>
+                      <div class="chat-box">The master-builder of human happiness.</div>
+                      <small class="opacity-6">
+                        <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+                        11:01 AM | Yesterday
+                      </small>
+                    </div>
+                    <div>
+                      <div class="avatar-icon-wrapper ml-1">
+                        <div class="badge badge-bottom btn-shine badge-success badge-dot badge-dot-lg"></div>
+                        <div class="avatar-icon avatar-icon-lg rounded">
+                          <img src="./assets/images/avatars/1.jpg" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>-->
+
+
+              </div>
+            </perfect-scrollbar>
+          </div>
+          <form #objForm="ngForm" name = "objForm">
+            <div class="card-footer">
+
+              <textarea #objCommentaire="ngModel" ngModel name="commentaire" [disabled]="globals.isMasquerCommentaire==true" class="form-control"
+                        autosize>Some text...</textarea>
+            </div>
+            <div>
+              <button [disabled]="globals.isMasquerCommentaire==true" class="mb-2 mr-2 btn-icon btn btn-success btn-sm btn-block"
+                      (click)="onSendCommentaire(objCommentaire.value)"><i
+                class="pe-7s-paper-plane btn-icon-wrapper"> </i>Envoyer
+              </button>
+            </div>
+          </form>
+        </div>
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--          <div class="row">
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Extrême-Nord</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                              [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                              [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Nord</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>66%</span>
+                            <round-progress [current]="66" [max]="100" [color]="'#4143c4'" [background]="'#e3e3e3'"
+                              [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                              [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Adamaoua</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>54%</span>
+                            <round-progress [current]="54" [max]="100" [color]="'#5ec473'" [background]="'#e3e3e3'"
+                              [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                              [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Est</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Centre</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Sud</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="divider"></div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Littoral</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Ouest</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Nord-Ouest</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="divider"></div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>Sud-Ouest</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>TOTAL</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col">
+                      <div class="progress-box">
+                        <h4>PRECEDENT</h4>
+                        <div class="progress-circle-wrapper">
+                          <div class="round-progress-text">
+                            <span>34%</span>
+                            <round-progress [current]="34" [max]="100" [color]="'#c44636'" [background]="'#e3e3e3'"
+                                            [radius]="118" [stroke]="15" [semicircle]="false" [rounded]="true" [clockwise]="false"
+                                            [responsive]="true" [duration]="1400" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                            </round-progress>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="divider"></div>-->
+        <!--</div>-->
+      </perfect-scrollbar>
+    </section>
+  </div>
+</div>
+
+<div class="app-drawer-overlay" (click)="toggleDrawer()"></div>

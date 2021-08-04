@@ -1,0 +1,136 @@
+<app-page-title [heading]="'ModeCahis.sourceContammination.heading' | translate" [subheading]="'ModeCahis.sourceContammination.subheading' | translate" [icon]="icon"></app-page-title>
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveSourceContamination(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.sourceContammination.labelTitreFormulaire' | translate}}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()"> {{'RecurentWord.Annuler' | translate}} </button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="codeSourceContamination" class="">{{'ModeCahis.sourceContammination.labelCodeSourceContamination' | translate}}*</label>
+          <input #codeSourceContamination="ngModel"
+                 id="codeSourceContamination"
+                 value="{{valeurCodeSourceContamination}}"
+                 class="form-control"
+                 type="text"
+                 name="codeSourceContamination"
+                 placeholder="{{'ModeCahis.sourceContammination.InsererCodeSourceContamination' | translate}}..."
+                 ngModel="{{valeurCodeSourceContamination}}"
+                 required="required">
+          <small *ngIf="codeSourceContamination.touched && codeSourceContamination.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.sourceContammination.labelLibelleSourceContamination' | translate}} (FR)*</label>
+          <input #libelleSourceContaminationFR="ngModel"
+                 id="libelleSourceContaminationFR"
+                 value="{{valeurLibelleSourceContaminationFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleSourceContaminationFR"
+                 placeholder="{{'ModeCahis.sourceContammination.InsererFrancaisSourceContamination' | translate}}..."
+                 ngModel="{{valeurLibelleSourceContaminationFR}}"
+                 required="required">
+          <small *ngIf="libelleSourceContaminationFR.touched && libelleSourceContaminationFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleSourceContaminationEN" class="">{{'ModeCahis.sourceContammination.labelLibelleSourceContamination' | translate}} (EN)*</label>
+          <input   #libelleSourceContaminationEN="ngModel"
+                   id="libelleSourceContaminationEN"
+                   value="{{valeurLibelleSourceContaminationEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleSourceContaminationEN"
+                   placeholder="{{'ModeCahis.sourceContammination.InsererAnglaisSourceContamination' | translate}}..."
+                   ngModel="{{valeurLibelleSourceContaminationEN}}"
+                   required="required">
+          <small *ngIf="libelleSourceContaminationEN.touched && libelleSourceContaminationEN.invalid" style="color: red"> {{'RecurentWord.BadChamp' | translate}} </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.sourceContammination.labelTitreTableau' | translate}}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listSourceContamination.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listSourceContamination.length>0 && (term==undefined || term=='')" style="display: inline-block; margin-left: 60px">
+      <em> {{'RecurentWord.navigationDonnees' | translate}} : </em> <strong>{{listSourceContamination.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>{{'ModeCahis.sourceContammination.labelCodeSourceContamination' | translate}}</th>
+        <th>{{'ModeCahis.sourceContammination.labelLibelleSourceContamination' | translate}} (FR)</th>
+        <th>{{'ModeCahis.sourceContammination.labelLibelleSourceContamination' | translate}} (EN)</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemSourceContamination  of (term==undefined || term=='' ? listSourceContamination : listForPaginaition) | filter : term">
+        <td>{{itemSourceContamination.codeSourceContamination}}</td>
+        <td>{{itemSourceContamination.libelleSourceContaminationFR}}</td>
+        <td>{{itemSourceContamination.libelleSourceContaminationEN}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate}}" class="btn btn-info" (click)="onSelect(itemSourceContamination)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate}}" class="btn btn-danger" (click)="onDeleteSourceContamination(itemSourceContamination.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="5" *ngIf="listSourceContamination.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate}} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="5">
+          <ngb-pagination [pageSize]="LIMIT_PARGINATION" (pageChange)="onChangePageRecup($event)" maxSize="7"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

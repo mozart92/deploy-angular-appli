@@ -1,0 +1,11 @@
+.ng-touched.ng-invalid{
+    border-color: red;
+}
+
+.hide{
+    display: none!important;
+}
+
+.show{
+    display: block;
+}

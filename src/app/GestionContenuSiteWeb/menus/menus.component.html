@@ -1,0 +1,345 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Enregistrement des menus">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+  <form name="formMenu" #formMenu="ngForm" (ngSubmit)="formMenu.valid && onSaveMenu(formMenu.value)">
+    <input name="idFicher" value="{{valeuridMenu}}" style="display: none" ngModel/>
+
+    <div class="mb-3 card">
+      <div class="card-header-tab card-header form-row">
+
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+          <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+        </div>
+
+
+
+        <div class="col-md-6 text-right">
+          <button type="submit"  class="btn btn-info btn-lg" [disabled]="formMenu.invalid">{{labelButtonSave}}</button>&nbsp;
+          <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">Annuler</button>
+        </div>
+
+      </div>
+
+      <div class="form-row" style="padding: 15px;">
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label  class="">{{NomMenuFR}}</label>
+            <input value="{{valeurlabelNomMenuFR}}"
+                   id="labelNomMenuFR"
+                   class="form-control"
+                   name="labelNomMenuFR"
+                   placeholder="Insérer le nom du menu (FR)"
+                   ngModel="{{valeurlabelNomMenuFR}}"
+                   #labelNomMenuFR="ngModel"
+                   required>
+            <small *ngIf="labelNomMenuFR.touched && labelNomMenuFR.invalid" style="color: red">champ obligatoire veuillez remplir</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label for="labelNomMenuEN"  class="">{{NomMenuEN}}</label>
+            <input value="{{valeurlabelNomMenuEN}}"
+                   id="labelNomMenuEN"
+                   class="form-control"
+                   name="labelNomMenuEN"
+                   placeholder="Insérer le nom du menu (EN)"
+                   ngModel="{{valeurlabelNomMenuEN}}"
+                   #labelNomMenuEN="ngModel"
+                   required>
+            <small *ngIf="labelNomMenuEN.touched && labelNomMenuEN.invalid" style="color: red">champ obligatoire veuillez remplir</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+
+          <div class="position-relative form-group">
+            <label forr="labelPosition" class="">{{Position}}</label>
+            <select   required="required"
+                      value="{{valeurlabelPosition}}"
+                      id="labelPosition"
+                      name="labelPosition"
+                      class="form-control"
+                      ngModel="{{valeurlabelPosition}}"
+                      #labelPosition="ngModel">
+              <option value="{{null}}" [selected]="true">Choisir...</option>
+              <option value="TOP">TOP</option>
+              <option value="LEFT">LEFT</option>
+              <option value="RIGHT">RIGHT</option>
+              <option value="BOTTOM">BOTTOM</option>
+            </select>
+            <small *ngIf="labelPosition.touched && labelPosition.invalid" style="color: red">champ obligatoire veuillez remplir</small>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </form>
+
+      </ng-template>
+    </ngb-tab>
+
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Configuration des menus enregistrés</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+        <!-- PARAMETRAGE DES ELEMENTS LA FICHE-->
+
+
+
+
+    <ng-template #content let-modal>
+      <div class="modal-header" style="background-color: #4e4376; color: white">
+        <h4 class="modal-title">Elements du menu : {{currentMenu.nomMenuFR | uppercase}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="onQuitModal(modal)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="alertModalSuccess" style="color: green; text-align: center">
+          <p>{{messageEnregistrement}}</p>
+        </div>
+        <div *ngIf="alertModalError" style="color: firebrick; text-align: center">
+          <p>{{erreurEnregistrement}}</p>
+        </div>
+        <form *ngIf="elementsMenu.length>0" name="formE" #formElementsMenu="ngForm" >
+          <div class="main-card mb-3 card">
+            <div class="card-body">
+
+              <div class="form-row" style="padding: 15px;">
+                <table class="mb-0 table table-default">
+                  <thead>
+                  <tr>
+                    <th>Titre menu (FR)</th>
+                    <th>Titre menu (EN)</th>
+                    <th>Type menu</th>
+                    <th>Divers</th>
+                    <th>Parent</th>
+                    <th>
+                      <button class="btn btn-info"><i class="fa fa-edit"></i></button>
+                    </th>
+                    <th>
+                      <button class="btn btn-primary" (click)="addElement(formElementsMenu)" [disabled]="visibleSpinner==true || onTouchFile==false">
+                        <span *ngIf="visibleSpinner==false">+</span>
+                        <div class="spinner-border spinner-border-sm" role="status" *ngIf="visibleSpinner==true">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </button>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!--<ng-template >-->
+                  <tr *ngFor="let itemelementMenu of elementsMenu; let i = index;">
+                    <td>
+                      <input style="display: none"
+                             id="id_{{i}}"
+                             #objid="ngModel"
+                             value="{{itemelementMenu.id}}"
+                             type="text"
+                             name="id_{{i}}"
+                             class="form-control"
+                             ngModel="{{itemelementMenu.id}}"
+
+                      />
+                      <input id="titreMenuFR_{{i}}"
+                             #titreMenuFR="ngModel"
+                             value="{{itemelementMenu.titreMenuFR}}"
+                             type="text"
+                             name="titreMenuFR_{{i}}"
+                             class="form-control"
+                             ngModel="{{itemelementMenu.titreMenuFR}}"
+
+                      />
+                    </td>
+                    <td>
+                      <input id="titreMenuEN_{{i}}"
+                             #titreMenuEN="ngModel"
+                             value="{{itemelementMenu.titreMenuEN}}"
+                             type="text"
+                             name="titreMenuEN_{{i}}"
+                             class="form-control"
+                             ngModel="{{itemelementMenu.titreMenuEN}}"
+
+                      />
+                    </td>
+                    <td style="display: none">
+                      <input id="alia_{{i}}"
+                             #objalias="ngModel"
+                             value="{{itemelementMenu.alias}}"
+                             ngModel="{{itemelementMenu.alias}}"
+                             type="text"
+                             name="alia_{{i}}"
+
+                             class="form-control"/>
+                    </td>
+                    <td>
+                      <select name="typeMenu_{{i}}"
+                              #objtypeMenu="ngModel"
+                              value="{{itemelementMenu.typeMenu}}"
+                              ngModel="{{itemelementMenu.typeMenu}}"
+                              [(ngModel)]="itemelementMenu.typeMenu"
+                              class="form-control">
+                        <option value="{{null}}" [selected]="true">Choisir...</option>
+                        <option value="Bloc catégorie">Bloc d'une catégorie</option>
+                        <option value="Simple Article">Simple Article</option>
+                        <option value="Bloc des médias">Bloc des médias</option>
+                        <option value="Lien divers">Lien divers</option>
+                      </select>
+                    </td>
+
+                    <ng-container *ngIf="itemelementMenu.typeMenu!='Bloc des médias'">
+                        <td>
+                            <input *ngIf="itemelementMenu.typeMenu=='Lien divers'"
+                                    id="propriete_{{i}}"
+                                   #objpropriete="ngModel"
+                                   value="{{itemelementMenu.propriete}}"
+                                   ngModel="{{itemelementMenu.propriete}}"
+                                   type="text"
+                                   [(ngModel)]="itemelementMenu.propriete"
+                                   name="propriete_{{i}}"
+                                   placeholder="Insérer le lien..."
+                                   class="form-control"/>
+
+
+                            <select  *ngIf="itemelementMenu.typeMenu=='Bloc catégorie'"
+                                    id="propriete{{i}}_{{i}}"
+                                    name="propriete_{{i}}"
+                                    #objpropriete="ngModel"
+                                    value="{{itemelementMenu.propriete}}"
+                                    ngModel="{{itemelementMenu.propriete}}"
+                                     [(ngModel)]="itemelementMenu.propriete"
+                                    class="form-control">
+                              <option value="{{null}}" [selected]="true">Choisir...</option>
+                              <option value="{{itemCategorie.id}}" *ngFor="let itemCategorie of listCategories">
+                                {{itemCategorie.libelleCategoriesFR}}
+                              </option>
+                            </select>
+
+                            <select *ngIf="itemelementMenu.typeMenu=='Simple Article'"
+                                    id="propriete{{i}}_{{i+1}}"
+                                    name="propriete_{{i}}"
+                                    #objpropriete="ngModel"
+                                    value="{{itemelementMenu.propriete}}"
+                                    ngModel="{{itemelementMenu.propriete}}"
+                                    [(ngModel)]="itemelementMenu.propriete"
+                                    class="form-control">
+                              <option value="{{null}}" [selected]="true">Choisir...</option>
+                              <option value="{{itemArticle.id}}" *ngFor="let itemArticle of listArticles">
+                                {{itemArticle.resumeArticleFR}}
+                              </option>
+                            </select>
+                          </td>
+                    </ng-container>
+
+                    <td>
+                      <select id="parent_{{i}}"
+                              name="parent_{{i}}"
+                              #objparent="ngModel"
+                              value="{{itemelementMenu.parent}}"
+                              ngModel="{{itemelementMenu.parent}}"
+                              class="form-control">
+                        <option value="{{null}}" [selected]="true">Choisir...</option>
+                        <ng-container *ngFor="let itemParentMenu of listParent">
+                          <option value="{{itemParentMenu.id}}" *ngIf="itemParentMenu.id!=null && itemelementMenu.id!=itemParentMenu.id">
+                            {{itemParentMenu.titreMenuFR}}
+                          </option>
+                        </ng-container>
+                      </select>
+                    </td>
+                    <td>
+                      <button class="btn btn-info"
+                              (click)="onUpdateElement(titreMenuFR,
+                                                      titreMenuEN,
+                                                      objalias,
+                                                      objtypeMenu,
+                                                      itemelementMenu.propriete,
+                                                      objparent,
+                                                      itemelementMenu)"
+                      ><i class="fa fa-edit"></i></button>
+                    </td>
+                    <td>
+                      <button class="mb-2 mr-2  btn btn-light"
+                              (click)="removeElement(itemelementMenu, i)">-
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- </ng-template>-->
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="onQuitModal(modal)">Close</button>
+      </div>
+    </ng-template>
+
+
+
+  <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">{{labelTitreTableau}}</h5>
+
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr >
+          <th>Nom menu (FR)</th>
+          <th>Nom menu (EN)</th>
+          <th>Position</th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-list"></i></button></th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor=" let itemMenu of listMenus">
+          <td>{{itemMenu.nomMenuFR}}</td>
+          <td>{{itemMenu.nomMenuEN}}</td>
+          <td>{{itemMenu.position}}</td>
+          <td ><button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onChargerElement(itemMenu.id, content)" ><i class="fa fa-list"></i></button></td>
+          <td ><button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onSelectFicheCollecte(itemMenu)"><i class="fa fa-edit"></i></button></td>
+          <td ><button title="{{titreBoutonDelete}}" class="btn btn-danger" (click)="onDeleteFicheCollecte(itemMenu.id)"><i class="fa fa-trash"></i></button></td>
+        </tr>
+
+
+        </tbody>
+
+
+
+
+      </table>
+
+
+    </div>
+  </div>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+
+</div>

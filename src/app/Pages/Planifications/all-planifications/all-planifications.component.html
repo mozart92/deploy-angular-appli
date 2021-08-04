@@ -1,0 +1,108 @@
+<app-new-planification (sendValidationForShow)="listingDataSend($event)" [reseiveData]="reseiveData" *ngIf="dataToSend!=null"></app-new-planification>
+<app-page-title [heading]="'CommunTranslate.AllPlanification.heading' | translate" [subheading]="'CommunTranslate.AllPlanification.subheading' | translate" [icon]="icon" *ngIf="dataToSend==null"></app-page-title>
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar" *ngIf="dataToSend==null">
+
+  <div class="row">
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">{{onPlanningForRead.libellePlanning | translateContenu : onPlanningForRead.libellePlanningEN : currentLangue }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table style="width: 100%;" id="example2" class="table table-hover table-striped table-bordered data-export">
+          <thead>
+          <tr>
+            <th>{{'CommunTranslate.AllPlanification.datestart' | translate }}</th>
+            <th>{{'CommunTranslate.AllPlanification.dateEnd' | translate }}</th>
+            <th>{{'CommunTranslate.AllPlanification.dateEffectif' | translate }}</th>
+            <th>{{'CommunTranslate.AllPlanification.frequence' | translate }}</th>
+            <th>{{'CommunTranslate.AllPlanification.typeCloture' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{onPlanningForRead.dateDebut}}</td>
+            <td>{{onPlanningForRead.dateFin}}</td>
+            <td>{{onPlanningForRead.dateEffictif}}</td>
+            <td>{{onPlanningForRead.frequence}}</td>
+            <td>{{onPlanningForRead.typeCloture}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{'CommunTranslate.AllPlanification.observations' | translate }}</h5>
+                <p class="card-text">{{onPlanningForRead.observations | translateContenu : onPlanningForRead.observationsEN : currentLangue}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{'CommunTranslate.AllPlanification.objectifs' | translate }}</h5>
+                <p class="card-text">{{onPlanningForRead.objectif | translateContenu : onPlanningForRead.objectifEN : currentLangue}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">{{'CommunTranslate.AllPlanification.close' | translate }}</button>
+      </div>
+    </ng-template>
+
+
+
+    <div class="col-sm-12 col-md-5 col-xl-4" *ngFor="let itemPlanning of listPlannification; let i = index" >
+      <div class="card-hover-shadow-2x mb-3 card">
+        <div class="card-header">
+          <div>
+            <button *ngIf="itemPlanning.programmerPar==currentUser" type="button" class="close" aria-label="Close" (click)="onDeletePlanning(itemPlanning.id, i)">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="text-align: center;">
+            <strong style="font-size: 20px"> {{'CommunTranslate.AllPlanification.du' | translate }} {{itemPlanning.dateDebut | date :'dd/MM/yyyy'}} {{'CommunTranslate.AllPlanification.au' | translate }} {{itemPlanning.dateFin | date : 'dd/MM/yyyy'}}</strong>
+          </div>
+        </div>
+        <div class="scroll-area-sm" style="height: 100px">
+          <div class="scrollbar-container">
+            <div id="ededede_{{itemPlanning.id}}" class="vertical-timeline-item vertical-timeline-element">
+              <div style="padding: 15px;"  #objTitle id="title_{{itemPlanning.id}}">
+                <h4 style="font-family: sans-serif">{{itemPlanning.libellePlanning | translateContenu : itemPlanning.libellePlanningEN : currentLangue}}</h4>
+              </div>
+              <div  class="list-group hide" #objBD>
+                <a routerLink="/liste-des-fichiers/{{itemBasejestion.nomBase}}/{{itemBasejestion.id}}#{{itemPlanning.id}}" class="list-group-item list-group-item-action active perso" *ngFor="let itemBasejestion of itemPlanning.baseQuestionnaires" style="color: white">
+                  {{itemBasejestion.nomBase | translateContenu : itemBasejestion.nomBaseEN : currentLangue}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-block text-center card-footer" #objgeneral>
+          <button class="btn-shadow btn-wide btn-pill btn btn-focus" (click)="onShowDetail(itemPlanning, content)">{{'CommunTranslate.AllPlanification.detail' | translate }}</button>&nbsp;
+          <button class="btn-shadow btn-wide btn-pill btn btn-focus" *ngIf="itemPlanning.programmerPar==currentUser" (click)="onSendDataForPlanning(itemPlanning)" >{{'CommunTranslate.AllPlanification.modifier' | translate }}</button>&nbsp;
+          <button #objButton [disabled]="itemPlanning.etatStartFill==false"  id="cadre_{{itemPlanning.id}}" class="btn-shadow btn-wide btn-pill btn btn-focus detail" (click)="btnActif(objBD, objTitle, objgeneral)">{{'CommunTranslate.AllPlanification.commencer' | translate }} </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="listPlannification.length<1 && thrust==false" style="position: relative; left: 40%">
+      <p>{{'CommunTranslate.AllPlanification.aucuneProgrammationEncour' | translate }}</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

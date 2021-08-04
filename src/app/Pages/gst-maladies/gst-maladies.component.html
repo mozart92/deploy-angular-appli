@@ -1,0 +1,155 @@
+<app-page-title [heading]="'ModeCahis.Malagie.heading' | translate" [subheading]="'ModeCahis.Malagie.heading' | translate" [icon]="icon"></app-page-title>
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveMaladie(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{ 'ModeCahis.Malagie.labelTitreFormulaire' | translate }}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{ 'RecurentWord.Annuler' | translate }}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label  class="">{{ 'ModeCahis.Malagie.labelLibelleMaladie' | translate }} (FR)*</label>
+          <input #libelleMaladieFR="ngModel"
+                 id="libelleMaladieFR"
+                 value="{{valeurLibelleMaladieFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleMaladieFR"
+                 placeholder="{{ 'ModeCahis.Malagie.InsererFrancaisMaladie' | translate }}..."
+                 ngModel="{{valeurLibelleMaladieFR}}"
+                 required="required">
+          <small *ngIf="libelleMaladieFR.touched && libelleMaladieFR.invalid" style="color: red">{{ 'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label for="libelleMaladieEN" class="">{{ 'ModeCahis.Malagie.labelLibelleMaladie' | translate }} (EN)*</label>
+          <input   #libelleMaladieEN="ngModel"
+                   id="libelleMaladieEN"
+                   value="{{valeurLibelleMaladieEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleMaladieEN"
+                   placeholder="{{ 'ModeCahis.Malagie.InsererAnglaisMaladie' | translate }}..."
+                   ngModel="{{valeurLibelleMaladieEN}}"
+                   required="required">
+          <small *ngIf="libelleMaladieEN.touched && libelleMaladieEN.invalid" style="color: red">{{ 'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-5">
+
+        <div class="position-relative form-group">
+          <label  for="groupMalagie" class="">{{ 'ModeCahis.Malagie.labelChampSelect' | translate }}*</label>
+          <select #objgroupMalagieID="ngModel"
+                  name="groupMalagie"
+                  id="groupMalagie"
+                  required="required"
+                  class="form-control"
+                  value="{{valeurGroupMalagie}}"
+                  ngModel="{{valeurGroupMalagie}}">
+            <option value="{{null}}" [selected]="true">{{ 'RecurentWord.choisi' | translate }}</option>
+            <option value="Maladies, infections et infection communes a plusieurs especes" >{{ 'ModeCahis.Malagie.MaladiesInfectionsInfectionCommunesPlusieursEspeces' | translate }}</option>
+            <option value="Maladies et infections des bovins" >{{ 'ModeCahis.Malagie.MaladiesInfectionsBovins' | translate }}</option>
+            <option value="Maladies et infections des ovins et capris" >{{ 'ModeCahis.Malagie.MaladiesInfectionsOvinsCapris' | translate }}</option>
+            <option value="Maladies et infections des eguides" >{{ 'ModeCahis.Malagie.MaladiesInfectionsEguides' | translate }}</option>
+            <option value="Maladies et infections des suides" >{{ 'ModeCahis.Malagie.MaladiesInfectionsSuides' | translate }}</option>
+            <option value="Maladies et infections des oiseaux" >{{ 'ModeCahis.Malagie.MaladiesInfectionsOiseaux' | translate }}</option>
+            <option value="Maladies et infections des lagomorphes" >{{ 'ModeCahis.Malagie.MaladiesInfectionsLagomorphes' | translate }}</option>
+            <option value="Maladies, infections et infectations des choilles" >{{ 'ModeCahis.Malagie.MaladiesInfectionsInfectationsChoilles' | translate }}</option>
+            <option value="Maladies des poisons" >{{ 'ModeCahis.Malagie.MaladiesPoisons' | translate }}</option>
+            <option value="Maladies des mollusques" >{{ 'ModeCahis.Malagie.MaladiesMollusques' | translate }}</option>
+            <option value="Maladies des crustaces" >{{ 'ModeCahis.Malagie.MaladiesCrustaces' | translate }}</option>
+            <option value="Maladies des amphibiens" >{{ 'ModeCahis.Malagie.MaladiesAmphibiens' | translate }}</option>
+          </select>
+          <small *ngIf="objgroupMalagieID.touched && objgroupMalagieID.invalid" style="color: red">{{ 'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{ 'ModeCahis.Malagie.labelTitreTableau' | translate }}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listMaladie.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listMaladie.length>0 && (term==undefined || term=='')" style="display: inline-block; margin-left: 30px">
+      <em>{{ 'RecurentWord.navigationDonnees' | translate }} : </em> <strong>{{listMaladie.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th style="font-weight: bold">#</th>
+        <th>{{ 'ModeCahis.Malagie.labelLibelleMaladie' | translate }} (FR)</th>
+        <th>{{ 'ModeCahis.Malagie.labelLibelleMaladie' | translate }} (EN)</th>
+        <th>{{ 'ModeCahis.Malagie.labelChampSelect' | translate }}</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemMaladie  of (term==undefined || term=='' ? listMaladie : listForPaginaition) | filter : term; let i = index">
+        <td style="font-weight: bold">{{i+1}}</td>
+        <td>{{itemMaladie.libelleMaladieFR}}</td>
+        <td>{{itemMaladie.libelleMaladieEN}}</td>
+        <td>{{itemMaladie.groupMalagie}}</td>
+        <td ><button title="{{ 'RecurentWord.edit' | translate }}" class="btn btn-info" (click)="onSelect(itemMaladie)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{ 'RecurentWord.delete' | translate }}" class="btn btn-danger" (click)="onDeleteMaladie(itemMaladie.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="8" *ngIf="listMaladie.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{ 'RecurentWord.AucuneDonneesEnregistrees' | translate }} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="6">
+          <ngb-pagination [pageSize]="LIMIT_PARGINATION" (pageChange)="onChangePageRecup($event)" maxSize="7"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+      <tr *ngIf="listMaladie.length==0" style="text-align: center">
+        <td colspan="11">
+          {{ 'RecurentWord.AucuneDonneesEnregistrees' | translate }}
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<script src="../villages/villages.module.ts"></script>
+<app-page-title [heading]="'ModeCahis.prelevement.heading' | translate " [subheading]="'ModeCahis.prelevement.subheading' | translate " [icon]="icon"></app-page-title>
+
+
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveNaturePrelevement(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.prelevement.labelTitreFormulaire' | translate }}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate }}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="codeNaturePrelevement" class="">{{'ModeCahis.prelevement.labelCodeNaturePrelevement' | translate }}*</label>
+          <input #codeNaturePrelevement="ngModel"
+                 id="codeNaturePrelevement"
+                 value="{{valeurCodeNaturePrelevement}}"
+                 class="form-control"
+                 type="text"
+                 name="codeNaturePrelevement"
+                 placeholder="{{'ModeCahis.prelevement.InsererCodeNaturePrelevement' | translate }}..."
+                 ngModel="{{valeurCodeNaturePrelevement}}"
+                 required="required">
+          <small *ngIf="codeNaturePrelevement.touched && codeNaturePrelevement.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.prelevement.labelLibelleNaturePrelevement' | translate }} (FR)*</label>
+          <input #libelleNaturePrelevementFR="ngModel"
+                 id="libelleNaturePrelevementFR"
+                 value="{{valeurLibelleNaturePrelevementFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleNaturePrelevementFR"
+                 placeholder="{{'ModeCahis.prelevement.InsererNomFrancais' | translate }}..."
+                 ngModel="{{valeurLibelleNaturePrelevementFR}}"
+                 required="required">
+          <small *ngIf="libelleNaturePrelevementFR.touched && libelleNaturePrelevementFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleNaturePrelevementEN" class="">{{'ModeCahis.prelevement.labelLibelleNaturePrelevement' | translate }} (EN)*</label>
+          <input   #libelleNaturePrelevementEN="ngModel"
+                   id="libelleNaturePrelevementEN"
+                   value="{{valeurLibelleNaturePrelevementEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleNaturePrelevementEN"
+                   placeholder="{{'ModeCahis.prelevement.InsererNomAnglais' | translate }}..."
+                   ngModel="{{valeurLibelleNaturePrelevementEN}}"
+                   required="required">
+          <small *ngIf="libelleNaturePrelevementEN.touched && libelleNaturePrelevementEN.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.prelevement.labelTitreTableau' | translate }}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listNaturePrelevement.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listNaturePrelevement.length>0 && (term==undefined || term=='')" style="display: inline-block">
+      <em>{{'RecurentWord.navigationDonnees' | translate }} : </em> <strong>{{listNaturePrelevement.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th style="font-weight: bold">#</th>
+        <th>{{'ModeCahis.prelevement.labelCodeNaturePrelevement' | translate }} (EN)</th>
+        <th>{{'ModeCahis.prelevement.labelLibelleNaturePrelevement' | translate }} (FR)</th>
+        <th>{{'ModeCahis.prelevement.labelLibelleNaturePrelevement' | translate }} (EN)</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemNaturePrelevement  of (term==undefined || term=='' ? listNaturePrelevement : listForPaginaition) | filter : term; let i = index">
+        <td style="font-weight: bold">{{i+1}}</td>
+        <td>{{itemNaturePrelevement.codeNaturePrelevement}}</td>
+        <td>{{itemNaturePrelevement.libelleNaturePrelevementFR}}</td>
+        <td>{{itemNaturePrelevement.libelleNaturePrelevementEN}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate }}" class="btn btn-info" (click)="onSelect(itemNaturePrelevement)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate }}" class="btn btn-danger" (click)="onDeleteNaturePrelevement(itemNaturePrelevement.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="8" *ngIf="listNaturePrelevement.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate }} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="6">
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<ngx-loading [show]="configShowNotif.showModalBlock"
+             [config]="{animationType: ngxLoadingAnimationTypes.cubeGrid,
+             primaryColour: primaryColour,
+             backdropBorderRadius: '3px'}"
+             [template]="loadingTemplate">
+</ngx-loading>
+
+<div class="font-icon-wrapper float-left mr-3 mb-3" *ngIf="configShowNotif.showLoading.show">
+  <div class="loader-wrapper d-flex justify-content-center align-items-center">
+    <div class="loader">
+      <div class="ball-grid-pulse">
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+        <div style="background-color: rgb(252,252,255);"></div>
+      </div>
+    </div>
+  </div>
+  <p style="font-weight: bold;background-color: rgb(87,4,163);font-size: 15px; color: white"> {{configShowNotif.showLoading.text}}...</p>
+</div>

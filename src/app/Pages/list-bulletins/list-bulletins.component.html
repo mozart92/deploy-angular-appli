@@ -1,0 +1,45 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+<div class="card mb-3">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-uppercase font-weight-normal">
+      <i class="header-icon lnr-file-empty mr-3 text-muted opacity-6"> </i>
+     Liste des bulletins d'informations
+    </div>
+  </div>
+  <form>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col">Nom bulletin</th>
+        <th scope="col">Nom planification achevée </th>
+        <th scope="col">Date de création</th>
+        <th scope="col">Suppression</th>
+        <th scope="col">Diffusion</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let itembulletin of listBulletins; let i = index">
+        <th scope="row" class="text-center">{{i}}</th>
+        <td>
+          <i class="fa fa-file-pdf-o mr-2" style="width: 20px; color:red"></i>
+          {{itembulletin.nomBulletin}}
+        </td>
+        <td>{{itembulletin.nomPlanning}}</td>
+        <td>{{itembulletin.dateSauvegade | date:'M/d/yyyy'}}</td>
+        <td>
+          <button class="border-0 btn-transition btn btn-outline-danger text-danger" (click)="onDeleteBulletin(itembulletin.id)">supprimer</button>
+        </td>
+        <td>
+          <button class="border-0 btn-transition btn btn-outline-success text-success">diffuser</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="card-footer pb-0">
+
+
+    </div>
+  </form>
+</div>

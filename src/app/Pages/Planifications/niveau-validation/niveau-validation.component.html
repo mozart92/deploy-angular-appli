@@ -1,0 +1,327 @@
+<app-page-title [heading]="'CommunTranslate.NiveauValidation.heading' | translate"
+                [subheading]="'CommunTranslate.NiveauValidation.subheading' | translate " [icon]="icon"
+                *ngIf="dataToSend==null"></app-page-title>
+
+
+<app-new-planification (sendValidationForShow)="listingDataSend($event)" [reseiveData]="reseiveData"
+                       *ngIf="dataToSend!=null"></app-new-planification>
+
+<app-loading *ngIf="isVisible" style="position: absolute; top: 160px; left: 50%; z-index: 1000000000"></app-loading>
+
+
+<div class="tabs-animation" *ngIf="dataToSend==null">
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4
+        class="modal-title">{{onPlanningForRead.libellePlanning | translateContenu : onPlanningForRead.libellePlanningEN : currentLangue}}
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <table style="width: 100%;" id="example2" class="table table-hover table-striped table-bordered data-export">
+        <thead class="thead-dark">
+        <tr>
+          <th>{{'CommunTranslate.NiveauValidation.dateDebut' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.dateFin' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.dateEffectif' | translate }} </th>
+          <th>{{'CommunTranslate.NiveauValidation.frequence' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.typeCloture' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{onPlanningForRead.dateDebut}}</td>
+          <td>{{onPlanningForRead.dateFin}}</td>
+          <td>{{onPlanningForRead.dateEffictif}}</td>
+          <td>{{onPlanningForRead.frequence}}</td>
+          <td>{{onPlanningForRead.typeCloture}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{'CommunTranslate.NiveauValidation.observations' | translate }}</h5>
+              <p
+                class="card-text">{{onPlanningForRead.observations | translateContenu : onPlanningForRead.observationsEN : currentLangue}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"> {{'CommunTranslate.NiveauValidation.objectifs' | translate }} </h5>
+              <p
+                class="card-text">{{onPlanningForRead.objectif | translateContenu : onPlanningForRead.objectifEN : currentLangue }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <div class="row" style="margin-top: 30px;margin-bottom: 20px">
+        <div class="col-md-6">
+          <div class="col-md-12">
+            <h5
+              style="font-weight: bold">{{'CommunTranslate.NiveauValidation.baseQuestionnairesPlanification' | translate }} </h5>
+          </div>
+          <div class="col-md-12">
+            <ul class="todo-list-wrapper list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let itemPlanningDetail of onPlanningForRead.baseQuestionnaires">
+                <div class="todo-indicator bg-primary"></div>
+                <div class="widget-content p-0">
+                  <div class="widget-content-wrapper">
+                    <div class="widget-content-left flex2">
+                      <div
+                        class="widget-heading">{{itemPlanningDetail.nomBase | translateContenu : itemPlanningDetail.nomBaseEN : currentLangue}}</div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="col-md-12">
+            <h5
+              style="font-weight: bold">{{'CommunTranslate.NiveauValidation.niveauxValidationPlanification' | translate }}</h5>
+          </div>
+          <div class="col-md-12">
+            <ul class="todo-list-wrapper list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let itemNivrauValidation of listGroupByPlanningForDetailGeneral">
+                <div class="todo-indicator bg-primary"></div>
+                <div class="widget-content p-0">
+                  <div class="widget-content-wrapper">
+                    <div class="widget-content-left flex2">
+                      <div class="widget-heading">{{itemNivrauValidation.groupe.libelleGroupe}}</div>
+                    </div>
+                    <div class="widget-content-right ml-3">
+                      <div
+                        class="badge badge-pill badge-success">{{'CommunTranslate.NiveauValidation.niveau' | translate }} {{itemNivrauValidation.niveau}}</div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light"
+              (click)="modal.close('Close click')">{{'CommunTranslate.NiveauValidation.close' | translate }} </button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #content2 let-modal>
+    <div class="modal-header" style="background-color: #4e4376">
+      <h4 class="modal-title"
+          style="color: white">{{'CommunTranslate.NiveauValidation.desactiveLesNiveaux' | translate }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="position:relative;">
+      <app-loading *ngIf="isvisibleModal"
+                   style="position: absolute; top: 70px; left: 35%; z-index: 1000000000"></app-loading>
+      <table style="width: 100%;" id="example3" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+          <th>{{'CommunTranslate.NiveauValidation.intitulleFonction' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.niveauValidation' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.desactive' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let itemGroupByPlanning of listGroupByPlanning; let z = index">
+          <td>{{itemGroupByPlanning.groupe.libelleGroupe}}</td>
+          <td style="text-align: center; vertical-align: middle">
+            <span
+              class="badge badge-pill badge-success">{{'CommunTranslate.NiveauValidation.niveau' | translate }} {{itemGroupByPlanning.niveau}}</span>
+          </td>
+          <td>
+            <button title="Enlever les privilege de remplissage" class="btn btn-danger" style="width: 100%"
+                    (click)="onDeteleGrouAssocie(itemGroupByPlanning.groupe)"><i class="fa fa-power-off"
+                                                                                 aria-hidden="true"></i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+
+  <form *ngIf="show" #formNivoValidation="ngForm"
+        (ngSubmit)="formNivoValidation.valid && onSendNiveauValidation(formNivoValidation.value)">
+    <input #objIdval="ngModel" ngModel="{{valeurIdval}}" value="{{valeurIdval}}" id="idval" name="idProgrammation"
+           style="display: none"/>
+
+    <div class="main-card mb-3 card">
+      <div class="card-body"><h5
+        class="card-title">{{'CommunTranslate.NiveauValidation.canalValidation' | translate }}:
+        <strong> {{libellePlanning}} </strong></h5>
+        <div class="form-row" style="padding: 15px;">
+
+          <div class="col-md-8">
+            <div class="position-relative form-group">
+              <h6>{{'CommunTranslate.NiveauValidation.niveauRemplissage' | translate }}*</h6>
+              <form [formGroup]="myForm">
+                <ng-multiselect-dropdown name="planification" [placeholder]="'CommunTranslate.NiveauValidation.selectionObligatoire' | translate "
+                                         [settings]="dropdownSettings"
+                                         [data]="planification" formControlName="planification"
+                                         (onDropDownClose)="onDropDownClose()"
+                                         (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+              </form>
+              <small *ngIf="objhieghtNiveau.touched && tabIdPlanningSelectMultipl.length==0"
+                     style="color: red">{{'CommunTranslate.NiveauValidation.selectionObligatoire' | translate }}</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="hieghtNiveau">{{'CommunTranslate.NiveauValidation.niveauHierachique' | translate }}* </label>
+            <p>
+              <select #objhieghtNiveau="ngModel"
+                      required="required"
+                      style="width: 100%;height: 40px"
+                      id="hieghtNiveau"
+                      name="hieghtNiveau"
+                      ngModel="{{valeurNiveau1}}"
+                      value="{{valeurNiveau1}}">
+                <option value="{{null}}" [selected]="true">{{'CommunTranslate.NiveauValidation.choisir' | translate }}
+                  ...
+                </option>
+                <option value="1">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 1</option>
+                <option value="2">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 2</option>
+                <option value="3">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 3</option>
+                <option value="4">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 4</option>
+                <option value="5">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 5</option>
+                <option value="6">{{'CommunTranslate.NiveauValidation.niveau' | translate }} 6</option>
+              </select>
+              <small *ngIf="objhieghtNiveau.touched && objhieghtNiveau.invalid"
+                     style="color: red">{{'CommunTranslate.NiveauValidation.champInvalide' | translate }}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1 text-right">
+        <button type="submit" class="btn btn-info btn-lg"
+                [disabled]="formNivoValidation.invalid && tabIdPlanningSelectMultipl.length==0">{{'CommunTranslate.NiveauValidation.envoyer' | translate }}</button>&nbsp;
+      </div>
+    </div>
+  </form>
+
+
+  <!--LISTE DES FICHES DEJA ENREGISTRE-->
+  <div class="main-card mb-3 card">
+
+    <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <h5 class="card-title">{{'CommunTranslate.NiveauValidation.labelTitreTableau' | translate }} </h5>
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listPlannification.length>0 && (term ==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+
+    <p *ngIf="listPlannification.length>0 && (term ==undefined || term=='')" style="display: inline-block; margin-left: 60px" >
+      <em>{{'CommunTranslate.NiveauValidation.navigationDonnees' | translate }} </em> <strong>{{listPlannification.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+
+    <div class="card-body">
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+          <th style="font-weight: bold">#</th>
+          <th>{{'CommunTranslate.NiveauValidation.libellePlanning' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.dateDebut' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.dateFin' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.dateEffectif' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.frequence' | translate }}</th>
+          <th>{{'CommunTranslate.NiveauValidation.typeCloture' | translate }}</th>
+          <th style="width: 25px;">
+            <button class="btn"><i class="fa fa-eye"></i></button>
+          </th>
+          <th style="width: 25px;">
+            <button class="btn"><i class="fa fa-th"></i></button>
+          </th>
+          <th style="width: 25px;">
+            <button class="btn"><i class="fa fa-user"></i></button>
+          </th>
+          <th style="width: 25px;">
+            <button class="btn"><i class="fa fa-edit"></i></button>
+          </th>
+          <th style="width: 25px;">
+            <button class="btn"><i class="fa fa-trash"></i></button>
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <ng-container *ngFor=" let itemPlanning of (term==undefined || term=='' ? listPlannification : listForPaginaition) | filter : term; let i = index">
+          <tr *ngIf="itemPlanning.programmerPar==userCurrent">
+            <td style="font-weight: bold">{{i + 1}}</td><!--libelle planning-->
+            <td>{{itemPlanning.libellePlanning | translateContenu : itemPlanning.libellePlanningEN : currentLangue}}</td>
+            <!--libelle planning-->
+            <td>{{itemPlanning.dateDebut}}</td><!--Date début-->
+            <td>{{itemPlanning.dateFin}}</td><!--Date fin-->
+            <td>{{itemPlanning.dateEffictif}}</td><!--Date éffectif-->
+            <td>{{itemPlanning.frequence}}</td><!--Fréquence-->
+            <td>{{itemPlanning.typeCloture}}</td><!--Type Cloture-->
+            <td>
+              <button title="{{'CommunTranslate.NiveauValidation.voirDetail' | translate }} " class="btn btn-secondary"
+                      (click)="onViewDetailPlanning(itemPlanning, content)"><i class="fa fa-eye"></i></button>
+            </td>
+            <td>
+              <button title=">{{'CommunTranslate.NiveauValidation.appliquerNiveauxValidation' | translate }}" class="btn btn-info"
+                      (click)="onChargerPlanning(itemPlanning.id, itemPlanning.libellePlanning)"><i
+                class="fa fa-th"></i></button>
+            </td>
+            <td>
+              <button title="{{'CommunTranslate.NiveauValidation.listeNiveauxValidation' | translate }}" class="btn btn-primary"
+                      (click)="onShowValidation(itemPlanning, content2)"><i class="fa fa-user"></i></button>
+            </td>
+            <td>
+              <button title="{{'CommunTranslate.NiveauValidation.modifier' | translate }}" class="btn btn-info" (click)="onUpdatePlanning(itemPlanning)"><i
+                class="fa fa-edit"></i></button>
+            </td>
+            <td>
+              <button title="{{'CommunTranslate.NiveauValidation.supprimer' | translate }}" class="btn btn-danger"
+                      (click)="onDeletePlanning(itemPlanning.id, i)"><i class="fa fa-trash"></i></button>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+
+        <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term ==undefined || term=='')">
+          <td colspan="12">
+            <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [collectionSize]="countItemAffcihe"
+                            [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+  <!-- FIN DES LISTES DEJA ENREGISTRE-->
+
+
+</div>
+
+
+
+

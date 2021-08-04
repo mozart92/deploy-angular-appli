@@ -1,0 +1,20 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+<div class="row">
+
+  <ngb-accordion  activeIds="ngb-panel-0" style="width: 100%;" *ngIf="listFAQ.length>0">
+    <ngb-panel *ngFor="let itemFaq of listFAQ">
+      <ng-template ngbPanelTitle >
+        <span class="card-header--title" style="font-weight: bold;font-size: larger">{{itemFaq.questionFR | translateContenu:itemFaq.questionEN:currentLangue}}</span>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        {{itemFaq.reponseFR | translateContenu:itemFaq.reponseEN:currentLangue}}
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+  <div class="col-md-12">
+    <p style="text-align: center" *ngIf="listFAQ.length==0">FAQ pas encore enregistré...</p>
+  </div>
+
+</div>

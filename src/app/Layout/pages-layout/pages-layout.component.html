@@ -1,0 +1,5 @@
+<div [@architectUIAnimation]="o.isActivated ? o.activatedRoute : ''">
+  <router-outlet #o="outlet"></router-outlet>
+</div>
+<app-notifications-operation [configShowNotif]="serviceNotification.configShowNotif" [configToast]="serviceNotification.configToast" [changeState]="serviceNotification.changeState"></app-notifications-operation>
+<ngx-loading-bar [color]="'var(--primary)'"></ngx-loading-bar>

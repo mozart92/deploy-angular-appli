@@ -1,0 +1,18 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+
+<app-loading style="position: absolute; top: 100px; left: 50%; z-index: 1000000000" *ngIf = "isvisible"></app-loading>
+
+
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar"  >
+  <div class="row">
+    <div class="col-sm-12 col-md-5 col-xl-2" style="" *ngFor="let itemFichier of listFichier" routerLink="/ficheQuestionnaire/{{itemFichier.nomFiche}}/{{itemFichier.id}}#{{idPlanning}}">
+      <div class="card" style="width: 8rem;cursor: pointer; height: 195px;font-size:11px; margin-bottom: 50px" ngbTooltip="{{itemFichier.nomFiche}}">
+        <img class="card-img-top" src="assets/images/fichier.png" width="100" alt="Card image cap" >
+        <div class="card-body" style="padding: 0; text-align: center; line-height: normal;">
+          <p style="font-size: larger; font-weight: bold" class="card-text">{{ (itemFichier.nomFiche | translateContenu : itemFichier.nomFicheEN : currentLangue ) | formatTextToolLong:33}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

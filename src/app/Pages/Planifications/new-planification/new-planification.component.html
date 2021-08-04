@@ -1,0 +1,245 @@
+<app-page-title [heading]="headingFR | translateContenu:headingEN:currentLangue" [subheading]="subheadingFR | translateContenu: subheadingEN:currentLangue" [icon]="icon"></app-page-title>
+
+<div class="tabs-animation" >
+
+
+
+  <form name ="formuser" (ngSubmit)="formuser.valid && onSavePlanning(formuser)" #formuser="ngForm">
+    <input name="idUser" value="{{valeurId}}" style="display: none" ngModel/>
+    <div class="mb-3 card">
+      <div class="card-header-tab card-header form-row">
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+          <h5 class="card-title">{{infoGeneralFR | translateContenu: infoGeneralEN: currentLangue}}</h5>
+        </div>
+
+        <div class="col-md-6 text-right">
+          <button type="submit"  class="btn btn-info btn-lg" [disabled]="formuser.invalid">{{labelButtonSave | translateContenu:labelButtonSaveEN:currentLangue}}</button>&nbsp;
+          <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{retournFR | translateContenu:retournEN:currentLangue}}</button>
+        </div>
+
+
+      </div>
+
+      <div class="form-row" style="padding: 15px;">
+
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="libellePlanning"  class="">{{nomCollecteFR  | translateContenu:nomCollecteEN:currentLangue}} (FR)*</label>
+            <input id="libellePlanning"
+                   #objlibellePlanning="ngModel"
+                   value="{{valeurlibellePlanning}}"
+                   ngModel="{{valeurlibellePlanning}}"
+                   required="required"
+                   type="text"
+                   placeholder="{{intitulerPlanificationFR | translateContenu : intitulerPlanificationEN : currentLangue}} (FR)"
+                   name="libellePlanning"
+                   class="form-control">
+            <small *ngIf="objlibellePlanning.touched && objlibellePlanning.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="libellePlanningEN"  class="">{{nomCollecteFR  | translateContenu:nomCollecteEN:currentLangue}} (EN)*</label>
+            <input id="libellePlanningEN"
+                   #objlibellePlanningEN="ngModel"
+                   value="{{valeurlibellePlanningEN}}"
+                   ngModel="{{valeurlibellePlanningEN}}"
+                   type="text"
+                   placeholder="{{intitulerPlanificationFR | translateContenu : intitulerPlanificationEN : currentLangue}} (EN)"
+                   name="libellePlanningEN"
+                   class="form-control">
+            <small *ngIf="objlibellePlanningEN.touched && objlibellePlanningEN.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="dateDebut"  class="">{{dateDebutFR | translateContenu:dateDebutEN:currentLangue}}*</label>
+            <input #objdateDebut="ngModel"
+                   value="{{valeurdateDebut}}"
+                   ngModel="{{valeurdateDebut}}"
+                   required="required"
+                   name="dateDebut"
+                   id="dateDebut"
+                   placeholder="MM/JJ/AAAA"
+                   type="date"
+                   class="form-control"
+                   data-toggle="datepicker"/>
+            <small *ngIf="objdateDebut.touched && objdateDebut.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="dateFin"  class="">{{dateFinFR | translateContenu:dateFinEN:currentLangue}}*</label>
+            <input #objdateFin="ngModel"
+                   value="{{valeurdateFin}}"
+                   ngModel="{{valeurdateFin}}"
+                   required="required"
+                   name="dateFin"
+                   id="dateFin"
+                   placeholder="MM/JJ/AAAA"
+                   type="date"
+                   class="form-control"
+                   data-toggle="datepicker"/>
+            <small *ngIf="objdateFin.touched && objdateFin.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small><br>
+            <small *ngIf="objdateFin.touched && objdateFin.value < objdateDebut.value " style="color: red">Date de fin inférieur à la date de début</small>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="dateEffictif" class="">{{apartirDeFR | translateContenu:apartirDeEN:currentLangue}}*</label>
+            <input #objdateEffictif="ngModel"
+                   value="{{valeurdateEffictif}}"
+                   ngModel="{{valeurdateEffictif}}"
+                   required="required"
+                   name="dateEffictif"
+                   id="dateEffictif"
+                   placeholder="MM/JJ/AAAA"
+                   type="date"
+                   class="form-control"
+                   data-toggle="datepicker"/>
+            <small *ngIf="objdateEffictif.touched && objdateEffictif.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small><br>
+            <small *ngIf="(objdateEffictif.touched && objdateDebut.touched  && objdateFin.touched) && (objdateFin.value<objdateEffictif.value || objdateDebut.value>objdateFin.value)" style="color: red">Incorrecte Date, elle doit etre entre date debut et date de fin</small>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="position-relative form-group">
+            <label for="typeCloture" class="">{{typeClotureFR | translateContenu:typeClotureEN:currentLangue}}*</label>
+            <select #objtypeCloture="ngModel"
+                   value="{{automatiqueValueFR"
+                   ngModel="{{automatiqueValueFR}}"
+                   required="required"
+                   readonly="readonly"
+                   id="typeCloture"
+                   name="typeCloture"
+                   class="form-control">
+            <option value="{{automatiqueValueFR}}" [selected]="true">{{automatiqueValueFR | translateContenu:automatiqueValueEN:currentLangue}}</option>
+            </select>
+            <small *ngIf="objtypeCloture.touched && objtypeCloture.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="position-relative form-group">
+            <label for="frequence" class="">{{frequenceDonneesFR | translateContenu:frequenceDonneesEN:currentLangue}}*</label>
+            <select #objfrequence="ngModel"
+                    value="{{valeurfrequence}}"
+                    ngModel="{{valeurfrequence}}"
+                    required="required"
+                    type="text"
+                    id="frequence"
+                    name="frequence"
+                    class="form-control">
+              <option value="{{null}}" [selected]="true">{{choisirFR | translateContenu:choisirEN:currentLangue}}...</option>
+              <option value="{{JournaliereFR | translateContenu:JournaliereEN:currentLangue}}">{{JournaliereFR | translateContenu:JournaliereEN:currentLangue}}</option>
+              <option value="{{HebdomadaireFR | translateContenu:HebdomadaireEN:currentLangue}}">{{HebdomadaireFR | translateContenu:HebdomadaireEN:currentLangue}}</option>
+              <option value="{{MensuelleFR | translateContenu:MensuelleEN:currentLangue}}">{{MensuelleFR | translateContenu:MensuelleEN:currentLangue}}</option>
+              <option value="{{AnnuelleFR | translateContenu:AnnuelleEN:currentLangue}}">{{AnnuelleFR | translateContenu:AnnuelleEN:currentLangue}}</option>
+            </select>
+            <small *ngIf="objfrequence.touched && objfrequence.invalid" style="color: red">{{champOblicatoirFR | translateContenu:champOblicatoirEN:currentLangue}}</small>
+          </div>
+        </div>
+
+
+        <div class="col-md-12">
+          <div class="position-relative form-group">
+            <label class="">
+              {{baseDonneesFR | translateContenu:baseDonneesEN:currentLangue}}*
+              <button type="button"
+                      class="btn mr-2 border-0 btn btn-success"
+                      style="font-weight: bold; padding: 5px; font-size: smaller"
+                      (click)="onGroupApp()"
+              >{{chargerBaseQuestionnairesExistantFR | translateContenu : chargerBaseQuestionnairesExistantEN : currentLangue}} *</button>
+            </label>
+
+
+            <form [formGroup]="myForm">
+              <ng-multiselect-dropdown name="baseQuestionnaire" [placeholder]="selectionnerBaseQuestionnairePlanificationFR | translateContenu : selectionnerBaseQuestionnairePlanificationEN : currentLangue " [settings]="dropdownSettings"
+                                       [data]="baseQuestionnaire" formControlName="baseQuestionnaire"
+                                       (onDropDownClose)="onDropDownClose()"
+                                       (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+              </ng-multiselect-dropdown>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="main-card mb-3 card">
+      <div class="card-body"><h5 class="card-title">{{observationFR | translateContenu:observationEN:currentLangue}}</h5>
+        <div class="form-row" style="padding: 0px;">
+          <div class="col-md-6">
+              <textarea #objobservations="ngModel"
+                        autosize
+                        style="min-height: 200px"
+                        value="{{valeurobservations}}"
+                        ngModel="{{valeurobservations}}"
+                        type="text"
+                        name="observations"
+                        id="observations"
+                        placeholder="{{remplirObservationsFrancaiseFR | translateContenu : remplirObservationsFrancaiseEN : currentLangue}}"
+                        class="form-control">
+              </textarea>
+          </div>
+          <div class="col-md-6">
+              <textarea #objobservationsEN="ngModel"
+                        autosize
+                        style="min-height: 200px"
+                        value="{{valeurobservationsEN}}"
+                        ngModel="{{valeurobservationsEN}}"
+                        name="observationsEN"
+                        id="observationsEN"
+                        placeholder="{{remplirObservationsAnglaiseFR | translateContenu : remplirObservationsAnglaiseEN : currentLangue}}"
+                        class="form-control">
+              </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="main-card mb-3 card">
+      <div class="card-body"><h5 class="card-title">{{objectifFR | translateContenu:objectifEN:currentLangue}}</h5>
+        <div class="form-row" style="padding: 2px;">
+          <div class="col-md-6">
+              <textarea #objobjectif="ngModel"
+                        autosize
+                        style="min-height: 200px"
+                        value="{{valeurobjectif}}"
+                        ngModel="{{valeurobjectif}}"
+                        type="text"
+                        name="objectif"
+                        id="objectif"
+                        placeholder="{{remplirObjectifFrancaiseFR | translateContenu : remplirObjectifFrancaiseEN : currentLangue}}"
+                        class="form-control">
+              </textarea>
+          </div>
+          <div class="col-md-6">
+              <textarea #objobjectif="ngModel"
+                        autosize
+                        style="min-height: 200px"
+                        value="{{valeurobjectifEN}}"
+                        ngModel="{{valeurobjectifEN}}"
+                        type="text"
+                        name="objectifEN"
+                        id="objectifEN"
+                        placeholder="{{remplirObjectifAnglaiseFR | translateContenu : remplirObjectifAnglaiseEN : currentLangue}}"
+                        class="form-control">
+              </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+
+</div>

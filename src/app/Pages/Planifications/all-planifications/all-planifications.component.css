@@ -1,0 +1,7 @@
+.list-group-item.active{
+    color: #033C73!important;
+    background-color: #d1f3ff!important;
+    border-color:#d1f3ff;
+    font-weight: bold;
+
+}

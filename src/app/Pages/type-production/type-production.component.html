@@ -1,0 +1,139 @@
+<app-page-title [heading]="'ModeCahis.typeProduction.heading' | translate " [subheading]="'ModeCahis.typeProduction.subheading' | translate " [icon]="icon"></app-page-title>
+
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveTypeProduction(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.typeProduction.labelTitreFormulaire' | translate }}
+      </div>
+
+
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate }}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="codeTypeProduction" class="">{{'ModeCahis.typeProduction.labelCodeTypeProduction' | translate }}*</label>
+          <input #codeTypeProduction="ngModel"
+                 id="codeTypeProduction"
+                 value="{{valeurCodeTypeProduction}}"
+                 class="form-control"
+                 type="text"
+                 name="codeTypeProduction"
+                 placeholder="{{'ModeCahis.typeProduction.InsererCodeTypeProduction' | translate }}..."
+                 ngModel="{{valeurCodeTypeProduction}}"
+                 required="required">
+          <small *ngIf="codeTypeProduction.touched && codeTypeProduction.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.typeProduction.labelLibelleTypeProduction' | translate }} (FR)*</label>
+          <input #libelleTypeProductionFR="ngModel"
+                 id="libelleTypeProductionFR"
+                 value="{{valeurLibelleTypeProductionFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleTypeProductionFR"
+                 placeholder="{{'ModeCahis.typeProduction.InsererFrancaisTypeProduction' | translate }}..."
+                 ngModel="{{valeurLibelleTypeProductionFR}}"
+                 required="required">
+          <small *ngIf="libelleTypeProductionFR.touched && libelleTypeProductionFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleTypeProductionEN" class="">{{'ModeCahis.typeProduction.labelLibelleTypeProduction' | translate }} (EN)*</label>
+          <input   #libelleTypeProductionEN="ngModel"
+                   id="libelleTypeProductionEN"
+                   value="{{valeurLibelleTypeProductionEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleTypeProductionEN"
+                   placeholder="{{'ModeCahis.typeProduction.InsererAnglaisTypeProduction' | translate }}..."
+                   ngModel="{{valeurLibelleTypeProductionEN}}"
+                   required="required">
+          <small *ngIf="libelleTypeProductionEN.touched && libelleTypeProductionEN.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate }}</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.typeProduction.labelTitreTableau' | translate }}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listTypeProduction.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listTypeProduction.length>0 && (term==undefined || term=='')" style="display: inline-block">
+      <em> {{'RecurentWord.navigationDonnees' | translate }} : </em> <strong>{{listTypeProduction.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>{{'ModeCahis.typeProduction.labelCodeTypeProduction' | translate }}</th>
+        <th>{{'ModeCahis.typeProduction.labelLibelleTypeProduction' | translate }} (FR)</th>
+        <th>{{'ModeCahis.typeProduction.labelLibelleTypeProduction' | translate }} (EN)</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemTypeProduction  of (term==undefined || term=='' ? listTypeProduction : listForPaginaition) | filter : term">
+        <td>{{itemTypeProduction.codeTypeProduction}}</td>
+        <td>{{itemTypeProduction.libelleTypeProductionFR}}</td>
+        <td>{{itemTypeProduction.libelleTypeProductionEN}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate }}" class="btn btn-info" (click)="onSelect(itemTypeProduction)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate }}" class="btn btn-danger" (click)="onDeleteTypeProduction(itemTypeProduction.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="5" *ngIf="listTypeProduction.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate }}  </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="5">
+          <ngb-pagination [pageSize]="LIMIT_PARGINATION" (pageChange)="onChangePageRecup($event)" maxSize="7"   [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

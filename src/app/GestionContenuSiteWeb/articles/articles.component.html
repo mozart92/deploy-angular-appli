@@ -1,0 +1,371 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Enregistrement des articles">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+  <form name="form" #formArticle="ngForm" (ngSubmit)="formArticle.valid && onSaveArticle(formArticle.value)">
+    <input name="id" value="{{id}}" style="display: none" ngModel="{{id}}"/>
+    <div class="mb-3 card">
+      <div class="card-header-tab card-header form-row">
+
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+          <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+        </div>
+
+        <div class="col-md-6 text-right">
+          <button type="submit"  class="btn btn-info btn-lg" [disabled]="formArticle.invalid">{{labelButtonSave}}</button>&nbsp;
+          <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">Annuler</button>
+        </div>
+      </div>
+
+      <div class="form-row" style="padding: 15px;">
+
+        <div class="col-md-12">
+          <div class="position-relative form-group">
+            <label for="labelTitreArticleFR" class="">{{TitreArticleFR}}</label>
+            <input #labelTitreArticleFR="ngModel"
+                   id="labelTitreArticleFR"
+                   value="{{valeurlabelTitreArticleFR}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer Titre article (FR)..."
+                   name="labelTitreArticleFR"
+                   ngModel="{{valeurlabelTitreArticleFR}}"
+                   required="required">
+            <small *ngIf="labelTitreArticleFR.touched && labelTitreArticleFR.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="position-relative form-group">
+            <label class="">{{TexteArticleFR}}</label>
+            <angular-editor #labelTexteArticleFR  name="labelTexteArticleFR" [(ngModel)]="valeurlabelTexteArticleFR" [config]="config"></angular-editor>
+            <small *ngIf="labelTexteArticleFR.touched && valeurlabelTexteArticleFR==''" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label class="">{{ResumeArticleFR}}</label>
+            <textarea #labelResumeArticleFR="ngModel"
+                   id="labelResumeArticleFR"
+                   value="{{valeurlabelResumeArticleFR}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer resumé article (FR)..."
+                   name="labelResumeArticleFR"
+                   ngModel="{{valeurlabelResumeArticleFR}}"
+                   required="required"
+                   autosize
+                   style="min-height: 319px!important;"
+            >
+            </textarea>
+            <small *ngIf="labelResumeArticleFR.touched && labelResumeArticleFR.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="position-relative form-group">
+            <label  class="">{{TitreArticleEN}}</label>
+            <input #labelTitreArticleEN="ngModel"
+                   id="labelTitreArticleEN"
+                   value="{{valeurlabelTitreArticleEN}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer titre article (EN)..."
+                   name="labelTitreArticleEN"
+                   ngModel="{{valeurlabelTitreArticleEN}}"
+                   required="required">
+            <small *ngIf="labelTitreArticleEN.touched && labelTitreArticleEN.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="position-relative form-group">
+            <label  class="">{{TexteArticleEN}}</label>
+            <angular-editor #labelTexteArticleEN name="labelTexteArticleEN" [(ngModel)]="valeurlabelTexteArticleEN" [config]="config"></angular-editor>
+            <small *ngIf="labelTexteArticleEN.touched && valeurlabelTexteArticleEN==''" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label  class="">{{ResumeArticleEN}}</label>
+            <textarea #labelResumeArticleEN="ngModel"
+                   id="labelResumeArticleEN"
+                   value="{{valeurlabelResumeArticleEN}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer résumé article (EN)..."
+                   name="labelResumeArticleEN"
+                   ngModel="{{valeurlabelResumeArticleEN}}"
+                   autosize
+                   style="min-height: 319px!important;"
+                   required="required">
+             </textarea>
+            <small *ngIf="labelResumeArticleEN.touched && labelResumeArticleEN.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+        <!--<div class="col-md-12">
+          <div class="position-relative form-group">
+            <label  class="">{{TexteArticleFR}}</label>
+            <textarea #labelTexteArticleFR="ngModel"
+                   id="labelTexteArticleFR"
+                   value="{{valeurlabelTexteArticleFR}}"
+                   class="form-control"
+                   type="text"
+                    placeholder="Insérer contenu article (FR)..."
+                   name="labelTexteArticleFR"
+                   ngModel="{{valeurlabelTexteArticleFR}}"
+                   required="required">
+            </textarea>
+            <small *ngIf="labelTexteArticleFR.touched && labelTexteArticleFR.invalid" style="color: red">Champ vide ou incorrecte,  veuillez vérifier</small>
+          </div>
+        </div>-->
+
+        <!--<div class="col-md-12">
+          <div class="position-relative form-group">
+            <label  class="">{{TexteArticleEN}}</label>
+            <textarea #labelTexteArticleEN="ngModel"
+                   id="labelTexteArticleEN"
+                   value="{{valeurlabelTexteArticleEN}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer contenu article (EN)..."
+                   name="labelTexteArticleEN"
+                   ngModel="{{valeurlabelTexteArticleEN}}"
+                   required="required">
+            </textarea>
+            <small *ngIf="labelTexteArticleEN.touched && labelTexteArticleEN.invalid" style="color: red">Champ vide ou incorrecte, veuillez veuillez vérifier</small>
+          </div>
+        </div>-->
+
+        <div class="col-md-6">
+          <div class="position-relative form-group">
+            <label for="labelImageVideoArticle" class="">{{ImageVideoArticle}}</label>
+            <select #labelImageVideoArticle="ngModel"
+                   id="labelImageVideoArticle"
+                   value="{{valeurlabelImageVideoArticle}}"
+                   class="form-control"
+                   type="file"
+                   name="labelImageVideoArticle"
+                   ngModel="{{valeurlabelImageVideoArticle}}"
+                    >
+              <option value="{{null}}" [selected]="true">Choisir...</option>
+              <option value="{{itemMedia.id}}" *ngFor="let itemMedia of listMedia; let z = indexZ">
+                {{itemMedia.titreFR}}
+              </option>
+            </select>
+            <small *ngIf="labelImageVideoArticle.touched && labelImageVideoArticle.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="position-relative form-group">
+            <label  class="">Categories</label>
+            <select #objCategories="ngModel"
+                    name="categories"
+                    id="categories"
+                    required="required"
+                    class="form-control"
+                    value="{{valeurcategories}}"
+                    ngModel="{{valeurcategories}}">
+              <option value="{{null}}" [selected]="true">"Choisir..."</option>
+              <option value="{{itemCategorie.id}}" *ngFor="let itemCategorie of listCategories; let z = indexZ">
+                {{itemCategorie.libelleCategoriesFR}}
+              </option>
+            </select>
+            <small *ngIf="objCategories.touched && objCategories.invalid" style="color: red">Champ vide ou incorrecte, veuillez vérifier</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des articles enregistrés</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+
+  <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">{{labelTitreTableau}}</h5>
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+          <th>Titre (FR)</th>
+          <th>Titre (EN)</th>
+          <th>Résumé (FR)</th>
+          <th>Résumé (EN)</th>
+          <th>Fichier</th>
+          <th>Catégories</th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  *ngFor=" let itemArticle  of listArticle">
+          <td>{{itemArticle.titreArticleFR | formatTextToolLong:10}}</td>
+          <td>{{itemArticle.titreArticleEN | formatTextToolLong :10}}</td>
+          <td>{{itemArticle.resumeArticleFR | formatTextToolLong:20}}</td>
+          <td>{{itemArticle.resumeArticleEN | formatTextToolLong:20}}</td>
+          <td *ngIf="itemArticle.media==null">aucun fichier joint</td>
+          <td *ngIf="itemArticle.media">{{itemArticle.media.titreFR}}</td>
+          <td>{{itemArticle.categories.libelleCategoriesFR}}</td>
+          <td><button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onSelectArticle(itemArticle)"><i class="fa fa-edit"></i></button></td>
+          <td><button title="{{titreBoutonDelete}}" class="btn btn-danger" (click)="onDeleteArticle(itemArticle.id)"><i class="fa fa-trash"></i></button></td>
+        </tr>
+
+
+        </tbody>
+
+
+       <!-- <tr>
+          <td colspan="5">
+            <jw-pagination [items]="articles" (changePage)="onChangePage($event)"></jw-pagination>
+          </td>
+        </tr>-->
+
+
+      </table>
+
+
+    </div>
+  </div>
+      </ng-template>
+    </ngb-tab>
+
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Présentation des articles sur cadrage</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+        <div class="card-columns">
+          <div class="card" style="width: 25rem" *ngFor="let itemArticleForcadre  of listArticle">
+            <img src="assets/images/{{itemArticleForcadre.media.fichierUploader | imageByDefault }}" class="card-img-top" alt="..."  height="100">
+            <div class="card-body">
+              <h5 class="card-title" style="font-weight: bold">{{itemArticleForcadre.titreArticleFR | formatTextToolLong:30}}</h5>
+              <p class="card-text">{{itemArticleForcadre.resumeArticleFR | formatTextToolLong:100}}</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"  (mousemove)="onSeeResumeArticle(itemArticleForcadre)"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash" (click)="onDeleteArticle(itemArticleForcadre.id)"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check" (click)="onValidArticle()"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right"> <strong> Last </strong> {{itemArticleForcadre.create_le | date: "d-m-y"}} <br> <strong> by </strong> {{itemArticleForcadre.create_by}}</small>
+              </p>
+            </div>
+          </div>
+<!--          <div class="card" style="width: 25rem">
+            <img src="assets/images/articleImage2.jpg" class="card-img-top" alt="..." height="100">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right">Last updated 3 mins ago</small>
+              </p>            </div>
+          </div>
+          <div class="card" style="width: 25rem">
+            <img src="assets/images/articleImage1.jpg" class="card-img-top" alt="..." height="100">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right">Last updated 3 mins ago</small>
+              </p>            </div>
+          </div>
+          <div class="card" style="width: 25rem">
+            <img src="assets/images/articleImage2.jpg"  class="card-img-top" alt="..." height="100">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right">Last updated 3 mins ago</small>
+              </p>            </div>
+          </div>
+          <div class="card" style="width: 25rem">
+            <img src="assets/images/articleImage1.jpg"  class="card-img-top" alt="..." height="100">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right">Last updated 3 mins ago</small>
+              </p>
+            </div>
+          </div>
+          <div class="card" style="width: 25rem">
+            <img src="assets/images/map2.png"  class="card-img-top" alt="..." height="100">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+              <p class="card-text">
+                <span >
+                  <button class="btn btn-primary"><i class="fa fa-eye"></i></button>&nbsp;
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>&nbsp;
+                  <button class="btn btn-success"><i class="fa fa-check"></i></button>&nbsp;
+                </span>
+                <small class="text-muted" style="float: right">Last updated 3 mins ago</small>
+              </p>
+            </div>
+          </div>-->
+        </div>
+
+
+
+
+      </ng-template>
+    </ngb-tab>
+
+
+
+  </ngb-tabset>
+
+
+</div>

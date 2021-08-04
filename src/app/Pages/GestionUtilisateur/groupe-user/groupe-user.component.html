@@ -1,0 +1,212 @@
+<app-page-title [heading]="'CommunTranslate.GroupUser.heading' | translate" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+
+    <ngb-tabset [destroyOnHide]="false">
+        <ngb-tab title="{{'CommunTranslate.GroupUser.heading' | translate}}">
+            <ng-template ngbTabContent>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+    <!--PARTIE ENRREGISTREMENT DES DONNEES DUN GROUPE-->
+    <form name ="formgrp" (ngSubmit)="formgroup.valid && onSaveGroup(formgroup)" #formgroup="ngForm">
+        <input name="idGroupe" value="{{valeurId}}" style="display: none" ngModel/>
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header form-row">
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+                    <h5 class="card-title">{{'CommunTranslate.GroupUser.titrePathAction' | translate}}</h5>
+                </div>
+
+                <div class="col-md-6 text-right">
+                    <button type="submit"  class="btn btn-info btn-lg" [disabled]="formgroup.invalid" >{{labelButtonSave}}</button>&nbsp;
+                    <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate}}</button>
+                </div>
+            </div>
+            <div class="form-row" style="padding: 15px;">
+
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        <label for="libele" class="">{{'CommunTranslate.GroupUser.LibeleGroupe' | translate}} *</label>
+                        <input #objlibele="ngModel"
+                               type="text"
+                               value="{{valeurLibeleGroup}}"
+                               id="libele"
+                               name="libele"
+                               ngModel="{{valeurLibeleGroup}}"
+                               required="required"
+                               placeholder="{{'CommunTranslate.GroupUser.VotreNomGroupe' | translate}}.."
+                               class="form-control">
+                        <small *ngIf="objlibele.touched && objlibele.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        <label for="abreviation" class="">{{'CommunTranslate.GroupUser.Abreviation' | translate}} * </label>
+                        <input #objabreviation="ngModel"
+                               type="text"
+                               value="{{valeurAbreviation}}"
+                               id="abreviation"
+                               name="abreviation"
+                               ngModel="{{valeurAbreviation}}"
+                               required="required"
+                               placeholder="{{'CommunTranslate.GroupUser.AbreviationCorrespondante' | translate}}.."
+                               class="form-control">
+                        <small *ngIf="objabreviation.touched && objabreviation.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        <label for="description" class="">{{'CommunTranslate.GroupUser.DescriptionGroupe' | translate}}</label>
+                        <input type="text"
+                               value="{{valeurDescriptGroup}}"
+                               name="description"
+                               id="description"
+                               placeholder="{{'CommunTranslate.GroupUser.brieveDescription' | translate}}.."
+                               ngModel="{{valeurDescriptGroup}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="position-relative form-group"><label  class="">{{'CommunTranslate.GroupUser.TypeGroupe' | translate}} *</label>
+                        <select #objtypegroup="ngModel"
+                                value="{{valeurTypeGroup}}"
+                                name="typegroup"
+                                ngModel="{{valeurTypeGroup}}"
+                                required="required"
+                                id="typegroup"
+                                class="form-control">
+                            <option value="{{null}}" [selected]="true" >{{'CommunTranslate.GroupUser.ChoisirTypeCorrespondant' | translate}}...</option>
+                            <option value="Unité organisationnelle">{{'CommunTranslate.GroupUser.UniteOrganisationnelle' | translate}}</option>
+                            <option value="Fonction">{{'CommunTranslate.GroupUser.Fonction' | translate}}</option>
+                            <option value="Groupe de travail">{{'CommunTranslate.GroupUser.GroupeTravail' | translate}}</option>
+                        </select>
+                        <small *ngIf="objtypegroup.touched && objtypegroup.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                      <label  class="">
+                        {{'CommunTranslate.GroupUser.GroupeAppartenance' | translate}}
+                        <button type="button"
+                                class="btn mr-2 border-0 btn btn-success"
+                                style="font-weight: bold; padding: 5px; font-size: smaller"
+                                (click)="onGroupApp()"
+                        >{{'CommunTranslate.GroupUser.ChargerGroupesAppartenanceExistant' | translate}}</button>
+                      </label>
+
+
+                      <form [formGroup]="myForm">
+                        <ng-multiselect-dropdown name="groupApp" [placeholder]="'CommunTranslate.GroupUser.SelectionnerGroupeApparrtenanceGroupe' | translate" [settings]="dropdownSettings"
+                                                 [data]="groupApp" formControlName="groupApp"
+                                                 (onDropDownClose)="onDropDownClose()"
+                                                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                      </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+            </ng-template>
+        </ngb-tab>
+
+
+
+        <ngb-tab>
+            <ng-template ngbTabTitle>{{'CommunTranslate.GroupUser.ListeGroupesUtilisateursEnregistres' | translate}}</ng-template>
+            <ng-template ngbTabContent>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+        <!--PARTIE LISTE DES GROUPE ENREGISTRES-->
+    <div class="main-card mb-3 card">
+
+      <div class="card-header-tab card-header">
+        <h5 class="card-title" style="display: inline-block">
+          {{'CommunTranslate.GroupUser.ListeGroupesEnregistres' | translate}}
+        </h5>
+
+        <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listGroupForPaginaition.length"
+               value="{{10}}" *ngIf="listGroup.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+        <p *ngIf="listGroup.length>0 && (term==undefined || term=='')" style="display: inline-block; margin-left: 60px">
+          <em>{{'RecurentWord.navigationDonnees' | translate}} : </em> <strong>{{listGroup.length}} / {{listGroupForPaginaition.length}}</strong>
+        </p>
+
+        <div class="btn-actions-pane-right text-capitalize">
+          <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+        </div>
+
+      </div>
+
+        <div class="card-body">
+
+          <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+                <thead>
+                <tr>
+                    <th>{{'CommunTranslate.GroupUser.LibeleGroupe' | translate}}</th>
+                    <th>{{'CommunTranslate.GroupUser.Abreviation' | translate}}</th>
+                    <th>{{'CommunTranslate.GroupUser.DescriptionGroupe' | translate}}</th>
+                    <th>{{'CommunTranslate.GroupUser.TypeGroupe' | translate}}</th>
+                    <th>{{'CommunTranslate.GroupUser.GroupeAppartenance' | translate}}</th>
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+                    <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let values of (term==undefined || term=='' ? listGroup : listGroupForPaginaition) | filter : term; let i = index">
+                        <td>{{values.libelleGroupe}}</td>
+                        <td>{{values.abreviation}}</td>
+                        <td>{{values.description}}</td>
+                        <td>{{values.typGroup}}</td>
+                        <td>
+                            <span *ngIf="!values.grpAppartenent.length" style="color: #e0c3fc">{{'CommunTranslate.GroupUser.AucunGroupeAppartenance' | translate}}</span>
+                            <span *ngFor="let valeuAppartenace of values.grpAppartenent">
+                                {{valeuAppartenace.libelleGroupe}},
+                            </span>
+                        </td>
+                        <td>
+                            <button title="{{'RecurentWord.edit' | translate}} {{values.abreviation}}" class="btn btn-info" (click)="onSelectGroup(values)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button  title="{{'RecurentWord.delete' | translate}} {{values.abreviation}}"  class="btn btn-danger" (click)="onDeleteGroup(values.id)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listGroupForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+                        <td colspan="7">
+                            <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"  [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+                        </td>
+                    </tr>
+                </tbody>
+
+              <tr *ngIf="listGroup.length==0" style="text-align: center">
+                <td colspan="11">
+                  {{'RecurentWord.AucuneDonneesEnregistrees' | translate}}
+                </td>
+              </tr>
+
+
+            </table>
+        </div>
+    </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+
+
+
+</div>

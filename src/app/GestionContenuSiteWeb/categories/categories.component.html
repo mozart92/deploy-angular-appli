@@ -1,0 +1,149 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Enregistrement des Categories">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+  <form name="form" #formCategories="ngForm" (ngSubmit)="formCategories.valid && onSaveCategories(formCategories.value)">
+
+
+    <div class="mb-3 card">
+      <div class="card-header-tab card-header form-row">
+
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+          <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+        </div>
+
+
+
+        <div class="col-md-6 text-right">
+          <button type="submit"  class="btn btn-info btn-lg" [disabled]="formCategories.invalid">{{labelButtonSave}}</button>&nbsp;
+          <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">Annuler</button>
+        </div>
+
+      </div>
+
+      <div class="form-row" style="padding: 15px;">
+        <div class="col-md-4">
+
+          <div class="position-relative form-group">
+            <label for="libelleCategorieFR" class="">{{LibelleCategorieFR}}</label>
+            <input #libelleCategorieFR="ngModel"
+                   id="libelleCategorieFR"
+                   value="{{valeurlibelleCategorieFR}}"
+                   class="form-control"
+                   type="text"
+                   name="libelleCategorieFR"
+                   placeholder="Insérer le nom de la catégorie(FR)..."
+                   ngModel="{{valeurlibelleCategorieFR}}"
+                   required="required">
+            <small *ngIf="libelleCategorieFR.touched && libelleCategorieFR.invalid" style="color: red">Champ Vide ou incorrecte, veillez veillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+
+          <div class="position-relative form-group">
+            <label for="libelleCategorieEN" class="">{{LibelleCategorieEN}}</label>
+            <input #libelleCategorieEN="ngModel"
+                   id="libelleCategorieEN"
+                   value="{{valeurlibelleCategorieEN}}"
+                   class="form-control"
+                   type="text"
+                   placeholder="Insérer le nom de la catégorie (EN)..."
+                   name="libelleCategorieEN"
+                   ngModel="{{valeurlibelleCategorieEN}}"
+                   required="required">
+            <small *ngIf="libelleCategorieEN.touched && libelleCategorieEN.invalid" style="color: red">Champ Vide ou incorrecte, veillez veillez vérifier</small>
+          </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <div class="position-relative form-group">
+            <label for="parentCategorie" class="">{{ParentCategorie}}</label>
+            <select #objParentCategorie="ngModel"
+                    name="parentCategorie"
+                    id="parentCategorie"
+                    class="form-control"
+                    value="{{valeurParentCategorie}}"
+                    ngModel="{{valeurParentCategorie}}">
+              <option  value="{{null}}" [selected]="true">{{selectlibelleCategorieEN}}</option>
+              <option value="{{itemCategories.id}}" *ngFor="let itemCategories of listCategories; let z = indexZ">
+                {{itemCategories.libelleCategoriesFR}}
+              </option>
+            </select>
+            <small *ngIf="objParentCategorie.touched && objParentCategorie.invalid" style="color: red">Champ Vide ou incorrecte, veillez veillez vérifier</small>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </form>
+      </ng-template>
+    </ngb-tab>
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des catégories enregistrées</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+  <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">{{labelTitreTableau}}</h5>
+
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+
+          <th>Libellé catégories (FR)</th>
+          <th>Libellé catégories (EN)</th>
+          <th>Parent</th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor=" let itemCategories  of categories">
+          <td>{{itemCategories.libelleCategoriesFR}}</td>
+          <td>{{itemCategories.libelleCategoriesEN}}</td>
+          <td *ngIf="itemCategories.parentMenu==null">Aucun menu parent</td>
+          <td *ngIf="itemCategories.parentMenu!=null">{{itemCategories.parentMenu.libelleCategoriesFR}}</td>
+          <td><button  class="btn btn-info" (click)="onSelectCategories(itemCategories)"><i class="fa fa-edit"></i></button></td>
+          <td><button  class="btn btn-danger" (click)="onDeleteCategories(itemCategories.id)"><i class="fa fa-trash"></i></button></td>
+        </tr>
+        </tbody>
+        <tr>
+          <td colspan="5">
+            <jw-pagination [items]="categories" (changePage)="onChangePage($event)"></jw-pagination>
+          </td>
+        </tr>
+
+
+      </table>
+
+
+    </div>
+  </div>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+
+</div>

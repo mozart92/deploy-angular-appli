@@ -1,0 +1,86 @@
+<app-page-title [heading]="'CommunTranslate.ExportDatas.ExportationDonneesPlanificationsEncours' | translate" [subheading]="'CommunTranslate.ExportDatas.ExporterDonneesCollecteesPlanificationsEncours' | translate" [icon]="icon"></app-page-title>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="position-relative form-group">
+      <label class="" style="font-weight: bold">{{'CommunTranslate.ExportDatas.Planification' | translate}}</label>
+      <select #objPlanning
+              id="planning"
+              class="form-control"
+              required="required"
+              (change)="chooseBDquestionnaire(objPlanning.value)">
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.ExportDatas.choisiserPlanification' | translate}}...</option>
+        <ng-container *ngFor="let itemPlanning of listPlanning ">
+          <option value="{{itemPlanning.id}}" *ngIf="itemPlanning.baseQuestionnaires.length>0">
+            {{itemPlanning.libellePlanning}}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="position-relative form-group">
+      <label class="" style="font-weight: bold">{{'CommunTranslate.ExportDatas.BaseQuestionnaireConcerne' | translate}}</label>
+      <select #objBasequestionnaire
+              id="bdquestionnaire"
+              class="form-control"
+              required="required"
+              (change)="chooseFile(objBasequestionnaire.value)">
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.ExportDatas.choisiserBaseQuestionnaire' | translate}}...</option>
+        <option value="{{itembaseQuestionnaire.id}}" *ngFor="let itembaseQuestionnaire of listBDquestionnaire ">
+          {{itembaseQuestionnaire.nomBase}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="position-relative form-group">
+      <label class="" style="font-weight: bold">{{'CommunTranslate.ExportDatas.FichesConcernes' | translate}}</label>
+      <select #objfile
+              id="fileconcerne"
+              class="form-control"
+              required="required"
+              (change)="onAfficheTable(objfile.value)">
+        <option value="{{null}}" [selected]="true">{{'CommunTranslate.ExportDatas.choisiserDataFichierCorrespondat' | translate}}...</option>
+        <option value="{{itemfiletrie.id}}" *ngFor="let itemfiletrie of listFileTrie ">
+          {{itemfiletrie.nomFiche}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-12 table-responsive" style="overflow: auto">
+    <input #valNbre type="number" ngModel step="10" style="width: 80px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="bodyTab.length>0" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+    <button (click)="exportAsXLSX('unique')" *ngIf="bodyTab.length>0" style="cursor: pointer">{{'CommunTranslate.ExportDatas.ExporterSelectionCourante' | translate}}</button>&nbsp;&nbsp;
+    <button (click)="exportAsXLSX('tout')" *ngIf="bodyTab.length>0" style="cursor: pointer">{{'CommunTranslate.ExportDatas.ExporterToutesDonnees' | translate}} </button>
+    <p style="float: right" *ngIf="bodyTab.length>0">
+      <em>{{'CommunTranslate.ExportDatas.NavigationAffichageDonneesSelection' | translate}} : </em> <strong>{{bodyTab.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+    <br/>
+    <br/>
+    <br/>
+    <table style="width: 100%;" id="example2"
+           class="table table-hover table-striped table-bordered data-export table-sm row-border hover" datatable
+           [dtOptions]="dtOptions">
+      <thead>
+      <tr>
+        <th *ngFor="let itemEntete of enteteTab">{{itemEntete }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let itemdata of bodyTab">
+        <td *ngFor="let item of itemdata; let y = index">{{item}}</td>
+      </tr>
+      </tbody>
+      <tr *ngIf="listForPaginaition.length>10">
+        <td [colSpan]="enteteTab.length" >
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" [maxSize]="7" [pageSize]="LIMIT_PARGINATION"
+                          [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-12">
+    <p style="text-align: center" *ngIf="bodyTab.length==0">{{'CommunTranslate.ExportDatas.AucuneDonneesTrouveesCollecte' | translate}}...</p>
+  </div>
+</div>

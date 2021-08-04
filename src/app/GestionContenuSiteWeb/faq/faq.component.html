@@ -1,0 +1,161 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="tabs-animation" >
+
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Enregistrement des FAQ">
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+
+  <form name="formFaq" #formFaq="ngForm" (ngSubmit)="formFaq.valid && onSaveFaq(formFaq.value)">
+
+
+    <div class="mb-3 card">
+      <div class="card-header-tab card-header form-row">
+
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal col-md-6" >
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+          <h5 class="card-title">{{labelTitreFormulaire}}</h5>
+        </div>
+
+
+
+        <div class="col-md-6 text-right">
+          <button type="submit"  class="btn btn-info btn-lg" [disabled]="formFaq.invalid">{{labelButtonSave}}</button>&nbsp;
+          <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">Annuler</button>
+        </div>
+
+      </div>
+
+      <div class="form-row" style="padding: 15px;">
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label for="questionFAQFR" class="">{{labelQuestionFAQFR}}</label>
+            <input #questionFAQFR="ngModel"
+                   id="questionFAQFR"
+                   value="{{valeurquestionFAQFR}}"
+                   class="form-control"
+                   name="questionFAQFR"
+                   ngModel="{{valeurquestionFAQFR}}"
+                   required="required"
+                   type="text">
+            <small *ngIf="questionFAQFR.touched && questionFAQFR.invalid" style="color: red">Champ vide  ou invalide, veillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="position-relative form-group">
+            <label for="labelReponseFAQFR" class="">{{ReponseFAQFR}}</label>
+            <input #labelReponseFAQFR="ngModel"
+                   id="labelReponseFAQFR"
+                   value="{{valeurlabelReponseFAQFR}}"
+                   class="form-control"
+                   name="labelReponseFAQFR"
+                   ngModel="{{valeurlabelReponseFAQFR}}"
+                   required="required"
+                   type="text">
+            <small *ngIf="labelReponseFAQFR.touched && labelReponseFAQFR.invalid" style="color: red">Champ vide  ou invalide, veillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="position-relative form-group">
+            <label for="questionFAQEN" class="">{{QuestionFAQEN}}</label>
+            <input #labelQuestionFAQEN="ngModel"
+                   id="questionFAQEN"
+                   value="{{valeurlabelQuestionFAQEN}}"
+                   class="form-control"
+                   name="questionFAQEN"
+                   ngModel="{{valeurlabelQuestionFAQEN}}"
+                   required="required"
+                   type="text">
+            <small *ngIf="labelQuestionFAQEN.touched && labelQuestionFAQEN.invalid" style="color: red">Champ vide  ou invalide, veillez vérifier</small>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="position-relative form-group">
+            <label for="labelReponseFAQEN" class="">{{ReponseFAQEN}}</label>
+            <input #labelReponseFAQEN="ngModel"
+                   id="labelReponseFAQEN"
+                   value="{{valeurlabelReponseFAQEN}}"
+                   class="form-control"
+                   name="labelReponseFAQEN"
+                   ngModel="{{valeurlabelReponseFAQEN}}"
+                   required="required"
+                   type="text">
+            <small *ngIf="labelReponseFAQEN.touched && labelReponseFAQEN.invalid" style="color: red">Champ vide  ou invalide, veillez vérifier</small>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </form>
+      </ng-template>
+    </ngb-tab>
+
+
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>Liste des FAQ enregistrés</ng-template>
+      <ng-template ngbTabContent>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+
+  <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">{{labelTitreTableau}}</h5>
+
+
+      <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered data-export">
+        <thead>
+        <tr>
+
+          <th>Question (FR)</th>
+          <th>Reponse (FR)</th>
+          <th>Question (EN)</th>
+          <th>Reponse (EN)</th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+          <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  *ngFor=" let itemfaq  of faqs">
+          <td>{{itemfaq.questionFR | formatTextToolLong:30}}</td>
+          <td>{{itemfaq.reponseFR | formatTextToolLong:30}}</td>
+          <td>{{itemfaq.questionEN | formatTextToolLong:30}}</td>
+          <td>{{itemfaq.reponseEN | formatTextToolLong:30}}</td>
+          <td ><button title="{{titreBoutonEdit}}" class="btn btn-info" (click)="onSelectFaq(itemfaq)"><i class="fa fa-edit"></i></button></td>
+          <td ><button title="{{titreBoutonDelete}}" class="btn btn-danger" (click)="onDeleteFaq(itemfaq.id)"><i class="fa fa-trash"></i></button></td>
+        </tr>
+
+
+        </tbody>
+
+
+        <tr>
+          <td colspan="6">
+            <jw-pagination [items]="faqs" (changePage)="onChangePage($event)"></jw-pagination>
+          </td>
+        </tr>
+
+
+      </table>
+
+
+    </div>
+  </div>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+
+</div>

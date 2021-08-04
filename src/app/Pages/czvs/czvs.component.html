@@ -1,0 +1,161 @@
+<app-page-title [heading]="'ModeCahis.CZV.heading' | translate " [subheading]="'ModeCahis.CZV.subheading' | translate " [icon]="icon"></app-page-title>
+
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveCZVS(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.CZV.labelTitreFormulaire' | translate }}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate}}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label  for="codeCZVS" class="">{{'ModeCahis.CZV.labelCodeCZVS' | translate }}*</label>
+          <input #codeCZVS="ngModel"
+                 id="codeCZVS"
+                 value="{{valeurCodeCZVS}}"
+                 class="form-control"
+                 type="text"
+                 name="codeCZVS"
+                 placeholder="{{'ModeCahis.CZV.InsererCodeCZVS' | translate }}..."
+                 ngModel="{{valeurCodeCZVS}}"
+                 required="required">
+          <small *ngIf="codeCZVS.touched && codeCZVS.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.CZV.labelLibelleCZVS' | translate }} (FR)*</label>
+          <input #libelleCZVSFR="ngModel"
+                 id="libelleCZVSFR"
+                 value="{{valeurLibelleCZVSFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleCZVSFR"
+                 placeholder="{{'ModeCahis.CZV.InsererNomFrancaisCZVS' | translate }}..."
+                 ngModel="{{valeurLibelleCZVSFR}}"
+                 required="required">
+          <small *ngIf="libelleCZVSFR.touched && libelleCZVSFR.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label for="libelleCZVSEN" class="">{{'ModeCahis.CZV.labelLibelleCZVS' | translate }} (EN)*</label>
+          <input   #libelleCZVSEN="ngModel"
+                   id="libelleCZVSEN"
+                   value="{{valeurLibelleCZVSEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleCZVSEN"
+                   placeholder="{{'ModeCahis.CZV.InsererNomAnglaisCZVS' | translate }}..."
+                   ngModel="{{valeurLibelleCZVSEN}}"
+                   required="required">
+          <small *ngIf="libelleCZVSEN.touched && libelleCZVSEN.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-3">
+
+        <div class="position-relative form-group">
+          <label  for="arrondissementID" class="">{{'ModeCahis.CZV.labelChampSelect' | translate }}*</label>
+          <select #objArondissementID="ngModel"
+                  name="arrondissementID"
+                  id="arrondissementID"
+                  required="required"
+                  class="form-control"
+                  value="{{valeurArondissement}}"
+                  ngModel="{{valeurArondissement}}">
+            <option value="{{null}}" [selected]="true">{{'RecurentWord.choisi' | translate}}</option>
+            <option value="{{itemArrondissement.id}}" *ngFor="let itemArrondissement of listArrondissement; let z = indexZ">
+              {{itemArrondissement.libelleCommuneFR | translateContenu : itemArrondissement.libelleCommuneEN : currentLangue}}
+            </option>
+          </select>
+          <small *ngIf="objArondissementID.touched && objArondissementID.invalid" style="color: red">{{'RecurentWord.BadChamp' | translate}}</small>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.CZV.labelTitreTableau' | translate }}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="10" *ngIf="listCZVS.length>0 && (term ==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listCZVS.length>0 && (term ==undefined || term=='')" style="display: inline-block">
+      <em>{{'RecurentWord.navigationDonnees' | translate}} : </em> <strong>{{listCZVS.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th style="font-weight: bold">#</th>
+        <th>{{'ModeCahis.CZV.labelCodeCZVS' | translate }}</th>
+        <th>{{'ModeCahis.CZV.labelLibelleCZVS' | translate }} (FR)</th>
+        <th>{{'ModeCahis.CZV.labelLibelleCZVS' | translate }} (EN)</th>
+        <th>{{'ModeCahis.CZV.labelChampSelect' | translate }}</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemCZVS  of (term==undefined || term=='' ? listCZVS : listForPaginaition) | filter : term ; let i = index">
+        <td style="font-weight: bold">{{i+1 | number}}</td>
+        <td>{{itemCZVS.codeCZVS}}</td>
+        <td>{{itemCZVS.libelleCZVSFR}}</td>
+        <td>{{itemCZVS.libelleCZVSEN}}</td>
+        <td>{{itemCZVS.arrondissement.libelleCommuneFR | translateContenu : itemCZVS.arrondissement.libelleCommuneEN : currentLangue}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate}}" class="btn btn-info" (click)="onSelect(itemCZVS)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate}}" class="btn btn-danger" (click)="onDeleteCZVS(itemCZVS.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr >
+        <td colspan="8" *ngIf="listCZVS.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate}} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term ==undefined || term=='')">
+        <td colspan="6">
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"  [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>

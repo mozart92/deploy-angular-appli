@@ -1,0 +1,11 @@
+<div class="d-block">
+
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+</div>
+<div class="divider"></div>
+<div class="text-center">
+  <button   class="btn btn-info btn-sm" (click)="randomize()">Changer le style du graphe</button>
+
+</div>

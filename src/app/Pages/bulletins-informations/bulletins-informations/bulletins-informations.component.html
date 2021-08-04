@@ -1,0 +1,289 @@
+<app-page-title [heading]="heading" [subheading]="subheading" [icon]="icon"></app-page-title>
+<div class="btn-actions-pane-right text-capitalize actions-icon-btn" ngbDropdown style="width: 12px;">
+  <button class="btn btn-icon btn-icon-only btn-link" ngbDropdownToggle>
+    <fa-icon [icon]="faTh"></fa-icon>
+  </button>
+  <div ngbDropdownMenu>
+    <div (click)="onGenerateBill()">
+      <button type="button" tabindex="0" class="dropdown-item">
+        <i class="dropdown-icon lnr-inbox"></i><span>Généner le bulletin</span>
+      </button>
+    </div>
+    <div>
+      <button type="button" tabindex="0" class="dropdown-item">
+        <i class="dropdown-icon lnr-file-empty"></i><span>Diffuser le bulletin</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="tabs-animation" #content id="content" style="background-color: white; padding: 30px">
+  <div class="card-header-tab card-header"
+       style="background-color: #ffffff; padding-top: 20px; padding-bottom: 30px; height: 300px;">
+    <div class="col-md-4" style="text-align: center">
+      REPUBLIQUE DU CAMEROUN <br>Paix - Travail - Patrie<br>------<br>MINISTERE DE L'ELEVAGE, DES PECHES ET DES
+      INDUSTRIES ANIMALES<br>
+      ------<br>SECRETARIAT GENERAL<br>------<br>DIRECTION DES SERVICES VETERINAIRES<br>------<br>
+      Réseau d'Epidémiosurveillance des Maladies Animales du Cameroun
+    </div>
+    <div class="col-md-4" style="text-align: center">
+      <img src="/assets/images/logo_minepia.jpg" alt="Logo MINEPIA" width="150px">
+    </div>
+    <div class="col-md-4" style="text-align: center">
+      REPUBLIQUE DU CAMEROUN <br>Paix - Travail - Patrie<br>------<br>MINISTERE DE L'ELEVAGE, DES PECHES ET DES
+      INDUSTRIES ANIMALES<br>
+      ------<br>SECRETARIAT GENERAL<br>------<br>DIRECTION DES SERVICES VETERINAIRES<br>------<br>
+      Réseau d'Epidémiosurveillance des Maladies Animales du Cameroun
+    </div>
+  </div>
+  <div class="card-header-tab card-header"
+       style="background-color: #ffffff; padding-top: 30px; padding-bottom: 30px; height: 150px;">
+    <div class="col-md-12" style="text-align: center; font-size: 25px; color: #0ba360;">
+      SYNTHESE HEBDOMADAIRE DES INFORMATIONS ZOOSANITAIRES <br>INTERNATIONALES ET NATIONALES <br>
+      <label style="color: #D0021B;font-size: 20px;" *ngIf="dataPlanningArchiveForBull!=undefined">SEMAINE
+        EPIDEMIOLOGIQUE N° : 39<br>
+        DU {{dataPlanningArchiveForBull.dateDebut | date:'dd'}} {{calendrierJourFrancais[dataPlanningArchiveForBull.dateDebut | date :'L']}} {{dataPlanningArchiveForBull.dateDebut | date : 'yyyy'}}
+        au {{dataPlanningArchiveForBull.dateFin | date : 'dd'}} {{calendrierJourFrancais[dataPlanningArchiveForBull.dateFin | date :'L']}} {{dataPlanningArchiveForBull.dateFin | date : 'yyyy'}}
+      </label>
+    </div>
+  </div>
+
+
+  <div class="">
+  <!--  card-header-tab card-header-->
+    <div class="" style="  height: 100px;position: relative">
+      <div class="card-header-title font-size-lg  font-weight-normal"
+           style="position: absolute;
+                  top: 30%;
+                  left: 30%;
+                  text-decoration: underline;
+                  font-size: 20px!important;
+                  font-family: monospace;
+                  text-transform: uppercase;
+">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        <strong>Complétude et promptitude des Reporting des régions</strong>
+      </div>
+      <div class="btn-actions-pane-right text-capitalize"></div>
+    </div>
+
+    <div class="no-gutters row">
+      <ng-container *ngIf="listregions.length>0">
+        <div class="col-md-6 col-xl-6">
+          <ng-container *ngFor="let itemRegion of listregions; let i = index">
+            <ng-container *ngIf="itemRegion.donnee.length>0">
+              <div class="card mb-6 widget-content {{itemRegion.donnee[0].label}}"
+                   style="height: 30px; border: 1px solid #ffffff;padding: 20px;">
+                <div class="widget-content-wrapper text-white">
+                  <div class="widget-content-left">
+                    <div class="widget-heading">{{itemRegion.libelleRegionFR}}</div>
+                  </div>
+                  <div class="widget-content-right">
+                    <div class="widget-numbers text-white"><span>{{itemRegion.donnee[0].taux}}</span></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+      <div class="col-md-6 col-xl-4" style="text-align: right;">
+        <fusioncharts
+          type="cameroon"
+          width="500"
+          height="455"
+          dataFormat="json"
+          [dataSource]="dataSource"
+        >
+        </fusioncharts>
+      </div>
+    </div>
+    <div class="text-center d-block p-3 card-footer">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="badge badge-success">Transmis à temps</div>
+        </div>
+        <div class="col-md-4">
+          <div class="badge badge-warning">Transmis en retard</div>
+        </div>
+        <div class="col-md-4">
+          <div class="badge badge-danger">Non transmis</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-left d-block p-3 card-footer">
+      <div class="row">
+        <div class="col-md-1">
+          <div class="icon-wrapper rounded-circle" style="width: 30px; margin-top: -15px;margin-bottom: -20px;">
+            <div class="icon-wrapper-bg opacity-9 bg-white"></div>
+            <i class="icon pe-7s-info text-gray"></i></div>
+        </div>
+        <div #divElement class="col-md-11" (dblclick)="onCommentaire(divElement)">
+          <ng-container *ngIf="isVisibleCommentaire">
+            <span
+              class="vsm-title">{{dataPlanningArchiveForBull.commentaireBulletin == null || dataPlanningArchiveForBull.commentaireBulletin == undefined ? this.commentaireDefault : dataPlanningArchiveForBull.commentaireBulletin}}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!--mb-3 card-->
+    <div class="">
+     <!-- card-header-tab card-header-->
+      <div class="" style=" height: 100px; position: relative" >
+        <div class="card-header-title font-size-lg  font-weight-normal"
+             style="position: absolute;
+                    top: 30%;
+                    left: 30%;
+                    text-decoration: underline;
+                    font-size: 20px!important;
+                    font-family: monospace;
+                    text-transform: uppercase;">
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+          <strong>Recapitulatif des notifications</strong>
+        </div>
+        <div class="btn-actions-pane-right text-capitalize"></div>
+      </div>
+
+
+      <ng-container *ngIf="dataPlanningArchiveForBull!=undefined">
+        <ng-container *ngIf="dataPlanningArchiveForBull.baseQuestionnaires.length>0">
+          <!--mb-3 card-->
+          <div class="" *ngFor="let itemBaseQuestionnaire of dataPlanningArchiveForBull.baseQuestionnaires">
+            <!--card-header-tab card-header-->
+            <div class="" style="background-color: beige;margin-bottom: 50px;">
+              <div class="card-header-title font-size-lg  font-weight-normal" style=" height: 70px;display: table;padding: 20px;">
+                <strong style="display: table-cell; vertical-align: middle;">{{itemBaseQuestionnaire.nomBase}}</strong>
+              </div>
+              <div class="btn-actions-pane-right text-capitalize"></div>
+            </div>
+
+            <div class="no-gutters row">
+              <ng-container *ngFor="let itemFicheNbredata of listFicheCollecteNbreData">
+                <div class="col-sm-6 col-md-4 col-xl-4"
+                     *ngIf="itemFicheNbredata.baseNotification.id==itemBaseQuestionnaire.id">
+                  <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+                    <div class="icon-wrapper rounded-circle">
+                      <div
+                        class="icon-wrapper-bg opacity-10 bg-{{itemFicheNbredata.nbreDataCollectee==0 ? 'success' : 'danger'}} text-white"></div>
+                      <i class="lnr-alarm text-white"></i></div>
+                    <div class="widget-chart-content">
+                      <div class="widget-subheading">{{itemFicheNbredata.ficheForCollecte.nomFiche}}</div>
+                      <div
+                        class="widget-numbers text-{{itemFicheNbredata.nbreDataCollectee==0 ? 'success' : 'danger'}}">{{itemFicheNbredata.nbreDataCollectee}}</div>
+                      <div class="widget-description opacity-8 text-focus">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="divider m-0 d-md-none d-sm-block"></div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+
+      <div class="text-left d-block p-3 card-footer">
+        <div class="row">
+          <div class="col-md-1">
+            <div class="icon-wrapper rounded-circle" style="width: 30px; margin-top: -15px;margin-bottom: -20px;">
+              <div class="icon-wrapper-bg opacity-9 bg-white"></div>
+              <i class="icon pe-7s-info text-gray"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <ng-container *ngIf="dataPlanningArchiveForBull!=undefined">
+      <ng-container *ngIf="dataPlanningArchiveForBull.baseQuestionnaires.length>0">
+        <!--mb-3 card-->
+        <div class="" *ngFor="let itemBaseQuestionnaire of dataPlanningArchiveForBull.baseQuestionnaires" style="background-color: white">
+        <!--  card-header-tab card-header-->
+          <div class="" style="background-color: beige;margin-bottom: 50px;">
+            <div class="card-header-title font-size-lg  font-weight-normal">
+              <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+              <strong>{{itemBaseQuestionnaire.nomBase}}</strong>
+            </div>
+            <div class="btn-actions-pane-right text-capitalize"></div>
+          </div>
+
+
+          <ng-container *ngFor="let itemFicheNbredata of listFicheCollecteNbreData">
+            <!--mb-3 card-->
+            <div class="" *ngIf="itemFicheNbredata.baseNotification.id==itemBaseQuestionnaire.id">
+              <!--card-header-tab card-header-->
+              <div
+                class=" bg-{{itemFicheNbredata.nbreDataCollectee==0 ? 'success' : 'danger'}} text-white">
+                <div class="card-header-title font-size-lg  font-weight-normal">
+                  <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+                  <strong>{{itemFicheNbredata.ficheForCollecte.nomFiche}}</strong>
+                </div>
+                <div class="btn-actions-pane-right text-capitalize"></div>
+              </div>
+              <div class="no-gutters row">
+                <ng-container *ngIf="itemFicheNbredata.nbreDataCollectee>0">
+                  <div
+                    class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+
+                    <div class="dot-danger vertical-timeline-element"
+                         *ngFor="let itemData of itemFicheNbredata.donneeValideBrut">
+                      <div>
+                        <span class="vertical-timeline-element-icon bounce-in"></span>
+                        <div class="vertical-timeline-element-content bounce-in">
+                          <h4 class="timeline-title"><strong>{{itemData.create_le | date : 'dd-MM-yyyy'}} : </strong>
+                          </h4><br/>
+
+                          <span *ngFor="let itemHeard of itemFicheNbredata.dataHeard">
+                          <strong>{{itemHeard}}
+                            :</strong>&nbsp;<em>{{itemFicheNbredata.donneeDetail[itemData.id][itemHeard]}},</em>&nbsp;
+                        </span>&nbsp;&nbsp;
+
+                          <!--<div class="row" *ngFor="let itemHeard of itemFicheNbredata.dataHeard">
+
+                            <div class="col-md-9 border-bottom border-right border-top font-weight-bolder font-italic">
+                              {{itemHeard}}
+                            </div>
+                            <div class="col-md-3 border-bottom border-top">
+                              {{itemFicheNbredata.donneeDetail[itemData.id][itemHeard]}}
+                            </div>
+                          </div>-->
+
+
+                        </div>
+                      </div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                  </div>
+                </ng-container>
+              </div>
+              <div class="text-center d-block p-3 card-footer">
+                <ng-container *ngIf="itemFicheNbredata.nbreDataCollectee>0">
+                  <ng-container *ngIf="itemFicheNbredata.nbreIndicateurTaux>0">
+                    <app-diagram-comparatif [idFicheInput]="itemFicheNbredata.ficheForCollecte.id"
+                                            [idPlanningInput]="itemFicheNbredata.donneeValideBrut"
+                                            [ModeInput]="'Mode Taux'"
+                                            [NameDiagrammeInput]="'Diagramme Comparatif des valeurs en Taux'"></app-diagram-comparatif>
+                  </ng-container>
+
+                  <ng-container *ngIf="itemFicheNbredata.nbreIndicateurPourcentage>0">
+                    <app-diagram-comparatif [idFicheInput]="itemFicheNbredata.ficheForCollecte.id"
+                                            [idPlanningInput]="itemFicheNbredata.donneeValideBrut"
+                                            [ModeInput]="'Mode Pourcentage'"
+                                            [NameDiagrammeInput]="'Diagramme Comparatif des valeurs en Pourçentage'"></app-diagram-comparatif>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="itemFicheNbredata.nbreDataCollectee==0">
+                  <p>Aucune données envoyées à travers cette fiche</p>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="dataPlanningArchiveForBull.baseQuestionnaires.length==0">
+        <p>Aucune base de collecte enregistrée dans cette planification</p>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+

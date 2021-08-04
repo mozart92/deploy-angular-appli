@@ -1,0 +1,35 @@
+.widget-number{
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
+
+.widget-text{
+  font-weight: bold;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.errorChamp{
+  border-color: red;
+  border-width: 2px;
+}
+
+.toggle-content{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 200ms ease-in-out;
+}
+
+.toggle-content.is-visible{
+  max-height:200px;
+}
+
+.hide{
+  display: none!important;
+}
+
+.show{
+  display: block;
+}

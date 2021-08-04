@@ -1,0 +1,83 @@
+<form name ="formAuth"  (ngSubmit)="formAuth.valid && onInfoUserAuth(formAuth)"   #formAuth="ngForm">
+
+
+
+  <div class="app-container app-theme-white body-tabs-shadow" style="background-image: url('/assets/images/bg.jpg');">
+    <div class="app-container" >
+
+      <div class="h-100 bg-happy-green bg-animation">
+        <div class="d-flex h-100 justify-content-center align-items-center">
+          <div class="mx-auto app-login-box col-md-8">
+            <div class="app-logo-inverse mx-auto mb-3"></div>
+
+            <div class="modal-dialog w-100 mx-auto">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="h5 modal-title text-center">
+                    <h4 class="mt-2">
+                      <div><h3>SYSTEME DE REPORTING ET MONITORING DES CTD</h3></div>
+                      <span>Veuillez vous connecter à votre compte ci-dessous.</span>
+                    </h4>
+                  </div>
+
+                  <div class="form-row">
+
+                    <div class="col-md-12">
+
+                      <div id="exampleInputGroup1" role="group" class="form-group">
+                        <div>
+                          <input #objlogin="ngModel" id="login" email  type="email" name="login" placeholder="Enter email..." required="required" class="form-control" [ngModel]="login">
+                          <small *ngIf="objlogin.touched && objlogin.invalid" tabindex="-1" id="exampleInputGroup1__BV_description_" class="form-text" style="color: red!important;">
+                            Login invalide, format email attendu. (exemple@domaine.com)
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+
+                      <div id="exampleInputGroup2" role="group" class="form-group">
+                        <div>
+                          <input #objpwd="ngModel" id="passkey" name="passkey" type="password" placeholder="Enter password..." required="required" class="form-control" [ngModel]="passKey">
+                          <small *ngIf="objpwd.touched && objpwd.invalid" tabindex="-1" id="exampleInputGroup1__BV_description_1" class="form-text" style="color: red!important;">
+                            Champs vide, veuillez inserer votre mot de passe.
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+
+                      <div id="exampleInputGroup3" role="group" class="form-group">
+                        <div>
+                          <select #ElementLangue ngModel name="langue" class="form-control" (change)="onChangeLangue(ElementLangue)">
+                            <option value="{{null}}" [selected]="true" >Choisir langue..</option>
+                            <option value="fr" [selected]="true" >Français</option>
+                            <option value="en">Anglais</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="divider"></div>
+                  <div class="float-right">
+                    <button [disabled]="!formAuth.valid" type="submit" class="btn btn-primary btn-lg">Connexion</button>
+                  </div>
+
+                </div>
+                <div class="modal-footer clearfix">
+
+
+                </div>
+              </div>
+            </div>
+            <div class="text-center text-white opacity-8 mt-3">
+              <img src="/assets/images/logo_mindevel-pnud.png" alt="MINDDEVEL-PNUD">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

@@ -1,0 +1,17 @@
+
+
+<div style="color: white; cursor: pointer; margin-bottom: 10px">
+    <a class="badge badge-success" style="float: right" *ngIf="filesList!=undefined" (click)="RequestUpload()"><i class="fa fa-upload"></i> Uploader</a>
+</div>
+<div class="progress" *ngIf="progress>0" >
+    <div
+            class="progress-bar progress-bar-info progress-bar-striped"
+            role="progressbar"
+            attr.aria-valuenow="{{ progress }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }"
+    >
+        {{ progress }}%
+    </div>
+</div>

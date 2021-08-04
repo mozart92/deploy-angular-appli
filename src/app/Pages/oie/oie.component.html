@@ -1,0 +1,138 @@
+<app-page-title [heading]="'ModeCahis.oie.heading' | translate" [subheading]="'ModeCahis.oie.subheading' | translate" [icon]="icon"></app-page-title>
+
+<form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSaveOIE(f.value)" novalidate>
+  <div class="mb-3 card">
+    <div class="card-header-tab card-header">
+      <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+        <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+        {{'ModeCahis.oie.labelTitreFormulaire' | translate}}
+      </div>
+      <div class="btn-actions-pane-right text-capitalize">
+        <button type="submit"  class="btn btn-info btn-lg" [disabled]="f.invalid">{{labelButtonSave}}</button>&nbsp;
+        <button *ngIf="labelButtonSave!='Enregistrer'" class="btn btn-danger btn-lg" (click)="cancelAction()">{{'RecurentWord.Annuler' | translate}}</button>
+      </div>
+    </div>
+    <div class="form-row" style="padding: 15px;">
+
+      <input name="idOccurentValue" value="{{valeurID}}" style="display: none" ngModel/>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  for="codeOIE" class="">{{'ModeCahis.oie.labelCodeOIE' | translate}}*</label>
+          <input #codeOIE="ngModel"
+                 id="codeOIE"
+                 value="{{valeurCodeOIE}}"
+                 class="form-control"
+                 type="text"
+                 name="codeOIE"
+                 placeholder="{{'ModeCahis.oie.InsererCodeOIE' | translate}}..."
+                 ngModel="{{valeurCodeOIE}}"
+                 required="required">
+          <small *ngIf="codeOIE.touched && codeOIE.invalid" style="color: red"> {{'RecurentWord.BadChamp' | translate}} </small>
+        </div>
+
+      </div>
+
+
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label  class="">{{'ModeCahis.oie.labelLibelleOIEFR' | translate}} (FR)*</label>
+          <input #libelleOIEFR="ngModel"
+                 id="libelleOIEFR"
+                 value="{{valeurLibelleOIEFR}}"
+                 class="form-control"
+                 type="text"
+                 name="libelleOIEFR"
+                 placeholder="{{'ModeCahis.oie.InsererNomFrancaisOIE' | translate}}..."
+                 ngModel="{{valeurLibelleOIEFR}}"
+                 required="required">
+          <small *ngIf="libelleOIEFR.touched && libelleOIEFR.invalid" style="color: red"> {{'RecurentWord.BadChamp' | translate}} </small>
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="position-relative form-group">
+          <label for="libelleOIEEN" class="">{{'ModeCahis.oie.labelLibelleOIEFR' | translate}} (EN)*</label>
+          <input   #libelleOIEEN="ngModel"
+                   id="libelleOIEEN"
+                   value="{{valeurLibelleOIEEN}}"
+                   type="text"
+                   class="form-control"
+                   name="libelleOIEEN"
+                   placeholder="{{'ModeCahis.oie.InsererNomAnglaisOIE' | translate}}..."
+                   ngModel="{{valeurLibelleOIEEN}}"
+                   required="required">
+          <small *ngIf="libelleOIEEN.touched && libelleOIEEN.invalid" style="color: red"> {{'RecurentWord.BadChamp' | translate}} </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      {{'ModeCahis.oie.labelTitreTableau' | translate}}
+    </div>
+
+    <input #valNbre type="number" ngModel step="10" style="width: 80px; display: inline-block; margin-left: 30px" [min]="10" [max]="listForPaginaition.length"
+           value="{{10}}" *ngIf="listOIE.length>0 && (term==undefined || term=='')" (change)="onChangeNbreDatasAffiche(valNbre.value)"/>&nbsp;&nbsp;
+
+    <p *ngIf="listOIE.length>0 && (term==undefined || term=='')" style="display: inline-block">
+      <em> {{'RecurentWord.navigationDonnees' | translate}} : </em> <strong>{{listOIE.length}} / {{listForPaginaition.length}}</strong>
+    </p>
+
+    <div class="btn-actions-pane-right text-capitalize">
+      <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="term" />
+    </div>
+  </div>
+  <div class="no-gutters row">
+
+
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+      <thead>
+      <tr>
+        <th style="font-weight: bold">#</th>
+        <th>{{'ModeCahis.oie.labelCodeOIE' | translate}}</th>
+        <th>{{'ModeCahis.oie.labelLibelleOIEFR' | translate}} (FR)</th>
+        <th>{{'ModeCahis.oie.labelLibelleOIEFR' | translate}} (EN)</th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-edit"></i></button></th>
+        <th style="width: 25px;"><button class="btn"><i class="fa fa-trash"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor=" let itemOIE  of (term==undefined || term=='' ? listOIE : listForPaginaition) | filter : term; let i=index">
+        <td style="font-weight: bold">{{i+1}}</td>
+        <td>{{itemOIE.codeOIE}}</td>
+        <td>{{itemOIE.libelleOIEFR}}</td>
+        <td>{{itemOIE.libelleOIEEN}}</td>
+        <td ><button title="{{'RecurentWord.edit' | translate}}" class="btn btn-info" (click)="onSelect(itemOIE)"><i class="fa fa-edit"></i></button></td>
+        <td ><button title="{{'RecurentWord.delete' | translate}}" class="btn btn-danger" (click)="onDeleteOIE(itemOIE.id)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+
+      </tbody>
+      <tr>
+        <td colspan="5" *ngIf="listOIE.length==0 && dataPreload==true" style="vertical-align: middle">
+          <p style="text-align: center"> {{'RecurentWord.AucuneDonneesEnregistrees' | translate}} </p>
+        </td>
+      </tr>
+      <tr *ngIf="listForPaginaition.length > LIMIT_PARGINATION && (term==undefined || term=='')">
+        <td colspan="5">
+          <ngb-pagination (pageChange)="onChangePageRecup($event)" maxSize="7" [pageSize]="LIMIT_PARGINATION"  [collectionSize]="countItemAffcihe" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+</div>
